@@ -41,11 +41,18 @@ namespace dir2
 
             var toFileInfoResult = MyToFileInfo(filterResult);
 
+            var toPrintResult = MyPrintFileInfo(toFileInfoResult,
+                (it) =>
+                {
+                    Console.Write($"{it.Length,8} ");
+                    Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
+                    Console.WriteLine(it.FullName);
+                    return it;
+                });
+
             var count = 0;
-            foreach (var info in toFileInfoResult)
+            foreach (var info in toPrintResult)
             {
-                Console.Write($"{info.Length,8} ");
-                Console.WriteLine(info.FullName);
                 count += 1;
             }
             Console.WriteLine($"{count} files are found.");
@@ -73,6 +80,17 @@ namespace dir2
             {
                 var currentThe = enumThe.Current;
                 yield return new FileInfo(currentThe);
+            }
+        }
+
+        static IEnumerable<FileInfo> MyPrintFileInfo(
+            IEnumerable<FileInfo> seqThe, Func<FileInfo, FileInfo> funcThe)
+        {
+            var enumThe = seqThe.GetEnumerator();
+            while (enumThe.MoveNext())
+            {
+                var currentThe = enumThe.Current;
+                yield return funcThe(currentThe);
             }
         }
     }

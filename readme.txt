@@ -1,1 +1,1 @@
-05.02 Add 'MyTransform' for the feature of LINQ Select() - ToFileInfo
+05.03 Add 'MyPrint' for the feature of LINQ Select() - PrintFileInfo

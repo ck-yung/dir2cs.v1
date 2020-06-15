@@ -80,6 +80,8 @@ namespace dir2
 
         static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
             SortFileInfo { get; private set; } = (seqThe) => seqThe;
+        static public Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
+            SortSumInfo { get; private set; } = (seqThe) => seqThe;
 
         static public readonly IParser SortOpt = new Parser(
             "--sort=", help: "size",
@@ -89,6 +91,8 @@ namespace dir2
                 {
                     case "size":
                         SortFileInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.Length);
+                        SortSumInfo =
                         (seqThe) => seqThe.OrderBy((it) => it.Length);
                         break;
                     default:
@@ -120,6 +124,7 @@ namespace dir2
                                 string.IsNullOrEmpty(grp.Key)
                                 ? "*no-ext*" : grp.Key),
                             (acc, it) => acc.AddWith(it)))
+                            .Invoke(SortSumInfo)
                             .Select((it) =>
                             {
                                 Console.Write(ItemText(it.ToString()));
@@ -134,6 +139,7 @@ namespace dir2
                                 InfoFile.RelativePath(it.FullName)))
                             .Select((grp) => grp.Aggregate(new InfoSum(grp.Key),
                             (acc, it) => acc.AddWith(it)))
+                            .Invoke(SortSumInfo)
                             .Select((it) =>
                             {
                                 Console.Write(ItemText(it.ToString()));

@@ -28,9 +28,9 @@ namespace dir2
             catch { return emptyStrings.AsEnumerable().GetEnumerator(); }
         }
 
-        static public IEnumerable<InfoFile> Invoke(
-            this IEnumerable<InfoFile> seqThe,
-            Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>> func)
+        static public IEnumerable<T> Invoke<T>(
+            this IEnumerable<T> seqThe,
+            Func<IEnumerable<T>, IEnumerable<T>> func)
         {
             return func(seqThe);
         }

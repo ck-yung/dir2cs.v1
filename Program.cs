@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace dir2
 {
@@ -6,7 +7,24 @@ namespace dir2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            try
+            {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Console.InputEncoding = System.Text.Encoding.UTF8;
+                MainRun(args);
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ee);
+            }
+        }
+
+        static void MainRun(string[] args)
+        {
+            var baseDir = Directory.GetCurrentDirectory();
+            Console.WriteLine(baseDir);
+            return;
         }
     }
 }

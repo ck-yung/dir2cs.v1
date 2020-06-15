@@ -1,1 +1,1 @@
-10.01 LINQ GroupBy() for sum by file extension
+10.02 Add 'Name' to 'InfoSum'

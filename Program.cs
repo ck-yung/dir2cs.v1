@@ -56,20 +56,22 @@ namespace dir2
                 .Where((it) => it.IsNotNone)
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
                 .GroupBy((it) => Path.GetExtension(it.Filename))
-                .Select((grp) => grp.Aggregate(new InfoSum(),
+                .Select((grp) => grp.Aggregate(new InfoSum(
+                    string.IsNullOrEmpty(grp.Key)
+                    ? "*no-ext*" : grp.Key),
                 (acc, it) => acc.AddWith(it)))
                 .Select((it) =>
                 {
                     Console.Write(Opts.ItemText(it.ToString()));
                     return it;
                 })
-                .Aggregate(new InfoSum(),
+                .Aggregate(new InfoSum(baseDir),
                 (acc, it) => acc.AddWith(it));
 
             if (sum.AddCount == 0)
                 Console.Write(Opts.TotalText("No file is found."));
             else if (sum.AddCount > 1)
-                Console.Write(Opts.TotalText($"{sum}{baseDir}"));
+                Console.Write(Opts.TotalText(sum.ToString()));
 
             return;
         }

@@ -44,6 +44,12 @@ namespace dir2
 
     class InfoSum
     {
+        public readonly string Name;
+        public InfoSum(string name)
+        {
+            Name = name;
+        }
+
         public int Count { get; private set; }
         public int AddCount { get; private set; }
         public long Length { get; private set; }
@@ -60,6 +66,7 @@ namespace dir2
             buf.Append(Opts.DateText("- "));
             buf.Append(Opts.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));
             buf.Append(Opts.CountText($"{Count,4} "));
+            buf.Append(Name);
             return buf.ToString();
         }
 

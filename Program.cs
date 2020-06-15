@@ -25,17 +25,7 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
-            Func<string, bool> IsIncludingFilename = (_) => true;
-            var exclFileExtensionOpt = "--excl-ext=";
-            foreach (var arg in args)
-            {
-                if (!arg.StartsWith(exclFileExtensionOpt)) continue;
-                var exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
-                IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
-            }
-
             var sum = Helper.GetAllFiles(baseDir)
-                .Where((it) => IsIncludingFilename(it))
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
                 .Select((it) =>

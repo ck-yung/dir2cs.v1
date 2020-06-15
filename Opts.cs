@@ -309,7 +309,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<long, string> SizeFormat =
-            new Function<long, string>("--size-format=", help: "long",
+            new Function<long, string>("--size-format=", help: "long|short",
                 invoke: (it) => $"{it,8} ",
                 parse: (opt, args) =>
                 {
@@ -317,6 +317,9 @@ namespace dir2
                     {
                         case "long":
                             opt.invoke = (it) => $"{it,19:N0} ";
+                            break;
+                        case "short":
+                            opt.invoke = (it) => $"{Helper.ToKiloUnit(it)} ";
                             break;
                         default:
                             throw new InvalidValueException(args[0], opt.Name());

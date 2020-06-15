@@ -200,6 +200,18 @@ namespace dir2
 
             return false;
         }
+
+        static public string ToKiloUnit(long arg)
+        {
+            var units = new char[] { 'T', 'G', 'M', 'K', ' ' };
+            string toKilo(long arg2, int index)
+            {
+                if (arg2 < 10000) return $"{arg2,4}{units[index - 1]}";
+                if (index == 1) return $"{arg2,4}{units[0]}";
+                return toKilo((arg2 + 512) / 1024, index - 1);
+            }
+            return toKilo(arg, units.Length);
+        }
     }
 
     class TooManyValuesException: ArgumentException

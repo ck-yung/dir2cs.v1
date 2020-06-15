@@ -68,6 +68,17 @@ namespace dir2
                 }
             }
         }
+
+        static public IEnumerable<string> GetFiles(string dirname)
+        {
+            var enumFile = SafeGetFileEnumerator(dirname);
+            while (SafeMoveNext(enumFile))
+            {
+                var currentFilename = SafeGetCurrent(enumFile);
+                if (string.IsNullOrEmpty(currentFilename)) continue;
+                yield return currentFilename;
+            }
+        }
     }
 
     class TooManyValuesException: ArgumentException

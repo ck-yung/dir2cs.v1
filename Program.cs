@@ -59,7 +59,7 @@ namespace dir2
 
             InfoFile.InitDir(baseDir);
 
-            var sum = Helper.GetAllFiles(baseDir)
+            var sum = Opts.GetFiles.Func(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))

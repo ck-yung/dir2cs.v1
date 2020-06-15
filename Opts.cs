@@ -150,6 +150,12 @@ namespace dir2
                     return (it) => it.Substring(pathLen);
                 });
 
+        static public readonly IFunc<string, IEnumerable<string>> GetFiles =
+            new Function<string, IEnumerable<string>>(
+                "--dir=", help: "TODO",
+                invoke: (dirname) => Helper.GetFiles(dirname),
+                parse: (opt, args) => { });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) GetFileDate,
@@ -157,6 +163,7 @@ namespace dir2
             (IParser) MaxFileSizeFilter,
             TotalOpt,
             HideOpt,
+            (IParser) GetFiles,
             (IParser) SumBy,
         };
     }

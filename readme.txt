@@ -1,1 +1,1 @@
-11.00 Lesson Init
+11.01 Add opt '--dir=' with default new 'Helper.GetFiles(dirname)'

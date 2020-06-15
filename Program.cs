@@ -33,9 +33,9 @@ namespace dir2
             }
         }
 
-        static void MainRun(string[] args)
+        static void MainRun(string[] argsMain)
         {
-            if (args.Contains("-?"))
+            if (argsMain.Contains("-?"))
             {
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [opt ..]");
                 foreach (var opt in Opts.Parsers)
@@ -47,9 +47,10 @@ namespace dir2
 
             var baseDir = Directory.GetCurrentDirectory();
 
+            var args = argsMain;
             foreach (var opt in Opts.Parsers)
             {
-                opt.Parse(args);
+                args = opt.Parse(args);
             }
 
             var sum = Helper.GetAllFiles(baseDir)

@@ -50,7 +50,9 @@ namespace dir2
 
                 if (values.Length>0) parse(this, values);
 
-                return Helper.emptyStrings;
+                return args
+                    .Where((it) => !it.StartsWith(name))
+                    .ToArray();
             }
 
             public override string ToString()
@@ -84,7 +86,9 @@ namespace dir2
 
                 if (values.Length > 0) parse(this, values);
 
-                return Helper.emptyStrings;
+                return args
+                    .Where((it) => !it.StartsWith(name))
+                    .ToArray();
             }
 
             readonly bool requireUnique;
@@ -130,7 +134,9 @@ namespace dir2
                     postAlt?.Invoke(this);
                 }
 
-                return Helper.emptyStrings;
+                return args
+                    .Where((it) => it!=name)
+                    .ToArray();
             }
 
             public Switcher(string name,

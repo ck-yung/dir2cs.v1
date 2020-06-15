@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace dir2
@@ -25,7 +26,6 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine($"{baseDir}:");
 
-            var exclFileExtension = string.Empty;
             var exclFileExtensionOpt = "--excl-ext=";
             foreach (var arg in args)
             {
@@ -33,18 +33,18 @@ namespace dir2
                 exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
             }
 
-            var count = 0;
+            var filenameForExclExt = new List<string>();
             foreach (var filename in Helper.GetAllFiles(baseDir))
             {
-                if (!string.IsNullOrEmpty(exclFileExtension))
-                {
-                    if (filename.EndsWith(exclFileExtension))
-                    {
-                        continue;
-                    }
-                }
+                if (!includingFileExt(filename)) continue;
+                filenameForExclExt.Add(filename);
+            }
 
+            var count = 0;
+            foreach (var filename in filenameForExclExt)
+            {
                 var info = new FileInfo(filename);
+
                 Console.Write($"{info.Length,8} ");
                 Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                 Console.WriteLine(info.FullName);
@@ -55,5 +55,16 @@ namespace dir2
 
             return;
         }
+
+        static bool includingFileExt(string filename)
+        {
+            if (string.IsNullOrEmpty(exclFileExtension))
+            {
+                return true;
+            }
+            return !filename.EndsWith(exclFileExtension);
+        }
+
+        static string exclFileExtension = string.Empty;
     }
 }

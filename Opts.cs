@@ -84,16 +84,36 @@ namespace dir2
             SortSumInfo { get; private set; } = (seqThe) => seqThe;
 
         static public readonly IParser SortOpt = new Parser(
-            "--sort=", help: "size",
+            "--sort=", help: "name|size|date|last|count",
             parse: (opt, args) =>
             {
                 switch (args[0])
                 {
+                    case "name":
+                        SortFileInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.FullName);
+                        SortSumInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.Name);
+                        break;
                     case "size":
                         SortFileInfo =
                         (seqThe) => seqThe.OrderBy((it) => it.Length);
                         SortSumInfo =
                         (seqThe) => seqThe.OrderBy((it) => it.Length);
+                        break;
+                    case "date":
+                        SortFileInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.DateTime);
+                        SortSumInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.DateTime);
+                        break;
+                    case "last":
+                        SortSumInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.Last);
+                        break;
+                    case "count":
+                        SortSumInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.Count);
                         break;
                     default:
                         throw new InvalidValueException(args[0], opt.Name());

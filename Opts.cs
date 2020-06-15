@@ -326,6 +326,14 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<bool, string> CountComma =
+            new Switcher<bool, string>("--count-comma",
+                invoke: (_) => "", alt: (_) => ":N0",
+                postAlt: (opt) =>
+                {
+                    ((IParser)CountFormat).Parse(
+                        new string[] { "--count-width=5" });
+                });
 
         static public readonly IFunc<int, string> CountFormat =
             new Function<int, string>("--count-width=",
@@ -337,7 +345,8 @@ namespace dir2
                     {
                         if (widthThe < 1)
                             throw new InvalidValueException(args[0], opt.Name());
-                        var fmtThe = $"{{0,{widthThe}}} ";
+                        var fmtThe =
+                        $"{{0,{widthThe}{CountComma.Func(true)}}} ";
                         opt.invoke = (it) =>
                         {
                             return string.Format(fmtThe, it);
@@ -353,6 +362,7 @@ namespace dir2
         {
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
+            (IParser) CountComma,
             (IParser) MinFileSizeFilter,
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,

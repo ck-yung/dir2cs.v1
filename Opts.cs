@@ -7,17 +7,16 @@ namespace dir2
 {
     static partial class Opts
     {
-
         static public readonly IFunc<long, bool> MinFileSizeFilter =
             new Function<long, bool>("--size-beyond=",
                 help: "NUMBER",
                 invoke: (_) => true,
                 parse: (opt, args) =>
                 {
-                    if (int.TryParse(args[0],
-                        out int intTemp))
+                    if (Helper.TryParseAsLong(args[0],
+                        out long longThe) && (longThe >= 0))
                     {
-                        opt.invoke = (it) => it >= intTemp;
+                        opt.invoke = (it) => it >= longThe;
                     }
                     else throw new InvalidValueException(
                         args[0], opt.Name());
@@ -29,10 +28,10 @@ namespace dir2
                 invoke: (_) => true,
                 parse: (opt, args) =>
                 {
-                    if (int.TryParse(args[0],
-                        out int intTemp))
+                    if (Helper.TryParseAsLong(args[0],
+                        out long longThe) && (longThe >= 0))
                     {
-                        opt.invoke = (it) => intTemp > it;
+                        opt.invoke = (it) => longThe > it;
                     }
                     else throw new InvalidValueException(
                         args[0], opt.Name());

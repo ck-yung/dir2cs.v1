@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace dir2
 {
@@ -105,6 +106,45 @@ namespace dir2
                     $"{cntDir} directories are found."));
                 Console.Write(Opts.TotalText(""));
             }
+        }
+
+        public static bool TryParseAsLong(string arg, out long result)
+        {
+            long unitValue(char unitThe)
+            {
+                switch (unitThe)
+                {
+                    case 'k': return 1024;
+                    case 'm': return 1024 * 1024;
+                    default: return 1024 * 1024 * 1024; // g
+                }
+            }
+
+            if (Regex.Match(arg, @"^\d+[kmg]$").Success)
+            {
+                if (long.TryParse(arg.Substring(0, arg.Length - 1),
+                    out long valThe))
+                {
+                    if (valThe > 0)
+                    {
+                        result = valThe * unitValue(arg[arg.Length - 1]);
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (long.TryParse(arg, out long valThe))
+                {
+                    if (valThe >= 0)
+                    {
+                        result = valThe;
+                        return true;
+                    }
+                }
+            }
+            result = 0;
+            return false;
         }
     }
 

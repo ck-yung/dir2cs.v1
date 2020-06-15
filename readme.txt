@@ -1,4 +1,5 @@
-00.01 Add exception handling and 'MainRun'
+00.02 Get file names and dir names
 
-Visual Studio User:
-You could assign "." to [MENU] Debug> dir2 Properties> Working directory.
+1. System.IO.Directory.GetFiles(string baseDirName);
+2. System.IO.Directory.GetDirectories(string baseDirName);
+

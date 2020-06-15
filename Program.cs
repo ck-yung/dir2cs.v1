@@ -24,6 +24,21 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine(baseDir);
+
+            Console.WriteLine();
+            Console.WriteLine("Directories:");
+            foreach (var dirName in Directory.GetDirectories(baseDir))
+            {
+                Console.WriteLine(dirName);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Files:");
+            foreach (var fileName in Directory.GetFiles(baseDir))
+            {
+                Console.WriteLine(fileName);
+            }
+
             return;
         }
     }

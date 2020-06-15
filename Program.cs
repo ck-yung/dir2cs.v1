@@ -43,16 +43,16 @@ namespace dir2
             var fileInfos = new List<FileInfo>();
             foreach (var filename in filenameForExclExt)
             {
-                fileInfos.Add(new FileInfo(filename));
+                fileInfos.Add(ToFileInfo(filename));
             }
 
+            var fileInfos2 = new List<FileInfo>();
             foreach (var info in fileInfos)
             {
-                Console.Write($"{info.Length,8} ");
-                Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
-                Console.WriteLine(info.FullName);
+                fileInfos2.Add(PrintFileInfo(info));
             }
-            Console.WriteLine($"{fileInfos.Count} files are found.");
+
+            Console.WriteLine($"{fileInfos2.Count} files are found.");
 
             return;
         }
@@ -67,5 +67,18 @@ namespace dir2
         }
 
         static string exclFileExtension = string.Empty;
+
+        static FileInfo ToFileInfo(string filename)
+        {
+            return new FileInfo(filename);
+        }
+
+        static FileInfo PrintFileInfo(FileInfo info)
+        {
+            Console.Write($"{info.Length,7} ");
+            Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
+            Console.WriteLine(info.FullName);
+            return info;
+        }
     }
 }

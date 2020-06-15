@@ -20,19 +20,33 @@ namespace dir2
             catch { return emptyStrings.AsEnumerable().GetEnumerator(); }
         }
 
+        static bool SafeMoveNext(IEnumerator<string> it)
+        {
+            try { return it.MoveNext(); }
+            catch { return false; }
+        }
+
+        static string SafeGetCurrent(IEnumerator<string> it)
+        {
+            try { return it.Current; }
+            catch { return string.Empty; }
+        }
+
         static public IEnumerable<string> GetAllFiles(string dirname)
         {
             var enumFile = SafeGetFileEnumerator(dirname);
-            while (enumFile.MoveNext())
+            while (SafeMoveNext(enumFile))
             {
-                var currentFilename = enumFile.Current;
+                var currentFilename = SafeGetCurrent(enumFile);
+                if (string.IsNullOrEmpty(currentFilename)) continue;
                 yield return currentFilename;
             }
 
             var enumDir = SafeGetDirectoryEnumerator(dirname);
             while (enumDir.MoveNext())
             {
-                var currentDirname = enumDir.Current;
+                var currentDirname = SafeGetCurrent(enumDir);
+                if (string.IsNullOrEmpty(currentDirname)) continue;
                 if (currentDirname.EndsWith(".git")) continue;
                 foreach (var filename in GetAllFiles(currentDirname))
                 {

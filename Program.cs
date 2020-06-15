@@ -63,6 +63,7 @@ namespace dir2
             var sum = Opts.GetFiles.Func(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
+                .Where((it) => Opts.MinFileSizeFilter.Func(it.Length))
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
                 .Invoke(Opts.SumBy);
 

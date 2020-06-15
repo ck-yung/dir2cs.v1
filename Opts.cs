@@ -7,6 +7,22 @@ namespace dir2
 {
     static partial class Opts
     {
+
+        static public readonly IFunc<long, bool> MinFileSizeFilter =
+            new Function<long, bool>("--size-beyond=",
+                help: "NUMBER",
+                invoke: (_) => true,
+                parse: (opt, args) =>
+                {
+                    if (int.TryParse(args[0],
+                        out int intTemp))
+                    {
+                        opt.invoke = (it) => it >= intTemp;
+                    }
+                    else throw new InvalidValueException(
+                        args[0], opt.Name());
+                });
+
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
             new Function<long, bool>("--size-within=",
                 help: "NUMBER",
@@ -235,6 +251,7 @@ namespace dir2
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
             (IParser) MaxFileSizeFilter,
+            (IParser) MinFileSizeFilter,
             TotalOpt,
             HideOpt,
             SortOpt,

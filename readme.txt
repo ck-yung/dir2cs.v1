@@ -1,1 +1,1 @@
-09.03 LINQ GroupBy()
+09.04 LINQ Aggregate() - replace for-loop

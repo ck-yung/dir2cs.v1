@@ -47,11 +47,9 @@ namespace dir2
 
             var baseDir = Directory.GetCurrentDirectory();
 
-            var args = argsMain;
-            foreach (var opt in Opts.Parsers)
-            {
-                args = opt.Parse(args);
-            }
+            var args = Opts.Parsers
+                .Aggregate(argsMain,
+                (it, opt) => opt.Parse(it));
 
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))

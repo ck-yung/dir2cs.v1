@@ -37,22 +37,30 @@ namespace dir2
 
             public string[] Parse(string[] args)
             {
-                var values = args
-                    .Where((it) => it.StartsWith(name))
-                    .Select((it) => it.Substring(name.Length))
-                    .Select((it) => it.Split(','))
-                    .SelectMany((it) => it)
-                    .Distinct()
-                    .ToArray();
+                var found = args
+                    .GroupBy((it) => it.StartsWith(name))
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
 
-                if (requireUnique && (values.Length > 1))
-                    throw new TooManyValuesException(name);
+                if (found.ContainsKey(true))
+                {
+                    var values = found[true]
+                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it.Split(','))
+                        .SelectMany((it) => it)
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Distinct()
+                        .ToArray();
 
-                if (values.Length>0) parse(this, values);
+                    if (requireUnique && (values.Length > 1))
+                        throw new TooManyValuesException(name);
 
-                return args
-                    .Where((it) => !it.StartsWith(name))
-                    .ToArray();
+                    if (values.Length > 0) parse(this, values);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
             }
 
             public override string ToString()
@@ -73,22 +81,30 @@ namespace dir2
             readonly Action<Parser, string[]> parse;
             public string[] Parse(string[] args)
             {
-                var values = args
-                    .Where((it) => it.StartsWith(name))
-                    .Select((it) => it.Substring(name.Length))
-                    .Select((it) => it.Split(','))
-                    .SelectMany((it) => it)
-                    .Distinct()
-                    .ToArray();
+                var found = args
+                    .GroupBy((it) => it.StartsWith(name))
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
 
-                if (requireUnique && (values.Length > 1))
-                    throw new TooManyValuesException(name);
+                if (found.ContainsKey(true))
+                {
+                    var values = found[true]
+                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it.Split(','))
+                        .SelectMany((it) => it)
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Distinct()
+                        .ToArray();
 
-                if (values.Length > 0) parse(this, values);
+                    if (requireUnique && (values.Length > 1))
+                        throw new TooManyValuesException(name);
 
-                return args
-                    .Where((it) => !it.StartsWith(name))
-                    .ToArray();
+                    if (values.Length > 0) parse(this, values);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
             }
 
             readonly bool requireUnique;
@@ -126,17 +142,20 @@ namespace dir2
             readonly Action<Switcher<T, R>> postAlt;
             public string[] Parse(string[] args)
             {
-                if (args
-                    .Where((it) => it==name)
-                    .Any())
+                var found = args
+                    .GroupBy((it) => it == name)
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+
+                if (found.ContainsKey(true))
                 {
                     invoke = alt;
                     postAlt?.Invoke(this);
                 }
+                else return args;
 
-                return args
-                    .Where((it) => it!=name)
-                    .ToArray();
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
             }
 
             public Switcher(string name,

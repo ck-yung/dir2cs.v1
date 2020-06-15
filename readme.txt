@@ -1,1 +1,1 @@
-05.04 Add 'MyCount' for the feature of LINQ Count()
+05.05 Combine into a chain function calling

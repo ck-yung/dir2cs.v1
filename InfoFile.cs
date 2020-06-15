@@ -50,7 +50,7 @@ namespace dir2
         {
             var buf = new StringBuilder();
             buf.Append(Opts.SizeText(Opts.SizeFormat.Func(Length)));
-            buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.DateText(Opts.DateFormat.Func(DateTime)));
             buf.Append(RelativePath(FullName));
             return buf.ToString();
         }
@@ -85,9 +85,9 @@ namespace dir2
         {
             var buf = new StringBuilder();
             buf.Append(Opts.SizeText(Opts.SizeFormat.Func(Length)));
-            buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.DateText(Opts.DateFormat.Func(DateTime)));
             buf.Append(Opts.DateText("- "));
-            buf.Append(Opts.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.DateText(Opts.DateFormat.Func(Last)));
             buf.Append(Opts.CountText(Opts.CountFormat.Func(Count)));
             buf.Append(Name);
             return buf.ToString();

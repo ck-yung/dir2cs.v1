@@ -408,6 +408,16 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<DateTime, string> DateFormat =
+            new Function<DateTime, string>("--date-format=",
+                help: "FORMAT",
+                invoke: (it) => $"{it:yyyy-MM-dd HH:mm:ss} ",
+                parse: (opt, args) =>
+                {
+                    var formatThe = $"{args[0]} ";
+                    opt.invoke = (it) => it.ToString(formatThe);
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) CaseOpt,
@@ -424,6 +434,7 @@ namespace dir2
             (IParser) HiddenFilter,
             (IParser) SizeFormat,
             (IParser) CountFormat,
+            (IParser) DateFormat,
             TotalOpt,
             HideOpt,
             SortOpt,

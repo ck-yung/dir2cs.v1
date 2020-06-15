@@ -25,13 +25,23 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine($"{baseDir}:");
 
-            var exclFileExtension = ".cache";
+            var exclFileExtension = string.Empty;
+            var exclFileExtensionOpt = "--excl-ext=";
+            foreach (var arg in args)
+            {
+                if (!arg.StartsWith(exclFileExtensionOpt)) continue;
+                exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
+            }
+
             var count = 0;
             foreach (var filename in Helper.GetAllFiles(baseDir))
             {
-                if (filename.EndsWith(exclFileExtension))
+                if (!string.IsNullOrEmpty(exclFileExtension))
                 {
-                    continue;
+                    if (filename.EndsWith(exclFileExtension))
+                    {
+                        continue;
+                    }
                 }
                 Console.WriteLine(filename);
                 count += 1;

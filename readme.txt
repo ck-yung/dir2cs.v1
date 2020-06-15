@@ -1,1 +1,1 @@
-01.01 Filter out/skip if file extension is '.cache'
+01.02 Parse command-line option '--excl-ext='

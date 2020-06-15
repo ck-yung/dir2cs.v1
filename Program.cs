@@ -37,7 +37,8 @@ namespace dir2
         {
             if (argsMain.Contains("-?"))
             {
-                Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [opt ..]");
+                Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
+                Console.WriteLine("OPT:");
                 foreach (var opt in Opts.Parsers)
                 {
                     Console.WriteLine(opt);
@@ -63,6 +64,7 @@ namespace dir2
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
+                .OrderBy((it) => it.Length)
                 .Invoke(Opts.SumBy);
 
             if (sum.AddCount == 0)

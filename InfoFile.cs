@@ -4,6 +4,44 @@ using System.Text;
 
 namespace dir2
 {
+    class InfoFile
+    {
+        public string FullName { get; private set; }
+        public string Filename { get; private set; }
+        public long Length { get; private set; }
+        public DateTime DateTime { get; private set; }
+        private InfoFile() { }
+
+        static InfoFile None = new InfoFile();
+
+        static public InfoFile From(string filename)
+        {
+            try
+            {
+                var info = new FileInfo(filename);
+                var rtn = new InfoFile();
+                rtn.Filename = Path.GetFileName(filename);
+                rtn.FullName = info.FullName;
+                rtn.Length = info.Length;
+                rtn.DateTime = info.LastWriteTime;
+                return rtn;
+            }
+            catch
+            {
+                return None;
+            }
+        }
+        public bool IsNotNone { get => !ReferenceEquals(this, None); }
+        public override string ToString()
+        {
+            var buf = new StringBuilder();
+            buf.Append($"{Length,7} ");
+            buf.Append($"{DateTime:yyyy-MM-dd HH:mm:ss} ");
+            buf.Append(FullName);
+            return buf.ToString();
+        }
+    }
+
     class InfoSum
     {
         public int Count { get; private set; }
@@ -24,12 +62,12 @@ namespace dir2
             return buf.ToString();
         }
 
-        public InfoSum AddWith(FileInfo arg)
+        public InfoSum AddWith(InfoFile arg)
         {
             Count += 1;
             Length += arg.Length;
-            if (DateTime > arg.LastWriteTime) DateTime = arg.LastWriteTime;
-            if (Last < arg.LastWriteTime) Last = arg.LastWriteTime;
+            if (DateTime > arg.DateTime) DateTime = arg.DateTime;
+            if (Last < arg.DateTime) Last = arg.DateTime;
             return this;
         }
     }

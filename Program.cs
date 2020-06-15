@@ -36,15 +36,15 @@ namespace dir2
 
             var sum = Helper.GetAllFiles(baseDir)
                 .Where((it) => IsIncludingFilename(it))
-                .Select((it) => new FileInfo(it))
+                .Select((it) => InfoFile.From(it))
+                .Where((it) => it.IsNotNone)
                 .Select((it) =>
                 {
-                    Console.Write($"{it.Length,7} ");
-                    Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
-                    Console.WriteLine(it.FullName);
+                    Console.WriteLine(it);
                     return it;
                 })
-                .Aggregate(new InfoSum(), func: (acc, it) => acc.AddWith(it));
+                .Aggregate(new InfoSum(),
+                (acc, it) => acc.AddWith(it));
 
             Console.WriteLine($"{sum} {baseDir}");
 

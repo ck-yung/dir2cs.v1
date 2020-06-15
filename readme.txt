@@ -1,1 +1,1 @@
-06.01 b. LINQ Aggregate() - calculate the grant total of list of FileInfo
+06.02 Add 'class InfoFile' to ignore protential exception from 'class FileInfo'

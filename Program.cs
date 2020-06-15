@@ -24,7 +24,6 @@ namespace dir2
         static void MainRun(string[] args)
         {
             var baseDir = Directory.GetCurrentDirectory();
-            Console.WriteLine($"{baseDir}:");
 
             Func<string, bool> IsIncludingFilename = (_) => true;
             var exclFileExtensionOpt = "--excl-ext=";
@@ -35,20 +34,22 @@ namespace dir2
                 IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
-
-            var count = Helper.GetAllFiles(baseDir)
+            var sum = new InfoSum();
+            foreach (var info in Helper.GetAllFiles(baseDir)
                 .Where((it) => IsIncludingFilename(it))
                 .Select((it) => new FileInfo(it))
                 .Select((it) =>
                 {
-                    Console.Write($"{it.Length,8} ");
+                    Console.Write($"{it.Length,7} ");
                     Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(it.FullName);
                     return it;
-                })
-                .Count();
+                }))
+            {
+                sum.AddWith(info);
+            }
 
-            Console.WriteLine($"{count} files are found.");
+            Console.WriteLine($"{sum} {baseDir}");
 
             return;
         }

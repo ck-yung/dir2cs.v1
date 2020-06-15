@@ -91,6 +91,7 @@ namespace dir2
                 (acc, it) => acc.AddWith(it)),
                 parse: (opt, args) =>
                 {
+                    PrintDir = (_) => { };
                     switch (args[0])
                     {
                         case "ext":
@@ -150,16 +151,34 @@ namespace dir2
                     return (it) => it.Substring(pathLen);
                 });
 
+        static Action<string> PrintDir { get; set; } =
+            (dirname) => Helper.PrintDir(dirname);
+
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
             new Function<string, IEnumerable<string>>(
-                "--dir=", help: "sub",
-                invoke: (dirname) => Helper.GetFiles(dirname),
+                "--dir=", help: "sub|off|only",
+                invoke: (dirname) =>
+                {
+                    PrintDir(dirname);
+                    return Helper.GetFiles(dirname);
+                },
                 parse: (opt, args) =>
                 {
                     switch (args[0])
                     {
                         case "sub":
                             opt.invoke = (dirname) => Helper.GetAllFiles(dirname);
+                            break;
+                        case "off":
+                            PrintDir = (_) => { };
+                            break;
+                        case "only":
+                            opt.invoke = (dirname) =>
+                            {
+                                PrintDir(dirname);
+                                TotalText = (_) => "";
+                                return Helper.emptyStrings;
+                            };
                             break;
                         default:
                             throw new InvalidValueException(args[0], opt.Name());

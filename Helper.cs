@@ -71,6 +71,17 @@ namespace dir2
 
         static public IEnumerable<string> GetFiles(string dirname)
         {
+            var enumFile = SafeGetFileEnumerator(dirname);
+            while (SafeMoveNext(enumFile))
+            {
+                var currentFilename = SafeGetCurrent(enumFile);
+                if (string.IsNullOrEmpty(currentFilename)) continue;
+                yield return currentFilename;
+            }
+        }
+
+        static public void PrintDir(string dirname)
+        {
             var cntDir = 0;
             var enumDir = SafeGetDirectoryEnumerator(dirname);
             while (SafeMoveNext(enumDir))
@@ -86,14 +97,6 @@ namespace dir2
                 Console.Write(Opts.TotalText(
                     $"{cntDir} directories are found."));
                 Console.Write(Opts.TotalText(""));
-            }
-
-            var enumFile = SafeGetFileEnumerator(dirname);
-            while (SafeMoveNext(enumFile))
-            {
-                var currentFilename = SafeGetCurrent(enumFile);
-                if (string.IsNullOrEmpty(currentFilename)) continue;
-                yield return currentFilename;
             }
         }
     }

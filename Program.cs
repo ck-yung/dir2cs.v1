@@ -36,7 +36,6 @@ namespace dir2
                 IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
-            var countWriteLine = 0;
             var count = Helper.GetAllFiles(baseDir)
                 .Where((filename) => IsIncludingFilename(filename))
                 .Select((filename) => new FileInfo(filename))
@@ -45,12 +44,6 @@ namespace dir2
                     Console.Write($"{info.Length,7} ");
                     Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(info.FullName);
-                    countWriteLine += 1;
-                    if (countWriteLine >= 5)
-                    {
-                        countWriteLine = 0;
-                        Console.WriteLine();
-                    }
                     return info;
                 })
                 .Count();
@@ -58,6 +51,18 @@ namespace dir2
             Console.WriteLine($"{count} files are found.");
 
             return;
+        }
+    }
+
+    static class Make
+    {
+        static public IEnumerable<string> Strings()
+        {
+            yield return "";
+            yield return "";
+            yield return "";
+            yield return "";
+            yield return Environment.NewLine;
         }
     }
 }

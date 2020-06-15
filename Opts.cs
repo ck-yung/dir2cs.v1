@@ -13,6 +13,11 @@ namespace dir2
                 parse: (opt, args) =>
                 {
                     opt.invoke = (filename) => args
+                    .Select((it) =>
+                    {
+                        Console.WriteLine($"\t *** dbg '{it}' ***");
+                        return it;
+                    })
                     .Any((it) => it == filename);
                 });
 

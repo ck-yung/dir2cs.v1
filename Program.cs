@@ -14,6 +14,14 @@ namespace dir2
                 Console.InputEncoding = System.Text.Encoding.UTF8;
                 MainRun(args);
             }
+            catch (TooManyValuesException tmve)
+            {
+                Console.WriteLine($"Too many value to {tmve.Message}");
+            }
+            catch (InvalidValueException ive)
+            {
+                Console.WriteLine($"{ive.Message} is invalid");
+            }
             catch (ArgumentException ae)
             {
                 Console.WriteLine(ae.Message);

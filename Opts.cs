@@ -11,12 +11,13 @@ namespace dir2
                 invoke: (_) => true,
                 parse: (opt, args) =>
                 {
-                    if (args.Length != 1) return;
                     if (int.TryParse(args[0],
                         out int intTemp))
                     {
                         opt.invoke = (it) => intTemp > it;
                     }
+                    else throw new InvalidValueException(
+                        args[0], opt.Name());
                 });
 
         static public Func<string, string> ItemText
@@ -36,8 +37,8 @@ namespace dir2
                         ItemText = (_) => "";
                         break;
                     default:
-                        throw new ArgumentException(
-                            $"'{args[0]}' is unknwon to {opt.Name()}");
+                        throw new InvalidValueException(
+                            args[0], opt.Name());
                 }
             });
 
@@ -65,8 +66,8 @@ namespace dir2
                             CountText = (_) => "";
                             break;
                         default:
-                            throw new ArgumentException(
-                                $"'{args[0]}' is unknwon to {opt.Name()}");
+                            throw new InvalidValueException(
+                                args[0], opt.Name());
                     }
                 }
             });

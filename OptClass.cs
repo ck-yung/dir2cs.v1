@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace dir2
@@ -46,9 +45,8 @@ namespace dir2
                     .Distinct()
                     .ToArray();
 
-                if (requireUnique && (values.Length>1))
-                    throw new ArgumentException(
-                            $"Too many option to {name}");
+                if (requireUnique && (values.Length > 1))
+                    throw new TooManyValuesException(name);
 
                 if (values.Length>0) parse(this, values);
             }
@@ -80,8 +78,7 @@ namespace dir2
                     .ToArray();
 
                 if (requireUnique && (values.Length > 1))
-                    throw new ArgumentException(
-                            $"Too many option to {name}");
+                    throw new TooManyValuesException(name);
 
                 if (values.Length > 0) parse(this, values);
             }

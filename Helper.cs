@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,5 +55,17 @@ namespace dir2
                 }
             }
         }
+    }
+
+    class TooManyValuesException: ArgumentException
+    {
+        public TooManyValuesException(string message)
+            : base(message) { }
+    }
+
+    class InvalidValueException : ArgumentException
+    {
+        public InvalidValueException(string value, string optName)
+            : base($"'{value}' to {optName}") { }
     }
 }

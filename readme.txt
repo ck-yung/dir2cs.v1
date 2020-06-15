@@ -1,1 +1,3 @@
-08.09 Add on-line help
+09.00 Lesson Init
+
+Add TooManyValuesException and InvalidValueException

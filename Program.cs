@@ -46,6 +46,12 @@ namespace dir2
                     Console.WriteLine(info.FullName);
                     return info;
                 })
+                .Zip(Make.Strings(),
+                    resultSelector: (info, it) =>
+                    {
+                        Console.Write(it);
+                        return info;
+                    })
                 .Count();
 
             Console.WriteLine($"{count} files are found.");
@@ -58,11 +64,14 @@ namespace dir2
     {
         static public IEnumerable<string> Strings()
         {
-            yield return "";
-            yield return "";
-            yield return "";
-            yield return "";
-            yield return Environment.NewLine;
+            while (true)
+            {
+                yield return "";
+                yield return "";
+                yield return "";
+                yield return "";
+                yield return Environment.NewLine;
+            }
         }
     }
 }

@@ -1,4 +1,3 @@
-03.06 b. First IEnumerable<T> func()
+03.06 c. LINQ Zip() - Print a blank line per 5 output lines
 
-c. LINQ Zip() - Print a blank line per 5 output lines
 d. A simple question

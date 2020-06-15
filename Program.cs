@@ -51,6 +51,8 @@ namespace dir2
                 .Aggregate(argsMain,
                 (it, opt) => opt.Parse(it));
 
+            InfoFile.InitDir(baseDir);
+
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)

@@ -1,1 +1,1 @@
-10.04 Add extension method 'InfoSum Invoke(this IEnumerable<InfoFile> ..
+10.05 a. Get relative path - add 'InfoFIle.Init(string basedir)'

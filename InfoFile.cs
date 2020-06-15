@@ -40,6 +40,18 @@ namespace dir2
             buf.Append(FullName);
             return buf.ToString();
         }
+
+        static public Func<string, string> RelativePath
+        { get; private set; } = (it) => it;
+        static public string BaseDir { get; private set; } = "?";
+        static public void InitDir(string dirname)
+        {
+            BaseDir = dirname;
+            var pathLen = dirname.Length;
+            if (!dirname.EndsWith(Path.DirectorySeparatorChar))
+                pathLen += 1;
+            RelativePath = (it) => it.Substring(pathLen);
+        }
     }
 
     class InfoSum

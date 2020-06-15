@@ -8,7 +8,7 @@ namespace dir2
                 parse: (opt, args) =>
                 {
                     if (args.Length != 1) return;
-                    if (int.TryParse(args[0].Substring(opt.Name().Length),
+                    if (int.TryParse(args[0],
                         out int intTemp))
                     {
                         opt.invoke = (it) => intTemp > it;

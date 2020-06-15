@@ -32,9 +32,13 @@ namespace dir2
 
             public void Parse(string[] args)
             {
-                parse(this, args
+                var values = args
                     .Where((it) => it.StartsWith(name))
-                    .ToArray());
+                    .Select((it) => it.Substring(name.Length))
+                    .Distinct()
+                    .ToArray();
+
+                if (values.Length>0) parse(this, values);
             }
         }
     }

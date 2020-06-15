@@ -35,7 +35,11 @@ namespace dir2
                 IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
-            var count = Helper.GetAllFiles(baseDir)
+
+            Console.Write("Press any key to start ");
+            Console.ReadKey(); Console.WriteLine();
+
+            var queryThe = Helper.GetAllFiles(baseDir)
                 .MyFilter(filterThe: (it) => IsIncludingFilename(it))
                 .MyToFileInfo()
                 .MyPrintFileInfo(funcThe: (it) =>
@@ -44,9 +48,12 @@ namespace dir2
                     Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(it.FullName);
                     return it;
-                })
-                .MyCount();
+                });
 
+            Console.Write("Press any key to continue ");
+            Console.ReadKey(); Console.WriteLine();
+
+            var count = queryThe.MyCount();
             Console.WriteLine($"{count} files are found.");
 
             return;

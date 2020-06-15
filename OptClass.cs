@@ -83,5 +83,43 @@ namespace dir2
                 this.requireUnique = requireUnique;
             }
         }
+
+        private class Switcher<T, R> : IFunc<T, R>, IParser
+        {
+            Func<T, R> invoke { get; set; }
+            readonly Func<T, R> alt;
+            public R Func(T arg)
+            {
+                return invoke(arg);
+            }
+
+            readonly string name;
+            public string Name()
+            {
+                return name;
+            }
+
+            readonly Action<Switcher<T, R>> postAlt;
+            public void Parse(string[] args)
+            {
+                if (args
+                    .Where((it) => it==name)
+                    .Any())
+                {
+                    invoke = alt;
+                    postAlt?.Invoke(this);
+                }
+            }
+
+            public Switcher(string name,
+                Func<T,R> invoke, Func<T,R> alt,
+                Action<Switcher<T,R>> postAlt = null)
+            {
+                this.name = name;
+                this.invoke = invoke;
+                this.alt = alt;
+                this.postAlt = postAlt;
+            }
+        }
     }
 }

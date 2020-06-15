@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace dir2
 {
@@ -68,11 +69,16 @@ namespace dir2
                 }
             });
 
+        static public readonly IFunc<FileInfo,DateTime> GetFileDate =
+            new Switcher<FileInfo, DateTime>("--create-date",
+            invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) MaxFileSizeFilter,
             TotalOpt,
             HideOpt,
+            (IParser) GetFileDate,
         };
     }
 }

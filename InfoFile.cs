@@ -23,7 +23,7 @@ namespace dir2
                 rtn.Filename = Path.GetFileName(filename);
                 rtn.FullName = info.FullName;
                 rtn.Length = info.Length;
-                rtn.DateTime = Program.GetFileDate(info);
+                rtn.DateTime = Opts.GetFileDate.Func(info);
                 return rtn;
             }
             catch

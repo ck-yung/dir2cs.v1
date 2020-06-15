@@ -29,14 +29,6 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
-            foreach (var arg in args)
-            {
-                if (arg == "--create-date")
-                {
-                    GetFileDate = (it) => it.CreationTime;
-                }
-            }
-
             foreach (var opt in Opts.Parsers)
             {
                 opt.Parse(args);
@@ -58,8 +50,5 @@ namespace dir2
 
             return;
         }
-
-        static public Func<FileInfo, DateTime> GetFileDate
-        { get; private set; } = (it) => it.LastWriteTime;
     }
 }

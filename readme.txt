@@ -1,1 +1,1 @@
-09.04 LINQ Aggregate() - replace for-loop
+10.00 Lesson Init

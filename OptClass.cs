@@ -13,13 +13,16 @@ namespace dir2
                 return invoke(arg);
             }
 
+            readonly bool requireUnique;
             public Function(string name,
                 Func<T,R> invoke,
-                Action<Function<T, R>, string[]> parse)
+                Action<Function<T, R>, string[]> parse,
+                bool requireUnique = true)
             {
                 this.name = name;
                 this.invoke = invoke;
                 this.parse = parse;
+                this.requireUnique = requireUnique;
             }
 
             readonly string name;
@@ -38,7 +41,48 @@ namespace dir2
                     .Distinct()
                     .ToArray();
 
+                if (requireUnique && (values.Length>1))
+                    throw new ArgumentException(
+                            $"Too many option to {name}");
+
                 if (values.Length>0) parse(this, values);
+            }
+        }
+
+        private class Parser : IParser
+        {
+            readonly string name;
+            public string Name()
+            {
+                return name;
+            }
+
+            readonly Action<Parser, string[]> parse;
+            public void Parse(string[] args)
+            {
+                var values = args
+                    .Where((it) => it.StartsWith(name))
+                    .Select((it) => it.Substring(name.Length))
+                    .Distinct()
+                    .ToArray();
+                switch (values.Length)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        parse(this, values);
+                        break;
+                    default:
+                        throw new ArgumentException(
+                            $"Too many option to {name}");
+                }
+            }
+
+            public Parser(string name,
+                Action<Parser, string[]> parse)
+            {
+                this.name = name;
+                this.parse = parse;
             }
         }
     }

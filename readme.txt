@@ -1,1 +1,1 @@
-05.01 Add 'MyFilter()' for the feature of LINQ Where()
+05.02 Add 'MyTransform' for the feature of LINQ Select() - ToFileInfo

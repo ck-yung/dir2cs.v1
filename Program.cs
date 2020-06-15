@@ -39,10 +39,13 @@ namespace dir2
                 Helper.GetAllFiles(baseDir),
                 filterThe: (it) => IsIncludingFilename(it));
 
+            var toFileInfoResult = MyToFileInfo(filterResult);
+
             var count = 0;
-            foreach (var filename in filterResult)
+            foreach (var info in toFileInfoResult)
             {
-                Console.WriteLine(filename);
+                Console.Write($"{info.Length,8} ");
+                Console.WriteLine(info.FullName);
                 count += 1;
             }
             Console.WriteLine($"{count} files are found.");
@@ -59,6 +62,17 @@ namespace dir2
                 var currentThe = enumThe.Current;
                 if (!filterThe(currentThe)) continue;
                 yield return currentThe;
+            }
+        }
+
+        static IEnumerable<FileInfo> MyToFileInfo(
+            IEnumerable<string> seqThe)
+        {
+            var enumThe = seqThe.GetEnumerator();
+            while (enumThe.MoveNext())
+            {
+                var currentThe = enumThe.Current;
+                yield return new FileInfo(currentThe);
             }
         }
     }

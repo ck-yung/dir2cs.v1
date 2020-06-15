@@ -30,9 +30,23 @@ namespace dir2
                 IsCreateDate = true;
             }
 
+            int? sizeWithin = null;
+            var sizeWithinOpt = "--size-within=";
+            foreach (var arg in args)
+            {
+                if (!arg.StartsWith(sizeWithinOpt)) continue;
+                if (int.TryParse(arg.Substring(sizeWithinOpt.Length),
+                    out int intTemp))
+                {
+                    sizeWithin = intTemp;
+                }
+            }
+
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
+                .Where((it) => (sizeWithin == null)
+                ? true : (sizeWithin > it.Length))
                 .Select((it) =>
                 {
                     Console.WriteLine(it);

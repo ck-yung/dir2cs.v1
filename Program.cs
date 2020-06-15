@@ -43,7 +43,11 @@ namespace dir2
                         continue;
                     }
                 }
-                Console.WriteLine(filename);
+
+                var info = new FileInfo(filename);
+                Console.Write($"{info.Length,8} ");
+                Console.WriteLine(info.FullName);
+
                 count += 1;
             }
             Console.WriteLine($"{count} files are found.");

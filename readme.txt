@@ -1,1 +1,1 @@
-01.02 Parse command-line option '--excl-ext='
+01.03 Convert filename to class FileInfo

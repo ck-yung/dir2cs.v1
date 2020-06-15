@@ -35,9 +35,9 @@ namespace dir2
             }
 
             var count = Helper.GetAllFiles(baseDir)
-                .Where(includingFileExt)
-                .Select(ToFileInfo)
-                .Select(PrintFileInfo)
+                .Where((it) => includingFileExt(it))
+                .Select((it) => ToFileInfo(it))
+                .Select((it) => PrintFileInfo(it))
                 .Count();
 
             Console.WriteLine($"{count} files are found.");

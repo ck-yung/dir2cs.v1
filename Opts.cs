@@ -2,22 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace dir2
 {
     static partial class Opts
     {
+        static public Func<string, Regex> MakeRegex { get; private set; }
+        = (it) => new Regex(it, RegexOptions.IgnoreCase);
+
+        static public readonly IFunc<string, string> CaseOpt =
+            new Switcher<string, string>("--case-sensitive",
+                invoke: (it) => it.ToLower(), alt: (it) => it,
+                postAlt: (opt) =>
+                {
+                    MakeRegex = (it) => new Regex(it, RegexOptions.None);
+                });
+
         static public readonly IFunc<string, bool> ExclFilenameFilter =
             new Function<string, bool>("--excl-file=", requireUnique: false,
                 help: "WILD[,WILD,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
                     var filterThe = args
-                    .Select((it) =>
-                    {
-                        Console.WriteLine($"\t *** dbg '{it}' ***");
-                        return it;
-                    })
                     .Select((it) => Helper.ToWildMatch(it))
                     .ToArray();
 
@@ -238,7 +245,8 @@ namespace dir2
                     {
                         case "ext":
                             opt.invoke = (seqThe) => seqThe
-                            .GroupBy((it) => Path.GetExtension(it.Filename))
+                            .GroupBy((it) => CaseOpt.Func(
+                                Path.GetExtension(it.Filename)))
                             .Select((grp) => grp.Aggregate(new InfoSum(
                                 string.IsNullOrEmpty(grp.Key)
                                 ? "*no-ext*" : grp.Key),
@@ -381,6 +389,7 @@ namespace dir2
 
         static public readonly IParser[] Parsers = new IParser[]
         {
+            (IParser) CaseOpt,
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
             (IParser) CountComma,

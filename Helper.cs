@@ -231,8 +231,7 @@ namespace dir2
                 .Replace("{", @"\{")
                 .Replace("}", @"\}"));
             regText.Append("$");
-            var regThe = new Regex(regText.ToString(),
-                RegexOptions.None);
+            var regThe = Opts.MakeRegex(regText.ToString());
             return (it) => regThe.Match(it).Success;
         }
     }

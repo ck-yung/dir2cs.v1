@@ -25,18 +25,9 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine(baseDir);
 
-            Console.WriteLine();
-            Console.WriteLine("Directories::");
-            foreach (var dirName in Directory.EnumerateDirectories(baseDir))
+            foreach (var filename in Helper.GetAllFiles(baseDir))
             {
-                Console.WriteLine(dirName);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("Files::");
-            foreach (var fileName in Directory.EnumerateFiles(baseDir))
-            {
-                Console.WriteLine(fileName);
+                Console.WriteLine(filename);
             }
 
             return;

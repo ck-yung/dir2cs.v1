@@ -7,6 +7,14 @@ namespace dir2
 {
     static partial class Opts
     {
+        static public readonly IFunc<string, bool> ExclFilenameFilter =
+            new Function<string, bool>("--excl-file=", requireUnique: false,
+                help: "NAME[,NAME,..]", invoke: (_) => false,
+                parse: (opt, args) =>
+                {
+                    opt.invoke = (filename) => filename == args[0];
+                });
+
         static public readonly IFunc<long, bool> MinFileSizeFilter =
             new Function<long, bool>("--size-beyond=",
                 help: "NUMBER",
@@ -363,6 +371,7 @@ namespace dir2
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
             (IParser) CountComma,
+            (IParser) ExclFilenameFilter,
             (IParser) MinFileSizeFilter,
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,

@@ -1,1 +1,1 @@
-15.00 Lesson Init
+15.01 Add opt '--excl-file=NAME' (simple pilot)

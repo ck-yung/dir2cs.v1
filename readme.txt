@@ -1,3 +1,1 @@
-09.00 Lesson Init
-
-Add TooManyValuesException and InvalidValueException
+09.01 Change 'string[] Parse(..)' in 'interface IParser'

@@ -3,7 +3,7 @@ namespace dir2
     interface IParser
     {
         string Name();
-        void Parse(string[] args);
+        string[] Parse(string[] args);
     }
 
     interface IFunc<T, R>

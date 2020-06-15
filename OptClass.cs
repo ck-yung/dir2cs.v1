@@ -35,7 +35,7 @@ namespace dir2
                 return name;
             }
 
-            public void Parse(string[] args)
+            public string[] Parse(string[] args)
             {
                 var values = args
                     .Where((it) => it.StartsWith(name))
@@ -49,6 +49,8 @@ namespace dir2
                     throw new TooManyValuesException(name);
 
                 if (values.Length>0) parse(this, values);
+
+                return Helper.emptyStrings;
             }
 
             public override string ToString()
@@ -67,7 +69,7 @@ namespace dir2
             }
 
             readonly Action<Parser, string[]> parse;
-            public void Parse(string[] args)
+            public string[] Parse(string[] args)
             {
                 var values = args
                     .Where((it) => it.StartsWith(name))
@@ -81,6 +83,8 @@ namespace dir2
                     throw new TooManyValuesException(name);
 
                 if (values.Length > 0) parse(this, values);
+
+                return Helper.emptyStrings;
             }
 
             readonly bool requireUnique;
@@ -116,7 +120,7 @@ namespace dir2
             }
 
             readonly Action<Switcher<T, R>> postAlt;
-            public void Parse(string[] args)
+            public string[] Parse(string[] args)
             {
                 if (args
                     .Where((it) => it==name)
@@ -125,6 +129,8 @@ namespace dir2
                     invoke = alt;
                     postAlt?.Invoke(this);
                 }
+
+                return Helper.emptyStrings;
             }
 
             public Switcher(string name,

@@ -12,7 +12,8 @@ namespace dir2
                 help: "NAME[,NAME,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
-                    opt.invoke = (filename) => filename == args[0];
+                    opt.invoke = (filename) => args
+                    .Any((it) => it == filename);
                 });
 
         static public readonly IFunc<long, bool> MinFileSizeFilter =

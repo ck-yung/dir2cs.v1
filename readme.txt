@@ -1,1 +1,1 @@
-15.01 Add opt '--excl-file=NAME' (simple pilot)
+15.02 LINQ Any() - Handle mulitple '--excl-file=NAME'

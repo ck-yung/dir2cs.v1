@@ -55,6 +55,9 @@ namespace dir2
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
+                .GroupBy((it) => Path.GetExtension(it.Filename))
+                .Select((grp) => grp.Aggregate(new InfoSum(),
+                (acc, it) => acc.AddWith(it)))
                 .Select((it) =>
                 {
                     Console.Write(Opts.ItemText(it.ToString()));
@@ -63,7 +66,10 @@ namespace dir2
                 .Aggregate(new InfoSum(),
                 (acc, it) => acc.AddWith(it));
 
-            Console.Write(Opts.TotalText($"{sum}{baseDir}"));
+            if (sum.AddCount == 0)
+                Console.Write(Opts.TotalText("No file is found."));
+            else if (sum.AddCount > 1)
+                Console.Write(Opts.TotalText($"{sum}{baseDir}"));
 
             return;
         }

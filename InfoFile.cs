@@ -45,6 +45,7 @@ namespace dir2
     class InfoSum
     {
         public int Count { get; private set; }
+        public int AddCount { get; private set; }
         public long Length { get; private set; }
         public DateTime DateTime { get; private set; }
         = DateTime.MaxValue;
@@ -64,10 +65,19 @@ namespace dir2
 
         public InfoSum AddWith(InfoFile arg)
         {
-            Count += 1;
+            Count += 1; AddCount += 1;
             Length += arg.Length;
             if (DateTime > arg.DateTime) DateTime = arg.DateTime;
             if (Last < arg.DateTime) Last = arg.DateTime;
+            return this;
+        }
+
+        public InfoSum AddWith(InfoSum arg)
+        {
+            Count += arg.Count; AddCount += 1;
+            Length += arg.Length;
+            if (DateTime > arg.DateTime) DateTime = arg.DateTime;
+            if (Last < arg.Last) Last = arg.Last;
             return this;
         }
     }

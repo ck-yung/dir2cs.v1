@@ -35,8 +35,8 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append(Program.SizeText($"{Length,7} "));
-            buf.Append(Program.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.SizeText($"{Length,7} "));
+            buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
             buf.Append(FullName);
             return buf.ToString();
         }
@@ -54,11 +54,11 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append(Program.SizeText($"{Length,7} "));
-            buf.Append(Program.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
-            buf.Append(Program.DateText("- "));
-            buf.Append(Program.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));
-            buf.Append($"{Count,4}");
+            buf.Append(Opts.SizeText($"{Length,7} "));
+            buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.DateText("- "));
+            buf.Append(Opts.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));
+            buf.Append(Opts.CountText($"{Count,4} "));
             return buf.ToString();
         }
 

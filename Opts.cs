@@ -38,10 +38,41 @@ namespace dir2
                 }
             });
 
+        static public Func<string, string> SizeText
+        { get; private set; } = (it) => it;
+        static public Func<string, string> DateText
+        { get; private set; } = (it) => it;
+        static public Func<string, string> CountText
+        { get; private set; } = (it) => it;
+        static public readonly IParser HideOpt = new Parser("--hide=",
+            requireUnique: false,
+            parse: (opt, args) =>
+            {
+                foreach (var arg in args)
+                {
+                    switch (arg)
+                    {
+                        case "size":
+                            SizeText = (_) => "";
+                            break;
+                        case "date":
+                            DateText = (_) => "";
+                            break;
+                        case "count":
+                            CountText = (_) => "";
+                            break;
+                        default:
+                            throw new ArgumentException(
+                                $"'{args[0]}' is unknwon to {opt.Name()}");
+                    }
+                }
+            });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) MaxFileSizeFilter,
             TotalOpt,
+            HideOpt,
         };
     }
 }

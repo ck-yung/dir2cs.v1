@@ -1,1 +1,1 @@
-08.05 Add 'class Parser' and move '--total=' into 'class Opts'
+08.06 Move '--hide=' into 'class Opts'

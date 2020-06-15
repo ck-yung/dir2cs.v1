@@ -65,24 +65,22 @@ namespace dir2
                     .Select((it) => it.Substring(name.Length))
                     .Distinct()
                     .ToArray();
-                switch (values.Length)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        parse(this, values);
-                        break;
-                    default:
-                        throw new ArgumentException(
+
+                if (requireUnique && (values.Length > 1))
+                    throw new ArgumentException(
                             $"Too many option to {name}");
-                }
+
+                if (values.Length > 0) parse(this, values);
             }
 
+            readonly bool requireUnique;
             public Parser(string name,
-                Action<Parser, string[]> parse)
+                Action<Parser, string[]> parse,
+                bool requireUnique = true)
             {
                 this.name = name;
                 this.parse = parse;
+                this.requireUnique = requireUnique;
             }
         }
     }

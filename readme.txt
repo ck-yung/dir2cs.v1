@@ -1,1 +1,1 @@
-13.04 Add opt '--no-ext=excl|only'
+13.05 Add opt '--hidden=incl|only'

@@ -82,6 +82,24 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<InfoFile, bool> HiddenFilter =
+            new Function<InfoFile, bool>("--hidden=", help: "incl|only",
+                invoke: (it) => !it.IsHidden,
+                parse: (opt, args) =>
+                {
+                    switch (args[0])
+                    {
+                        case "incl":
+                            opt.invoke = (_) => true;
+                            break;
+                        case "only":
+                            opt.invoke = (it) => it.IsHidden;
+                            break;
+                        default:
+                            throw new InvalidValueException(args[0], opt.Name());
+                    }
+                });
+
         static public Func<string, string> ItemText
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
         static public Func<string, string> TotalText
@@ -299,6 +317,7 @@ namespace dir2
             (IParser) MinFileDateFilter,
             (IParser) MaxFileDateFilter,
             (IParser) FileExtFilter,
+            (IParser) HiddenFilter,
             TotalOpt,
             HideOpt,
             SortOpt,

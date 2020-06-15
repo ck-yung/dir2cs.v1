@@ -10,6 +10,19 @@ namespace dir2
         public string Filename { get; private set; }
         public long Length { get; private set; }
         public DateTime DateTime { get; private set; }
+        public FileAttributes Attributes { get; private set; }
+
+        public bool IsHidden
+        {
+            get
+            {
+                if (Attributes.HasFlag(FileAttributes.Hidden)) return true;
+                if (string.IsNullOrEmpty(FullName)) return true;
+                if (Path.GetFileName(FullName)[0] == '.') return true;
+                return false;
+            }
+        }
+
         private InfoFile() { }
 
         static InfoFile None = new InfoFile();
@@ -24,6 +37,7 @@ namespace dir2
                 rtn.FullName = info.FullName;
                 rtn.Length = info.Length;
                 rtn.DateTime = Opts.GetFileDate.Func(info);
+                rtn.Attributes = info.Attributes;
                 return rtn;
             }
             catch

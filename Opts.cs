@@ -37,6 +37,26 @@ namespace dir2
                         args[0], opt.Name());
                 });
 
+        static public readonly IFunc<DateTime, bool> MinFileDateFilter =
+            new Function<DateTime, bool>("--date-beyond=", help: "DATETIME",
+                invoke: (_) => true, parse: (opt, args) =>
+                {
+                    if (Helper.TryParseDateTime(args[0], out DateTime result))
+                    {
+                        opt.invoke = (it) => result > it;
+                    }
+                });
+
+        static public readonly IFunc<DateTime, bool> MaxFileDateFilter =
+            new Function<DateTime, bool>("--date-within=", help: "DATETIME",
+                invoke: (_) => true, parse: (opt, args) =>
+                {
+                    if (Helper.TryParseDateTime(args[0], out DateTime result))
+                    {
+                        opt.invoke = (it) => it >= result;
+                    }
+                });
+
         static public Func<string, string> ItemText
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
         static public Func<string, string> TotalText
@@ -249,8 +269,10 @@ namespace dir2
         {
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
-            (IParser) MaxFileSizeFilter,
             (IParser) MinFileSizeFilter,
+            (IParser) MaxFileSizeFilter,
+            (IParser) MinFileDateFilter,
+            (IParser) MaxFileDateFilter,
             TotalOpt,
             HideOpt,
             SortOpt,

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -144,6 +145,59 @@ namespace dir2
                 }
             }
             result = 0;
+            return false;
+        }
+
+        static public string[] DateTimeFormats = new string[] {
+                "yyyy-MM-dd", "yyyyMMdd", "yyyy-MM-ddTHH:mm:ss",
+                "yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm",
+                "yyyy-MM-dd HH:mm", "yyyyMMdd HH:mm:ss",
+                "yyyyMMdd HH:mm",
+            };
+
+        static public bool TryParseDateTime(string arg, out DateTime result)
+        {
+            result = DateTime.MinValue;
+
+            if (Regex.Match(arg, @"^\d+[mhd]$").Success)
+            {
+                Func<int, TimeSpan> toTimeSpan;
+                switch (arg[arg.Length - 1])
+                {
+                    case 'm':
+                        toTimeSpan = (arg9) => TimeSpan.FromMinutes(arg9);
+                        break;
+                    case 'h':
+                        toTimeSpan = (arg9) => TimeSpan.FromHours(arg9);
+                        break;
+                    default: // 'd'
+                        toTimeSpan = (arg9) => TimeSpan.FromDays(arg9);
+                        break;
+                }
+
+                if (int.TryParse(arg.Substring(0, arg.Length - 1),
+                    out int goodValue))
+                {
+                    if (goodValue > 0)
+                    {
+                        result = DateTime.Now.Subtract(toTimeSpan(goodValue));
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            foreach (var fmtThe in DateTimeFormats)
+            {
+                if (DateTime.TryParseExact(arg, fmtThe,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out DateTime goodValue))
+                {
+                    result = goodValue;
+                    return true;
+                }
+            }
+
             return false;
         }
     }

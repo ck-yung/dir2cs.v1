@@ -45,6 +45,8 @@ namespace dir2
                     {
                         opt.invoke = (it) => result > it;
                     }
+                    else throw new InvalidValueException(
+                        args[0], opt.Name());
                 });
 
         static public readonly IFunc<DateTime, bool> MaxFileDateFilter =
@@ -54,6 +56,29 @@ namespace dir2
                     if (Helper.TryParseDateTime(args[0], out DateTime result))
                     {
                         opt.invoke = (it) => it >= result;
+                    }
+                    else throw new InvalidValueException(
+                        args[0], opt.Name());
+                });
+
+        static public readonly IFunc<string, bool> FileExtFilter =
+            new Function<string, bool>("--no-ext=", help: "excl|only",
+                invoke: (_) => true,
+                parse: (opt, args) =>
+                {
+                    switch (args[0])
+                    {
+                        case "excl":
+                            opt.invoke = (it) =>
+                            !string.IsNullOrEmpty(Path.GetExtension(it));
+                            break;
+                        case "only":
+                            opt.invoke = (it) =>
+                            string.IsNullOrEmpty(Path.GetExtension(it));
+                            break;
+                        default:
+                            throw new InvalidValueException(
+                                args[0], opt.Name());
                     }
                 });
 
@@ -273,6 +298,7 @@ namespace dir2
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,
             (IParser) MaxFileDateFilter,
+            (IParser) FileExtFilter,
             TotalOpt,
             HideOpt,
             SortOpt,

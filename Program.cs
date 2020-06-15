@@ -67,6 +67,7 @@ namespace dir2
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
                 .Where((it) => Opts.MinFileDateFilter.Func(it.DateTime))
                 .Where((it) => Opts.MaxFileDateFilter.Func(it.DateTime))
+                .Where((it) => Opts.FileExtFilter.Func(it.Filename))
                 .Invoke(Opts.SumBy);
 
             if (sum.AddCount == 0)

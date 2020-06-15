@@ -18,7 +18,11 @@ namespace dir2
             while (enumDir.MoveNext())
             {
                 var currentDirname = enumDir.Current;
-                return GetAllFiles(currentDirname);
+                if (currentDirname.EndsWith(".git")) continue;
+                foreach (var filename in GetAllFiles(currentDirname))
+                {
+                    yield return filename;
+                }
             }
         }
     }

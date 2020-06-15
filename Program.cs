@@ -25,10 +25,18 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine($"{baseDir}:");
 
+            var exclFileExtension = ".cache";
+            var count = 0;
             foreach (var filename in Helper.GetAllFiles(baseDir))
             {
+                if (filename.EndsWith(exclFileExtension))
+                {
+                    continue;
+                }
                 Console.WriteLine(filename);
+                count += 1;
             }
+            Console.WriteLine($"{count} files are found.");
 
             return;
         }

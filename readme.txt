@@ -1,1 +1,1 @@
-12.01 Sort 'IEnumerable<FileInfo>' by 'Length'
+12.02 Sort with calling lamdba on 'IEnumerable<FileInfo>'

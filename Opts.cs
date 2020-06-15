@@ -78,10 +78,15 @@ namespace dir2
             new Switcher<FileInfo, DateTime>("--create-date",
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
+        static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
+            SortByLength { get; private set; }
+            = (seqThe) => seqThe.OrderBy((it) => it.Length);
+
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
             new Function<IEnumerable<InfoFile>, InfoSum>(
                 "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
+                .Invoke((seqThe) => SortByLength(seqThe))
                 .Select((it) =>
                 {
                     Console.Write(ItemText(it.ToString()));

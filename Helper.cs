@@ -28,6 +28,13 @@ namespace dir2
             catch { return emptyStrings.AsEnumerable().GetEnumerator(); }
         }
 
+        static public IEnumerable<InfoFile> Invoke(
+            this IEnumerable<InfoFile> seqThe,
+            Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>> func)
+        {
+            return func(seqThe);
+        }
+
         static IEnumerator<string> SafeGetDirectoryEnumerator(string dirname)
         {
             try { return Directory.EnumerateDirectories(dirname).GetEnumerator(); }

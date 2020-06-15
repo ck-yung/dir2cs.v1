@@ -64,7 +64,6 @@ namespace dir2
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
-                .OrderBy((it) => it.Length)
                 .Invoke(Opts.SumBy);
 
             if (sum.AddCount == 0)

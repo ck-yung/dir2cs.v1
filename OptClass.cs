@@ -14,7 +14,7 @@ namespace dir2
 
             public Function(string name,
                 Func<T,R> invoke,
-                Action<string[]> parse)
+                Action<Function<T, R>, string[]> parse)
             {
                 this.name = name;
                 this.invoke = invoke;
@@ -22,7 +22,7 @@ namespace dir2
             }
 
             readonly string name;
-            readonly Action<string[]> parse;
+            readonly Action<Function<T, R>, string[]> parse;
 
             public string Name()
             {
@@ -31,7 +31,7 @@ namespace dir2
 
             public void Parse(string[] args)
             {
-                parse(args);
+                parse(this, args);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace dir2
 {
@@ -36,75 +36,21 @@ namespace dir2
             }
 
 
-            Console.Write("Press any key to start ");
-            Console.ReadKey(); Console.WriteLine();
-
-            var queryThe = Helper.GetAllFiles(baseDir)
-                .MyFilter(filterThe: (it) => IsIncludingFilename(it))
-                .MyToFileInfo()
-                .MyPrintFileInfo(funcThe: (it) =>
+            var count = Helper.GetAllFiles(baseDir)
+                .Where((it) => IsIncludingFilename(it))
+                .Select((it) => new FileInfo(it))
+                .Select((it) =>
                 {
                     Console.Write($"{it.Length,8} ");
                     Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(it.FullName);
                     return it;
-                });
+                })
+                .Count();
 
-            Console.Write("Press any key to continue ");
-            Console.ReadKey(); Console.WriteLine();
-
-            var count = queryThe.MyCount();
             Console.WriteLine($"{count} files are found.");
 
             return;
-        }
-    }
-
-    static public class MyTool
-    {
-        static public IEnumerable<string> MyFilter(
-            this IEnumerable<string> seqThe, Func<string, bool> filterThe)
-        {
-            var enumThe = seqThe.GetEnumerator();
-            while (enumThe.MoveNext())
-            {
-                var currentThe = enumThe.Current;
-                if (!filterThe(currentThe)) continue;
-                yield return currentThe;
-            }
-        }
-
-        static public IEnumerable<FileInfo> MyToFileInfo(
-            this IEnumerable<string> seqThe)
-        {
-            var enumThe = seqThe.GetEnumerator();
-            while (enumThe.MoveNext())
-            {
-                var currentThe = enumThe.Current;
-                yield return new FileInfo(currentThe);
-            }
-        }
-
-        static public IEnumerable<FileInfo> MyPrintFileInfo(
-            this IEnumerable<FileInfo> seqThe, Func<FileInfo, FileInfo> funcThe)
-        {
-            var enumThe = seqThe.GetEnumerator();
-            while (enumThe.MoveNext())
-            {
-                var currentThe = enumThe.Current;
-                yield return funcThe(currentThe);
-            }
-        }
-
-        static public int MyCount(this IEnumerable<FileInfo> seqThe)
-        {
-            int result = 0;
-            var enumThe = seqThe.GetEnumerator();
-            while (enumThe.MoveNext())
-            {
-                result += 1;
-            }
-            return result;
         }
     }
 }

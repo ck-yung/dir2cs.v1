@@ -1,1 +1,1 @@
-05.07 What is "Lazy Computing"?
+06.00 Lesson Init

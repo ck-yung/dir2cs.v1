@@ -23,7 +23,9 @@ namespace dir2
                 rtn.Filename = Path.GetFileName(filename);
                 rtn.FullName = info.FullName;
                 rtn.Length = info.Length;
-                rtn.DateTime = info.LastWriteTime;
+                rtn.DateTime = (Program.IsCreateDate)
+                    ? info.CreationTime
+                    : info.LastWriteTime;
                 return rtn;
             }
             catch

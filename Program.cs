@@ -25,6 +25,11 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
+            if (args.Contains("--create-date"))
+            {
+                IsCreateDate = true;
+            }
+
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
@@ -40,5 +45,7 @@ namespace dir2
 
             return;
         }
+
+        static public bool IsCreateDate { get; private set; } = false;
     }
 }

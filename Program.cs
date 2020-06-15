@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace dir2
 {
@@ -25,56 +23,23 @@ namespace dir2
         static void MainRun(string[] args)
         {
             var baseDir = Directory.GetCurrentDirectory();
-            Console.WriteLine($"{baseDir}:");
+            Console.WriteLine(baseDir);
 
-            Func<string, bool> IsIncludingFilename = (_) => true;
-            var exclFileExtensionOpt = "--excl-ext=";
-            foreach (var arg in args)
+            Console.WriteLine();
+            Console.WriteLine("Directories:");
+            foreach (var dirName in Directory.GetDirectories(baseDir))
             {
-                if (!arg.StartsWith(exclFileExtensionOpt)) continue;
-                var exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
-                IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
+                Console.WriteLine(dirName);
             }
 
-            var count = Helper.GetAllFiles(baseDir)
-                .Where((filename) => IsIncludingFilename(filename))
-                .Select((filename) => new FileInfo(filename))
-                .Select((info) =>
-                {
-                    Console.Write($"{info.Length,7} ");
-                    Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
-                    Console.WriteLine(info.FullName);
-                    return info;
-                })
-                .Zip(Make.Strings(),
-                    resultSelector: (info, it) =>
-                    {
-                        Console.Write(it);
-                        return info;
-                    })
-                .Count();
-
-            Console.WriteLine($"{count} files are found.");
-
-            var count2 = Make.Strings().Count();
-            Console.WriteLine($"count2 is {count2}");
+            Console.WriteLine();
+            Console.WriteLine("Files:");
+            foreach (var fileName in Directory.GetFiles(baseDir))
+            {
+                Console.WriteLine(fileName);
+            }
 
             return;
-        }
-    }
-
-    static class Make
-    {
-        static public IEnumerable<string> Strings()
-        {
-            while (true)
-            {
-                yield return "";
-                yield return "";
-                yield return "";
-                yield return "";
-                yield return Environment.NewLine;
-            }
         }
     }
 }

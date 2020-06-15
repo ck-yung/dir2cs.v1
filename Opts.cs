@@ -12,13 +12,19 @@ namespace dir2
                 help: "NAME[,NAME,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
-                    opt.invoke = (filename) => args
+                    var filterThe = args
                     .Select((it) =>
                     {
                         Console.WriteLine($"\t *** dbg '{it}' ***");
                         return it;
                     })
-                    .Any((it) => it == filename);
+                    .ToArray();
+
+                    if (filterThe.Length>0)
+                    {
+                        opt.invoke = (filename) => filterThe
+                        .Any((it) => it == filename);
+                    }
                 });
 
         static public readonly IFunc<long, bool> MinFileSizeFilter =

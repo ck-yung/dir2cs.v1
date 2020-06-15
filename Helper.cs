@@ -18,7 +18,13 @@ namespace dir2
             while (enumDir.MoveNext())
             {
                 var currentDirname = enumDir.Current;
-                yield return $"[DIR] {currentDirname}";
+                var dirnameThe = Path.Join(dirname, Path.GetFileName(currentDirname));
+                var enumFile2 = Directory.EnumerateFiles(dirnameThe).GetEnumerator();
+                while (enumFile2.MoveNext())
+                {
+                    var currentFilename = enumFile2.Current;
+                    yield return currentFilename;
+                }
             }
         }
     }

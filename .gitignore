@@ -1,0 +1,8 @@
+.vs/*
+*.csproj.user
+bin/*
+obj/*
+Properties/*
+.DS_Store
+__MACOSX/*
+**/.DS_Store

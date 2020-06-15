@@ -1,1 +1,1 @@
-03.03 LINQ Select(), Count() - Print FileInfo
+03.04 Combine into a single LINQ query

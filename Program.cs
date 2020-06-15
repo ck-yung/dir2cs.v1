@@ -34,16 +34,13 @@ namespace dir2
                 exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
             }
 
-            var filenameForExclExt = Helper.GetAllFiles(baseDir)
-                .Where(includingFileExt);
+            var count = Helper.GetAllFiles(baseDir)
+                .Where(includingFileExt)
+                .Select(ToFileInfo)
+                .Select(PrintFileInfo)
+                .Count();
 
-            var fileInfos = filenameForExclExt
-                .Select(ToFileInfo);
-
-            var fileInfos2 = fileInfos
-                .Select(PrintFileInfo);
-
-            Console.WriteLine($"{fileInfos2.Count()} files are found.");
+            Console.WriteLine($"{count} files are found.");
 
             return;
         }

@@ -51,11 +51,11 @@ namespace dir2
                 .Aggregate(argsMain,
                 (it, opt) => opt.Parse(it));
 
-            var sum = Opts.SumBy.Func(
-                Helper.GetAllFiles(baseDir)
+            var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
-                .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length)));
+                .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
+                .Invoke(Opts.SumBy);
 
             if (sum.AddCount == 0)
                 Console.Write(Opts.TotalText("No file is found."));

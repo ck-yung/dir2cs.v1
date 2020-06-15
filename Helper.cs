@@ -9,6 +9,12 @@ namespace dir2
     {
         static public string[] emptyStrings = new string[] { };
 
+        static public InfoSum Invoke(this IEnumerable<InfoFile> seqThe,
+            IFunc<IEnumerable<InfoFile>, InfoSum> func)
+        {
+            return func.Func(seqThe);
+        }
+
         static IEnumerator<string> SafeGetFileEnumerator(string dirname)
         {
             try { return Directory.EnumerateFiles(dirname).GetEnumerator(); }

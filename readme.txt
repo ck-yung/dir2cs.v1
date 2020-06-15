@@ -1,1 +1,1 @@
-10.02 Add 'Name' to 'InfoSum'
+10.03 Add opt '--sum=' ('ext' only)

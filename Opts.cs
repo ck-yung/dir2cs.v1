@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace dir2
 {
@@ -76,12 +78,49 @@ namespace dir2
             new Switcher<FileInfo, DateTime>("--create-date",
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
+        static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
+            new Function<IEnumerable<InfoFile>, InfoSum>(
+                "--sum=", help: "ext",
+                invoke: (seqThe) => seqThe
+                .Select((it) =>
+                {
+                    Console.Write(ItemText(it.ToString()));
+                    return it;
+                })
+                .Aggregate(new InfoSum("*"),
+                (acc, it) => acc.AddWith(it)),
+                parse: (opt, args) =>
+                {
+                    switch (args[0])
+                    {
+                        case "ext":
+                            opt.invoke = (seqThe) => seqThe
+                            .GroupBy((it) => Path.GetExtension(it.Filename))
+                            .Select((grp) => grp.Aggregate(new InfoSum(
+                                string.IsNullOrEmpty(grp.Key)
+                                ? "*no-ext*" : grp.Key),
+                            (acc, it) => acc.AddWith(it)))
+                            .Select((it) =>
+                            {
+                                Console.Write(ItemText(it.ToString()));
+                                return it;
+                            })
+                            .Aggregate(new InfoSum("*"),
+                            (acc, it) => acc.AddWith(it));
+                            break;
+                        default:
+                            throw new InvalidValueException(
+                                args[0], opt.Name());
+                    }
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) MaxFileSizeFilter,
             TotalOpt,
             HideOpt,
             (IParser) GetFileDate,
+            (IParser) SumBy,
         };
     }
 }

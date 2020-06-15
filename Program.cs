@@ -37,11 +37,8 @@ namespace dir2
             var filenameForExclExt = Helper.GetAllFiles(baseDir)
                 .Where(includingFileExt);
 
-            var fileInfos = new List<FileInfo>();
-            foreach (var filename in filenameForExclExt)
-            {
-                fileInfos.Add(ToFileInfo(filename));
-            }
+            var fileInfos = filenameForExclExt
+                .Select(ToFileInfo);
 
             var fileInfos2 = new List<FileInfo>();
             foreach (var info in fileInfos)

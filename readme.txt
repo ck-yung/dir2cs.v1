@@ -1,3 +1,1 @@
-03.01 LINQ Where()
-
-using System.Linq;
+03.02 LINQ Select() - Transform string into FileInfo

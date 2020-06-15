@@ -26,15 +26,15 @@ namespace dir2
             Console.WriteLine(baseDir);
 
             Console.WriteLine();
-            Console.WriteLine("Directories:");
-            foreach (var dirName in Directory.GetDirectories(baseDir))
+            Console.WriteLine("Directories::");
+            foreach (var dirName in Directory.EnumerateDirectories(baseDir))
             {
                 Console.WriteLine(dirName);
             }
 
             Console.WriteLine();
-            Console.WriteLine("Files:");
-            foreach (var fileName in Directory.GetFiles(baseDir))
+            Console.WriteLine("Files::");
+            foreach (var fileName in Directory.EnumerateFiles(baseDir))
             {
                 Console.WriteLine(fileName);
             }

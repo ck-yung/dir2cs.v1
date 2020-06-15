@@ -50,11 +50,7 @@ namespace dir2
                     return it;
                 });
 
-            var count = 0;
-            foreach (var info in toPrintResult)
-            {
-                count += 1;
-            }
+            var count = MyCount(toPrintResult);
             Console.WriteLine($"{count} files are found.");
 
             return;
@@ -92,6 +88,17 @@ namespace dir2
                 var currentThe = enumThe.Current;
                 yield return funcThe(currentThe);
             }
+        }
+
+        static int MyCount(IEnumerable<FileInfo> seqThe)
+        {
+            int result = 0;
+            var enumThe = seqThe.GetEnumerator();
+            while (enumThe.MoveNext())
+            {
+                result += 1;
+            }
+            return result;
         }
     }
 }

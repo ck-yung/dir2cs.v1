@@ -1,1 +1,1 @@
-05.03 Add 'MyPrint' for the feature of LINQ Select() - PrintFileInfo
+05.04 Add 'MyCount' for the feature of LINQ Count()

@@ -1,1 +1,1 @@
-07.02 c. Change '--hide=' with lambda from control-data
+07.02 d. Change '--total=' with lambda from control-data

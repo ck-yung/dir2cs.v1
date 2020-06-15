@@ -64,12 +64,10 @@ namespace dir2
                     switch (valueThe)
                     {
                         case "off":
-                            IsPrintTotal = false;
-                            IsPrintItem = true;
+                            TotalText = (_) => "";
                             break;
                         case "only":
-                            IsPrintTotal = true;
-                            IsPrintItem = false;
+                            ItemText = (_) => "";
                             break;
                         default:
                             break;
@@ -83,16 +81,13 @@ namespace dir2
                 .Where((it) => maxFileSizeFilter(it.Length))
                 .Select((it) =>
                 {
-                    if (IsPrintItem) Console.WriteLine(it);
+                    Console.Write(ItemText(it.ToString()));
                     return it;
                 })
                 .Aggregate(new InfoSum(),
                 (acc, it) => acc.AddWith(it));
 
-            if (IsPrintTotal)
-            {
-                Console.WriteLine($"{sum} {baseDir}");
-            }
+            Console.Write(TotalText($"{sum} {baseDir}"));
 
             return;
         }
@@ -103,7 +98,9 @@ namespace dir2
         { get; private set; } = (it) => it;
         static public Func<string, string> DateText
         { get; private set; } = (it) => it;
-        static public bool IsPrintItem { get; private set; } = true;
-        static public bool IsPrintTotal { get; private set; } = true;
+        static public Func<string, string> ItemText
+        { get; private set; } = (it) => it + Environment.NewLine;
+        static public Func<string, string> TotalText
+        { get; private set; } = (it) => it + Environment.NewLine;
     }
 }

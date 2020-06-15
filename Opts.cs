@@ -87,7 +87,7 @@ namespace dir2
                     Console.Write(ItemText(it.ToString()));
                     return it;
                 })
-                .Aggregate(new InfoSum("*"),
+                .Aggregate(new InfoSum(InfoFile.BaseDir),
                 (acc, it) => acc.AddWith(it)),
                 parse: (opt, args) =>
                 {
@@ -105,7 +105,7 @@ namespace dir2
                                 Console.Write(ItemText(it.ToString()));
                                 return it;
                             })
-                            .Aggregate(new InfoSum("*"),
+                            .Aggregate(new InfoSum(InfoFile.BaseDir),
                             (acc, it) => acc.AddWith(it));
                             break;
                         default:

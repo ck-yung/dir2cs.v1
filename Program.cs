@@ -34,8 +34,7 @@ namespace dir2
                 IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
-            var sum = new InfoSum();
-            foreach (var info in Helper.GetAllFiles(baseDir)
+            var sum = Helper.GetAllFiles(baseDir)
                 .Where((it) => IsIncludingFilename(it))
                 .Select((it) => new FileInfo(it))
                 .Select((it) =>
@@ -44,10 +43,8 @@ namespace dir2
                     Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(it.FullName);
                     return it;
-                }))
-            {
-                sum.AddWith(info);
-            }
+                })
+                .Aggregate(new InfoSum(), func: (acc, it) => acc.AddWith(it));
 
             Console.WriteLine($"{sum} {baseDir}");
 

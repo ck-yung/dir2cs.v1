@@ -15,6 +15,13 @@ namespace dir2
             return func.Func(seqThe);
         }
 
+        static public string GetFirstPath(string arg)
+        {
+            var parts = arg.Split(Path.DirectorySeparatorChar);
+            if (parts.Length == 1) return ".";
+            return parts[0];
+        }
+
         static IEnumerator<string> SafeGetFileEnumerator(string dirname)
         {
             try { return Directory.EnumerateFiles(dirname).GetEnumerator(); }

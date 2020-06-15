@@ -80,7 +80,7 @@ namespace dir2
 
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
             new Function<IEnumerable<InfoFile>, InfoSum>(
-                "--sum=", help: "ext",
+                "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
                 .Select((it) =>
                 {
@@ -99,6 +99,20 @@ namespace dir2
                             .Select((grp) => grp.Aggregate(new InfoSum(
                                 string.IsNullOrEmpty(grp.Key)
                                 ? "*no-ext*" : grp.Key),
+                            (acc, it) => acc.AddWith(it)))
+                            .Select((it) =>
+                            {
+                                Console.Write(ItemText(it.ToString()));
+                                return it;
+                            })
+                            .Aggregate(new InfoSum(InfoFile.BaseDir),
+                            (acc, it) => acc.AddWith(it));
+                            break;
+                        case "dir":
+                            opt.invoke = (seqThe) => seqThe
+                            .GroupBy((it) => Helper.GetFirstPath(
+                                InfoFile.RelativePath(it.FullName)))
+                            .Select((grp) => grp.Aggregate(new InfoSum(grp.Key),
                             (acc, it) => acc.AddWith(it)))
                             .Select((it) =>
                             {

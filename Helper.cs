@@ -1,20 +1,35 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace dir2
 {
     static class Helper
     {
+        static public string[] emptyStrings = new string[] { };
+
+        static IEnumerator<string> SafeGetFileEnumerator(string dirname)
+        {
+            try { return Directory.EnumerateFiles(dirname).GetEnumerator(); }
+            catch { return emptyStrings.AsEnumerable().GetEnumerator(); }
+        }
+
+        static IEnumerator<string> SafeGetDirectoryEnumerator(string dirname)
+        {
+            try { return Directory.EnumerateDirectories(dirname).GetEnumerator(); }
+            catch { return emptyStrings.AsEnumerable().GetEnumerator(); }
+        }
+
         static public IEnumerable<string> GetAllFiles(string dirname)
         {
-            var enumFile = Directory.EnumerateFiles(dirname).GetEnumerator();
+            var enumFile = SafeGetFileEnumerator(dirname);
             while (enumFile.MoveNext())
             {
                 var currentFilename = enumFile.Current;
                 yield return currentFilename;
             }
 
-            var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
+            var enumDir = SafeGetDirectoryEnumerator(dirname);
             while (enumDir.MoveNext())
             {
                 var currentDirname = enumDir.Current;

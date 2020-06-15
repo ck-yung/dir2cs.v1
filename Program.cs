@@ -33,7 +33,7 @@ namespace dir2
             {
                 if (arg == "--create-date")
                 {
-                    IsCreateDate = true;
+                    GetFileDate = (it) => it.CreationTime;
                 }
                 else if (arg.StartsWith(sizeWithinOpt))
                 {
@@ -98,7 +98,8 @@ namespace dir2
             return;
         }
 
-        static public bool IsCreateDate { get; private set; } = false;
+        static public Func<FileInfo, DateTime> GetFileDate
+        { get; private set; } = (it) => it.LastWriteTime;
         static public bool IsPrintSize { get; private set; } = true;
         static public bool IsPrintDate { get; private set; } = true;
         static public bool IsPrintItem { get; private set; } = true;

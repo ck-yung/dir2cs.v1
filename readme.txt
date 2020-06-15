@@ -1,5 +1,6 @@
-00.02 Get file names and dir names
+01.00 Lesson Init
 
-1. System.IO.Directory.GetFiles(string baseDirName);
-2. System.IO.Directory.GetDirectories(string baseDirName);
-
+1. Apply '--excl-ext=' opt
+2. Print file size
+3. Print last written date/time
+4. Print path name

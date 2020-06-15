@@ -23,20 +23,11 @@ namespace dir2
         static void MainRun(string[] args)
         {
             var baseDir = Directory.GetCurrentDirectory();
-            Console.WriteLine(baseDir);
+            Console.WriteLine($"{baseDir}:");
 
-            Console.WriteLine();
-            Console.WriteLine("Directories:");
-            foreach (var dirName in Directory.GetDirectories(baseDir))
+            foreach (var filename in Helper.GetAllFiles(baseDir))
             {
-                Console.WriteLine(dirName);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("Files:");
-            foreach (var fileName in Directory.GetFiles(baseDir))
-            {
-                Console.WriteLine(fileName);
+                Console.WriteLine(filename);
             }
 
             return;

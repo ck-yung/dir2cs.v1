@@ -1,1 +1,1 @@
-15.04 LINQ ToArray() - Resolve performance issue of calling lambda
+15.05 Handle wild matching of opt '--excl-file=WILD[,WILD,..]' (Regex, regular expression)

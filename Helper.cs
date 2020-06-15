@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace dir2
@@ -211,6 +212,28 @@ namespace dir2
                 return toKilo((arg2 + 512) / 1024, index - 1);
             }
             return toKilo(arg, units.Length);
+        }
+
+        static public Func<string, bool> ToWildMatch(string arg)
+        {
+            var regText = new StringBuilder("^");
+            regText.Append(arg
+                .Replace(@"\", @"\\")
+                .Replace("^", @"\^")
+                .Replace("$", @"\$")
+                .Replace(".", @"\.")
+                .Replace("?", ".")
+                .Replace("*", ".*")
+                .Replace("(", @"\(")
+                .Replace(")", @"\)")
+                .Replace("[", @"\[")
+                .Replace("]", @"\]")
+                .Replace("{", @"\{")
+                .Replace("}", @"\}"));
+            regText.Append("$");
+            var regThe = new Regex(regText.ToString(),
+                RegexOptions.None);
+            return (it) => regThe.Match(it).Success;
         }
     }
 

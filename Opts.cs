@@ -9,7 +9,7 @@ namespace dir2
     {
         static public readonly IFunc<string, bool> ExclFilenameFilter =
             new Function<string, bool>("--excl-file=", requireUnique: false,
-                help: "NAME[,NAME,..]", invoke: (_) => false,
+                help: "WILD[,WILD,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
                     var filterThe = args
@@ -18,12 +18,13 @@ namespace dir2
                         Console.WriteLine($"\t *** dbg '{it}' ***");
                         return it;
                     })
+                    .Select((it) => Helper.ToWildMatch(it))
                     .ToArray();
 
                     if (filterThe.Length>0)
                     {
                         opt.invoke = (filename) => filterThe
-                        .Any((it) => it == filename);
+                        .Any((it) => it(filename));
                     }
                 });
 

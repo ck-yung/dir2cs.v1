@@ -28,6 +28,7 @@ namespace dir2
             int? sizeWithin = null;
             var sizeWithinOpt = "--size-within=";
             var hideOpt = "--hide=";
+            var totalOpt = "--total=";
             foreach (var arg in args)
             {
                 if (arg == "--create-date")
@@ -57,6 +58,23 @@ namespace dir2
                             break;
                     }
                 }
+                else if (arg.StartsWith(totalOpt))
+                {
+                    var valueThe = arg.Substring(totalOpt.Length);
+                    switch (valueThe)
+                    {
+                        case "off":
+                            IsPrintTotal = false;
+                            IsPrintItem = true;
+                            break;
+                        case "only":
+                            IsPrintTotal = true;
+                            IsPrintItem = false;
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
             var sum = Helper.GetAllFiles(baseDir)
@@ -66,13 +84,16 @@ namespace dir2
                 ? true : (sizeWithin > it.Length))
                 .Select((it) =>
                 {
-                    Console.WriteLine(it);
+                    if (IsPrintItem) Console.WriteLine(it);
                     return it;
                 })
                 .Aggregate(new InfoSum(),
                 (acc, it) => acc.AddWith(it));
 
-            Console.WriteLine($"{sum} {baseDir}");
+            if (IsPrintTotal)
+            {
+                Console.WriteLine($"{sum} {baseDir}");
+            }
 
             return;
         }
@@ -80,5 +101,7 @@ namespace dir2
         static public bool IsCreateDate { get; private set; } = false;
         static public bool IsPrintSize { get; private set; } = true;
         static public bool IsPrintDate { get; private set; } = true;
+        static public bool IsPrintItem { get; private set; } = true;
+        static public bool IsPrintTotal { get; private set; } = true;
     }
 }

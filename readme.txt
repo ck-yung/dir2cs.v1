@@ -1,1 +1,1 @@
-07.01 c. Add '--hide=' with control data
+07.01 d. Add '--total=' with control data

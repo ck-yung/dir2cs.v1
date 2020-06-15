@@ -128,12 +128,35 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<string, Func<string, string>>
+            MakeRelativePath = new Switcher<string, Func<string, string>>(
+                "--relative", invoke: (dirname) =>
+                {
+                    var pathLen = dirname.Length;
+                    if (!dirname.EndsWith(Path.DirectorySeparatorChar))
+                        pathLen += 1;
+                    return (it) => it.Substring(pathLen);
+                }, alt: (dirname) =>
+                {
+                    var currDir = Directory.GetCurrentDirectory();
+                    if (!dirname.StartsWith(currDir))
+                    {
+                        throw new ArgumentException(
+                            $"'--relative': '{dirname}' is NOT in current directory!");
+                    }
+                    var pathLen = currDir.Length;
+                    if (!currDir.EndsWith(Path.DirectorySeparatorChar))
+                        pathLen += 1;
+                    return (it) => it.Substring(pathLen);
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
+            (IParser) GetFileDate,
+            (IParser) MakeRelativePath,
             (IParser) MaxFileSizeFilter,
             TotalOpt,
             HideOpt,
-            (IParser) GetFileDate,
             (IParser) SumBy,
         };
     }

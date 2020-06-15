@@ -51,6 +51,12 @@ namespace dir2
                 .Aggregate(argsMain,
                 (it, opt) => opt.Parse(it));
 
+            if (args.Length > 0 && Directory.Exists(args[0]))
+            {
+                baseDir = Path.GetFullPath(args[0]);
+                args = args.Skip(1).ToArray();
+            }
+
             InfoFile.InitDir(baseDir);
 
             var sum = Helper.GetAllFiles(baseDir)
@@ -63,6 +69,9 @@ namespace dir2
                 Console.Write(Opts.TotalText("No file is found."));
             else if (sum.AddCount > 1)
                 Console.Write(Opts.TotalText(sum.ToString()));
+
+            foreach (var arg in args)
+                Console.WriteLine($"Unknown opt '{arg}'");
 
             return;
         }

@@ -47,10 +47,7 @@ namespace dir2
         static public void InitDir(string dirname)
         {
             BaseDir = dirname;
-            var pathLen = dirname.Length;
-            if (!dirname.EndsWith(Path.DirectorySeparatorChar))
-                pathLen += 1;
-            RelativePath = (it) => it.Substring(pathLen);
+            RelativePath = Opts.MakeRelativePath.Func(dirname);
         }
     }
 

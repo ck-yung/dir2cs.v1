@@ -1,1 +1,1 @@
-10.06 Add 'dir' to opt '--sum='
+10.07 Add opt '--relative'

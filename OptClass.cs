@@ -38,6 +38,8 @@ namespace dir2
                 var values = args
                     .Where((it) => it.StartsWith(name))
                     .Select((it) => it.Substring(name.Length))
+                    .Select((it) => it.Split(','))
+                    .SelectMany((it) => it)
                     .Distinct()
                     .ToArray();
 
@@ -63,6 +65,8 @@ namespace dir2
                 var values = args
                     .Where((it) => it.StartsWith(name))
                     .Select((it) => it.Substring(name.Length))
+                    .Select((it) => it.Split(','))
+                    .SelectMany((it) => it)
                     .Distinct()
                     .ToArray();
 

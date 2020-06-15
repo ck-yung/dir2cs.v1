@@ -1,1 +1,5 @@
-02.03 Use function for 'new FileInfo(..)' and print FileInfo
+03.00 Lesson Init
+
+1. LINQ Where()
+2. LINQ Select()
+3. LINQ Count()

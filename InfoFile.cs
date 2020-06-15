@@ -37,7 +37,7 @@ namespace dir2
             var buf = new StringBuilder();
             buf.Append(Opts.SizeText($"{Length,7} "));
             buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
-            buf.Append(FullName);
+            buf.Append(RelativePath(FullName));
             return buf.ToString();
         }
 

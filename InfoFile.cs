@@ -88,7 +88,7 @@ namespace dir2
             buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
             buf.Append(Opts.DateText("- "));
             buf.Append(Opts.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));
-            buf.Append(Opts.CountText($"{Count,4} "));
+            buf.Append(Opts.CountText(Opts.CountFormat.Func(Count)));
             buf.Append(Name);
             return buf.ToString();
         }

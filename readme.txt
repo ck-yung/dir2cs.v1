@@ -1,1 +1,1 @@
-14.02 Add 'short' to opt '--size-format=' (recursive function call)
+14.03 Add opt '--count-width='

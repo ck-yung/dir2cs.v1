@@ -326,6 +326,29 @@ namespace dir2
                     }
                 });
 
+
+        static public readonly IFunc<int, string> CountFormat =
+            new Function<int, string>("--count-width=",
+                help: "NUMBER",
+                invoke: (it) => $"{it,4} ",
+                parse: (opt, args) =>
+                {
+                    if (int.TryParse(args[0], out int widthThe))
+                    {
+                        if (widthThe < 1)
+                            throw new InvalidValueException(args[0], opt.Name());
+                        var fmtThe = $"{{0,{widthThe}}} ";
+                        opt.invoke = (it) =>
+                        {
+                            return string.Format(fmtThe, it);
+                        };
+                    }
+                    else
+                    {
+                        throw new InvalidValueException(args[0], opt.Name());
+                    }
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) GetFileDate,
@@ -337,6 +360,7 @@ namespace dir2
             (IParser) FileExtFilter,
             (IParser) HiddenFilter,
             (IParser) SizeFormat,
+            (IParser) CountFormat,
             TotalOpt,
             HideOpt,
             SortOpt,

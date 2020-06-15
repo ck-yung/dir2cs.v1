@@ -49,7 +49,7 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append(Opts.SizeText($"{Length,7} "));
+            buf.Append(Opts.SizeText(Opts.SizeFormat.Func(Length)));
             buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
             buf.Append(RelativePath(FullName));
             return buf.ToString();
@@ -84,7 +84,7 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append(Opts.SizeText($"{Length,7} "));
+            buf.Append(Opts.SizeText(Opts.SizeFormat.Func(Length)));
             buf.Append(Opts.DateText($"{DateTime:yyyy-MM-dd HH:mm:ss} "));
             buf.Append(Opts.DateText("- "));
             buf.Append(Opts.DateText($"{Last:yyyy-MM-dd HH:mm:ss} "));

@@ -308,6 +308,21 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<long, string> SizeFormat =
+            new Function<long, string>("--size-format=", help: "long",
+                invoke: (it) => $"{it,8} ",
+                parse: (opt, args) =>
+                {
+                    switch (args[0])
+                    {
+                        case "long":
+                            opt.invoke = (it) => $"{it,19:N0} ";
+                            break;
+                        default:
+                            throw new InvalidValueException(args[0], opt.Name());
+                    }
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) GetFileDate,
@@ -318,6 +333,7 @@ namespace dir2
             (IParser) MaxFileDateFilter,
             (IParser) FileExtFilter,
             (IParser) HiddenFilter,
+            (IParser) SizeFormat,
             TotalOpt,
             HideOpt,
             SortOpt,

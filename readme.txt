@@ -1,1 +1,1 @@
-04.04 IEnumerable<T>.GetEnumerator
+04.05 EnumerateDirectories(dirname).GetEnumerator()

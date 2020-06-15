@@ -13,6 +13,13 @@ namespace dir2
                 var currentFilename = enumFile.Current;
                 yield return currentFilename;
             }
+
+            var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
+            while (enumDir.MoveNext())
+            {
+                var currentDirname = enumDir.Current;
+                yield return $"[DIR] {currentDirname}";
+            }
         }
     }
 }

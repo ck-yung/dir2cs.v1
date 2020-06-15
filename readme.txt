@@ -1,1 +1,1 @@
-15.06 Add opt '--case-sensitive'
+15.07 Add opt '--excl-dir=WILD[,WILD,..]'

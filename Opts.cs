@@ -35,6 +35,27 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<string, bool> ExclDirnameFilter =
+            new Function<string, bool>("--excl-dir=",
+                help: "WILD[,WILD,..]", invoke: (_) => false,
+                requireUnique: false,
+                parse: (opt, args) =>
+                {
+                    var filterThe = args
+                    .Select((it) => it.Split(','))
+                    .SelectMany((it) => it)
+                    .Where((it) => !string.IsNullOrEmpty(it))
+                    .Distinct()
+                    .Select((it) => Helper.ToWildMatch(it))
+                    .ToArray();
+
+                    if (filterThe.Length > 0)
+                    {
+                        opt.invoke = (filename) =>
+                        filterThe.Any((it) => it(filename));
+                    }
+                });
+
         static public readonly IFunc<long, bool> MinFileSizeFilter =
             new Function<long, bool>("--size-beyond=",
                 help: "NUMBER",
@@ -394,6 +415,7 @@ namespace dir2
             (IParser) MakeRelativePath,
             (IParser) CountComma,
             (IParser) ExclFilenameFilter,
+            (IParser) ExclDirnameFilter,
             (IParser) MinFileSizeFilter,
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,

@@ -71,7 +71,8 @@ namespace dir2
             {
                 var currentDirname = SafeGetCurrent(enumDir);
                 if (string.IsNullOrEmpty(currentDirname)) continue;
-                if (currentDirname.EndsWith(".git")) continue;
+                if (Opts.ExclDirnameFilter.Func(
+                    Path.GetFileName(currentDirname))) continue;
                 foreach (var filename in GetAllFiles(currentDirname))
                 {
                     yield return filename;
@@ -98,6 +99,8 @@ namespace dir2
             {
                 var currentDirname = SafeGetCurrent(enumDir);
                 if (string.IsNullOrEmpty(currentDirname)) continue;
+                if (Opts.ExclDirnameFilter.Func(
+                    Path.GetFileName(currentDirname))) continue;
                 Console.Write(Opts.ItemText(
                     $"[DIR] {InfoFile.RelativePath(currentDirname)}"));
                 cntDir += 1;

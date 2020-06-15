@@ -1,1 +1,1 @@
-11.01 Add opt '--dir=' with default new 'Helper.GetFiles(dirname)'
+11.02 Add 'sub' to '--dir=' for calling 'Helper.GetAllFiles(dirname)'

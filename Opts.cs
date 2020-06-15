@@ -152,9 +152,19 @@ namespace dir2
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
             new Function<string, IEnumerable<string>>(
-                "--dir=", help: "TODO",
+                "--dir=", help: "sub",
                 invoke: (dirname) => Helper.GetFiles(dirname),
-                parse: (opt, args) => { });
+                parse: (opt, args) =>
+                {
+                    switch (args[0])
+                    {
+                        case "sub":
+                            opt.invoke = (dirname) => Helper.GetAllFiles(dirname);
+                            break;
+                        default:
+                            throw new InvalidValueException(args[0], opt.Name());
+                    }
+                });
 
         static public readonly IParser[] Parsers = new IParser[]
         {

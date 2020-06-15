@@ -7,8 +7,12 @@ namespace dir2
     {
         static public IEnumerable<string> GetAllFiles(string dirname)
         {
-            foreach (var filename in Directory.EnumerateFiles(dirname))
-                yield return filename;
+            var enumFile = Directory.EnumerateFiles(dirname).GetEnumerator();
+            while (enumFile.MoveNext())
+            {
+                var currentFilename = enumFile.Current;
+                yield return currentFilename;
+            }
         }
     }
 }

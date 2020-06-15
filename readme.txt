@@ -1,1 +1,1 @@
-04.03 yield return for IEnumerable<T>
+04.04 IEnumerable<T>.GetEnumerator

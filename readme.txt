@@ -1,3 +1,3 @@
-03.06 c. LINQ Zip() - Print a blank line per 5 output lines
+03.06 d. A simple question about LINQ Count()
 
-d. A simple question
+*** DON'T RUN BEFORE SAVING .. ..

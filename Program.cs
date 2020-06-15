@@ -56,6 +56,9 @@ namespace dir2
 
             Console.WriteLine($"{count} files are found.");
 
+            var count2 = Make.Strings().Count();
+            Console.WriteLine($"count2 is {count2}");
+
             return;
         }
     }

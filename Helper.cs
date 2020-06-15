@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,7 +7,8 @@ namespace dir2
     {
         static public IEnumerable<string> GetAllFiles(string dirname)
         {
-            return Directory.EnumerateFiles(dirname);
+            foreach (var filename in Directory.EnumerateFiles(dirname))
+                yield return filename;
         }
     }
 }

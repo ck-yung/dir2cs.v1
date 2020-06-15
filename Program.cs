@@ -25,7 +25,7 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
-            int? sizeWithin = null;
+            Func<long, bool> maxFileSizeFilter = (_) => true;
             var sizeWithinOpt = "--size-within=";
             var hideOpt = "--hide=";
             var totalOpt = "--total=";
@@ -40,7 +40,7 @@ namespace dir2
                     if (int.TryParse(arg.Substring(sizeWithinOpt.Length),
                         out int intTemp))
                     {
-                        sizeWithin = intTemp;
+                        maxFileSizeFilter = (it) => intTemp > it;
                     }
                 }
                 else if (arg.StartsWith(hideOpt))
@@ -80,8 +80,7 @@ namespace dir2
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
-                .Where((it) => (sizeWithin == null)
-                ? true : (sizeWithin > it.Length))
+                .Where((it) => maxFileSizeFilter(it.Length))
                 .Select((it) =>
                 {
                     if (IsPrintItem) Console.WriteLine(it);

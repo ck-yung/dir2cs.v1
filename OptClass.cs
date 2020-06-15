@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace dir2
@@ -17,15 +18,17 @@ namespace dir2
             public Function(string name,
                 Func<T,R> invoke,
                 Action<Function<T, R>, string[]> parse,
-                bool requireUnique = true)
+                string help = "", bool requireUnique = true)
             {
                 this.name = name;
                 this.invoke = invoke;
                 this.parse = parse;
+                this.help = help;
                 this.requireUnique = requireUnique;
             }
 
             readonly string name;
+            readonly string help;
             readonly Action<Function<T, R>, string[]> parse;
 
             public string Name()
@@ -49,11 +52,17 @@ namespace dir2
 
                 if (values.Length>0) parse(this, values);
             }
+
+            public override string ToString()
+            {
+                return $"{name,19}{help}";
+            }
         }
 
         private class Parser : IParser
         {
             readonly string name;
+            readonly string help;
             public string Name()
             {
                 return name;
@@ -80,11 +89,16 @@ namespace dir2
             readonly bool requireUnique;
             public Parser(string name,
                 Action<Parser, string[]> parse,
-                bool requireUnique = true)
+                string help = "", bool requireUnique = true)
             {
                 this.name = name;
+                this.help = help;
                 this.parse = parse;
                 this.requireUnique = requireUnique;
+            }
+            public override string ToString()
+            {
+                return $"{name,19}{help}";
             }
         }
 
@@ -98,6 +112,7 @@ namespace dir2
             }
 
             readonly string name;
+            readonly string help;
             public string Name()
             {
                 return name;
@@ -117,12 +132,19 @@ namespace dir2
 
             public Switcher(string name,
                 Func<T,R> invoke, Func<T,R> alt,
+                string help = "",
                 Action<Switcher<T,R>> postAlt = null)
             {
                 this.name = name;
+                this.help = help;
                 this.invoke = invoke;
                 this.alt = alt;
                 this.postAlt = postAlt;
+            }
+
+            public override string ToString()
+            {
+                return $"{name,18} {help}";
             }
         }
     }

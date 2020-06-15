@@ -27,6 +27,16 @@ namespace dir2
 
         static void MainRun(string[] args)
         {
+            if (args.Contains("-?"))
+            {
+                Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [opt ..]");
+                foreach (var opt in Opts.Parsers)
+                {
+                    Console.WriteLine(opt);
+                }
+                return;
+            }
+
             var baseDir = Directory.GetCurrentDirectory();
 
             foreach (var opt in Opts.Parsers)

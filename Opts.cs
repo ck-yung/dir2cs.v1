@@ -7,6 +7,7 @@ namespace dir2
     {
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
             new Function<long, bool>("--size-within=",
+                help: "NUMBER",
                 invoke: (_) => true,
                 parse: (opt, args) =>
                 {
@@ -23,6 +24,7 @@ namespace dir2
         static public Func<string, string> TotalText
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
         static public readonly IParser TotalOpt = new Parser("--total=",
+            help: "off|only",
             parse: (opt, args) =>
             {
                 switch (args[0])
@@ -46,7 +48,7 @@ namespace dir2
         static public Func<string, string> CountText
         { get; private set; } = (it) => it;
         static public readonly IParser HideOpt = new Parser("--hide=",
-            requireUnique: false,
+            help: "size,date,count", requireUnique: false,
             parse: (opt, args) =>
             {
                 foreach (var arg in args)

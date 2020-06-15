@@ -1,5 +1,3 @@
-03.00 Lesson Init
+03.01 LINQ Where()
 
-1. LINQ Where()
-2. LINQ Select()
-3. LINQ Count()
+using System.Linq;

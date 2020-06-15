@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace dir2
 {
@@ -33,12 +34,8 @@ namespace dir2
                 exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
             }
 
-            var filenameForExclExt = new List<string>();
-            foreach (var filename in Helper.GetAllFiles(baseDir))
-            {
-                if (!includingFileExt(filename)) continue;
-                filenameForExclExt.Add(filename);
-            }
+            var filenameForExclExt = Helper.GetAllFiles(baseDir)
+                .Where(includingFileExt);
 
             var fileInfos = new List<FileInfo>();
             foreach (var filename in filenameForExclExt)

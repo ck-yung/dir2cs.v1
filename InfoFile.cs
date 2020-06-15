@@ -37,8 +37,10 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append($"{Length,7} ");
-            buf.Append($"{DateTime:yyyy-MM-dd HH:mm:ss} ");
+            if (Program.IsPrintSize)
+                buf.Append($"{Length,7} ");
+            if (Program.IsPrintDate)
+                buf.Append($"{DateTime:yyyy-MM-dd HH:mm:ss} ");
             buf.Append(FullName);
             return buf.ToString();
         }
@@ -56,10 +58,14 @@ namespace dir2
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append($"{Length,7} ");
-            buf.Append($"{DateTime:yyyy-MM-dd HH:mm:ss} ");
-            buf.Append("- ");
-            buf.Append($"{Last:yyyy-MM-dd HH:mm:ss} ");
+            if (Program.IsPrintSize)
+                buf.Append($"{Length,7} ");
+            if (Program.IsPrintDate)
+            {
+                buf.Append($"{DateTime:yyyy-MM-dd HH:mm:ss} ");
+                buf.Append("- ");
+                buf.Append($"{Last:yyyy-MM-dd HH:mm:ss} ");
+            }
             buf.Append($"{Count,4}");
             return buf.ToString();
         }

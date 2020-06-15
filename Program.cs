@@ -25,20 +25,37 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
-            if (args.Contains("--create-date"))
-            {
-                IsCreateDate = true;
-            }
-
             int? sizeWithin = null;
             var sizeWithinOpt = "--size-within=";
+            var hideOpt = "--hide=";
             foreach (var arg in args)
             {
-                if (!arg.StartsWith(sizeWithinOpt)) continue;
-                if (int.TryParse(arg.Substring(sizeWithinOpt.Length),
-                    out int intTemp))
+                if (arg == "--create-date")
                 {
-                    sizeWithin = intTemp;
+                    IsCreateDate = true;
+                }
+                else if (arg.StartsWith(sizeWithinOpt))
+                {
+                    if (int.TryParse(arg.Substring(sizeWithinOpt.Length),
+                        out int intTemp))
+                    {
+                        sizeWithin = intTemp;
+                    }
+                }
+                else if (arg.StartsWith(hideOpt))
+                {
+                    var valueThe = arg.Substring(hideOpt.Length);
+                    switch (valueThe)
+                    {
+                        case "size":
+                            IsPrintSize = false;
+                            break;
+                        case "date":
+                            IsPrintDate = false;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -61,5 +78,7 @@ namespace dir2
         }
 
         static public bool IsCreateDate { get; private set; } = false;
+        static public bool IsPrintSize { get; private set; } = true;
+        static public bool IsPrintDate { get; private set; } = true;
     }
 }

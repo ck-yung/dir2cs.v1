@@ -1,1 +1,1 @@
-07.01 b. Add '--size-within=' for control data 'sizeWithin'
+07.01 c. Add '--hide=' with control data

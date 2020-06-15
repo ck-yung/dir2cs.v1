@@ -27,6 +27,7 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine($"{baseDir}:");
 
+            string exclFileExtension = string.Empty;
             var exclFileExtensionOpt = "--excl-ext=";
             foreach (var arg in args)
             {
@@ -35,38 +36,27 @@ namespace dir2
             }
 
             var count = Helper.GetAllFiles(baseDir)
-                .Where((it) => includingFileExt(it))
-                .Select((it) => ToFileInfo(it))
-                .Select((it) => PrintFileInfo(it))
+                .Where((filename) =>
+                {
+                    if (string.IsNullOrEmpty(exclFileExtension))
+                    {
+                        return true;
+                    }
+                    return !filename.EndsWith(exclFileExtension);
+                })
+                .Select((filename) => new FileInfo(filename))
+                .Select((info) =>
+                {
+                    Console.Write($"{info.Length,7} ");
+                    Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
+                    Console.WriteLine(info.FullName);
+                    return info;
+                })
                 .Count();
 
             Console.WriteLine($"{count} files are found.");
 
             return;
-        }
-
-        static bool includingFileExt(string filename)
-        {
-            if (string.IsNullOrEmpty(exclFileExtension))
-            {
-                return true;
-            }
-            return !filename.EndsWith(exclFileExtension);
-        }
-
-        static string exclFileExtension = string.Empty;
-
-        static FileInfo ToFileInfo(string filename)
-        {
-            return new FileInfo(filename);
-        }
-
-        static FileInfo PrintFileInfo(FileInfo info)
-        {
-            Console.Write($"{info.Length,7} ");
-            Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
-            Console.WriteLine(info.FullName);
-            return info;
         }
     }
 }

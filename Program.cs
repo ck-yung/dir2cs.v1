@@ -27,23 +27,17 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
             Console.WriteLine($"{baseDir}:");
 
-            string exclFileExtension = string.Empty;
+            Func<string, bool> IsIncludingFilename = (_) => true;
             var exclFileExtensionOpt = "--excl-ext=";
             foreach (var arg in args)
             {
                 if (!arg.StartsWith(exclFileExtensionOpt)) continue;
-                exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
+                var exclFileExtension = arg.Substring(exclFileExtensionOpt.Length);
+                IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
             var count = Helper.GetAllFiles(baseDir)
-                .Where((filename) =>
-                {
-                    if (string.IsNullOrEmpty(exclFileExtension))
-                    {
-                        return true;
-                    }
-                    return !filename.EndsWith(exclFileExtension);
-                })
+                .Where((filename) => IsIncludingFilename(filename))
                 .Select((filename) => new FileInfo(filename))
                 .Select((info) =>
                 {

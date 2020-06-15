@@ -1,1 +1,1 @@
-02.01 Get the list of filename for '--excl-ext' option
+02.02 Get a list of FileInfo

@@ -40,18 +40,19 @@ namespace dir2
                 filenameForExclExt.Add(filename);
             }
 
-            var count = 0;
+            var fileInfos = new List<FileInfo>();
             foreach (var filename in filenameForExclExt)
             {
-                var info = new FileInfo(filename);
+                fileInfos.Add(new FileInfo(filename));
+            }
 
+            foreach (var info in fileInfos)
+            {
                 Console.Write($"{info.Length,8} ");
                 Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                 Console.WriteLine(info.FullName);
-
-                count += 1;
             }
-            Console.WriteLine($"{count} files are found.");
+            Console.WriteLine($"{fileInfos.Count} files are found.");
 
             return;
         }

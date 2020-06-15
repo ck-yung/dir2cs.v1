@@ -79,14 +79,28 @@ namespace dir2
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
         static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
-            SortByLength { get; private set; }
-            = (seqThe) => seqThe.OrderBy((it) => it.Length);
+            SortFileInfo { get; private set; } = (seqThe) => seqThe;
+
+        static public readonly IParser SortOpt = new Parser(
+            "--sort=", help: "size",
+            parse: (opt, args) =>
+            {
+                switch (args[0])
+                {
+                    case "size":
+                        SortFileInfo =
+                        (seqThe) => seqThe.OrderBy((it) => it.Length);
+                        break;
+                    default:
+                        throw new InvalidValueException(args[0], opt.Name());
+                }
+            });
 
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
             new Function<IEnumerable<InfoFile>, InfoSum>(
                 "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
-                .Invoke((seqThe) => SortByLength(seqThe))
+                .Invoke((seqThe) => SortFileInfo(seqThe))
                 .Select((it) =>
                 {
                     Console.Write(ItemText(it.ToString()));
@@ -197,6 +211,7 @@ namespace dir2
             (IParser) MaxFileSizeFilter,
             TotalOpt,
             HideOpt,
+            SortOpt,
             (IParser) GetFiles,
             (IParser) SumBy,
         };

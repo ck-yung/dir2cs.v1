@@ -1,1 +1,1 @@
-12.02 Sort with calling lamdba on 'IEnumerable<FileInfo>'
+12.03 Add opt '--sort=' ('size' first)

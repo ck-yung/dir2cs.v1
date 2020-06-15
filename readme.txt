@@ -1,1 +1,1 @@
-03.02 LINQ Select() - Transform string into FileInfo
+03.03 LINQ Select(), Count() - Print FileInfo

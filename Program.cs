@@ -40,13 +40,10 @@ namespace dir2
             var fileInfos = filenameForExclExt
                 .Select(ToFileInfo);
 
-            var fileInfos2 = new List<FileInfo>();
-            foreach (var info in fileInfos)
-            {
-                fileInfos2.Add(PrintFileInfo(info));
-            }
+            var fileInfos2 = fileInfos
+                .Select(PrintFileInfo);
 
-            Console.WriteLine($"{fileInfos2.Count} files are found.");
+            Console.WriteLine($"{fileInfos2.Count()} files are found.");
 
             return;
         }

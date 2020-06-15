@@ -1,1 +1,1 @@
-08.02 Field 'parse' is in type of 'Action<Function<T,R>,string[]>'
+08.03 Parse for '--size-within=', and call 'Func'

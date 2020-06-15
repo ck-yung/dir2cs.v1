@@ -25,8 +25,6 @@ namespace dir2
         {
             var baseDir = Directory.GetCurrentDirectory();
 
-            Func<long, bool> maxFileSizeFilter = (_) => true;
-            var sizeWithinOpt = "--size-within=";
             var hideOpt = "--hide=";
             var totalOpt = "--total=";
             foreach (var arg in args)
@@ -34,14 +32,6 @@ namespace dir2
                 if (arg == "--create-date")
                 {
                     GetFileDate = (it) => it.CreationTime;
-                }
-                else if (arg.StartsWith(sizeWithinOpt))
-                {
-                    if (int.TryParse(arg.Substring(sizeWithinOpt.Length),
-                        out int intTemp))
-                    {
-                        maxFileSizeFilter = (it) => intTemp > it;
-                    }
                 }
                 else if (arg.StartsWith(hideOpt))
                 {
@@ -75,10 +65,15 @@ namespace dir2
                 }
             }
 
+            foreach (var opt in Opts.Parsers)
+            {
+                opt.Parse(args);
+            }
+
             var sum = Helper.GetAllFiles(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
-                .Where((it) => maxFileSizeFilter(it.Length))
+                .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
                 .Select((it) =>
                 {
                     Console.Write(ItemText(it.ToString()));

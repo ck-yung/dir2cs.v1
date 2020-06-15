@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace dir2
 {
@@ -31,7 +32,9 @@ namespace dir2
 
             public void Parse(string[] args)
             {
-                parse(this, args);
+                parse(this, args
+                    .Where((it) => it.StartsWith(name))
+                    .ToArray());
             }
         }
     }

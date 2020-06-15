@@ -14,5 +14,10 @@ namespace dir2
                         opt.invoke = (it) => intTemp > it;
                     }
                 });
+
+        static public readonly IParser[] Parsers = new IParser[]
+        {
+            (IParser) MaxFileSizeFilter,
+        };
     }
 }

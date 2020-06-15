@@ -49,10 +49,10 @@ namespace dir2
                     switch (valueThe)
                     {
                         case "size":
-                            IsPrintSize = false;
+                            SizeText = (_) => "";
                             break;
                         case "date":
-                            IsPrintDate = false;
+                            DateText = (_) => "";
                             break;
                         default:
                             break;
@@ -99,8 +99,10 @@ namespace dir2
 
         static public Func<FileInfo, DateTime> GetFileDate
         { get; private set; } = (it) => it.LastWriteTime;
-        static public bool IsPrintSize { get; private set; } = true;
-        static public bool IsPrintDate { get; private set; } = true;
+        static public Func<string, string> SizeText
+        { get; private set; } = (it) => it;
+        static public Func<string, string> DateText
+        { get; private set; } = (it) => it;
         static public bool IsPrintItem { get; private set; } = true;
         static public bool IsPrintTotal { get; private set; } = true;
     }

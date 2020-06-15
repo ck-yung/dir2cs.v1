@@ -1,1 +1,1 @@
-07.02 b. Change '--size-within' with lambda from control-data
+07.02 c. Change '--hide=' with lambda from control-data

@@ -35,28 +35,28 @@ namespace dir2
                 IsIncludingFilename = (it) => !it.EndsWith(exclFileExtension);
             }
 
-            var count =
-                MyCount(
-                MyPrintFileInfo(
-                MyToFileInfo(
-                MyFilter(
-                Helper.GetAllFiles(baseDir),
-                filterThe: (it) => IsIncludingFilename(it))),
-                funcThe: (it) =>
+            var count = Helper.GetAllFiles(baseDir)
+                .MyFilter(filterThe: (it) => IsIncludingFilename(it))
+                .MyToFileInfo()
+                .MyPrintFileInfo(funcThe: (it) =>
                 {
                     Console.Write($"{it.Length,8} ");
                     Console.Write($"{it.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                     Console.WriteLine(it.FullName);
                     return it;
-                }));
+                })
+                .MyCount();
 
             Console.WriteLine($"{count} files are found.");
 
             return;
         }
+    }
 
-        static IEnumerable<string> MyFilter(
-            IEnumerable<string> seqThe, Func<string, bool> filterThe)
+    static public class MyTool
+    {
+        static public IEnumerable<string> MyFilter(
+            this IEnumerable<string> seqThe, Func<string, bool> filterThe)
         {
             var enumThe = seqThe.GetEnumerator();
             while (enumThe.MoveNext())
@@ -67,8 +67,8 @@ namespace dir2
             }
         }
 
-        static IEnumerable<FileInfo> MyToFileInfo(
-            IEnumerable<string> seqThe)
+        static public IEnumerable<FileInfo> MyToFileInfo(
+            this IEnumerable<string> seqThe)
         {
             var enumThe = seqThe.GetEnumerator();
             while (enumThe.MoveNext())
@@ -78,8 +78,8 @@ namespace dir2
             }
         }
 
-        static IEnumerable<FileInfo> MyPrintFileInfo(
-            IEnumerable<FileInfo> seqThe, Func<FileInfo, FileInfo> funcThe)
+        static public IEnumerable<FileInfo> MyPrintFileInfo(
+            this IEnumerable<FileInfo> seqThe, Func<FileInfo, FileInfo> funcThe)
         {
             var enumThe = seqThe.GetEnumerator();
             while (enumThe.MoveNext())
@@ -89,7 +89,7 @@ namespace dir2
             }
         }
 
-        static int MyCount(IEnumerable<FileInfo> seqThe)
+        static public int MyCount(this IEnumerable<FileInfo> seqThe)
         {
             int result = 0;
             var enumThe = seqThe.GetEnumerator();

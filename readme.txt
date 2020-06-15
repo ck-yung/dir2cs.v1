@@ -1,1 +1,1 @@
-05.05 Combine into a chain function calling
+05.06 Use extension methods to simplify the chain of function calling

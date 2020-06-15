@@ -46,6 +46,7 @@ namespace dir2
 
                 var info = new FileInfo(filename);
                 Console.Write($"{info.Length,8} ");
+                Console.Write($"{info.LastWriteTime:yyyy-MM-dd HH:mm:ss} ");
                 Console.WriteLine(info.FullName);
 
                 count += 1;

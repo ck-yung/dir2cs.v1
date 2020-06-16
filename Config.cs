@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace dir2
             return Path.Join(pathHome, ".local", "dir2.opt");
         }
 
-        static public string[] ParseFile()
+        static public IEnumerable<string> ParseFile()
         {
             try
             {
@@ -26,8 +27,7 @@ namespace dir2
                     var lines = fs.ReadToEnd()
                         .Split('\n', '\r')
                         .Select((it) => it.Trim())
-                        .Where((it) => !string.IsNullOrEmpty(it))
-                        .ToArray();
+                        .Where((it) => !string.IsNullOrEmpty(it));
                     try
                     {
                         return Opts.ConfigParsers
@@ -35,8 +35,7 @@ namespace dir2
                             .Join(Opts.ConfigParsers2,
                             outerKeySelector: (line) => line.Split('=')[0],
                             innerKeySelector: (opt) => opt.Name().Trim('='),
-                            resultSelector: (line, opt) => line)
-                            .ToArray();
+                            resultSelector: (line, opt) => line);
                     }
                     catch (Exception ee)
                     {

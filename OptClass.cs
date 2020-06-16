@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace dir2
@@ -23,7 +24,8 @@ namespace dir2
                 return name;
             }
 
-            public abstract string[] Parse(string[] args);
+            public abstract IEnumerable<string> Parse(
+                IEnumerable<string> args);
 
             public virtual R Func(T arg)
             {
@@ -48,7 +50,8 @@ namespace dir2
                 this.parse = parse;
             }
 
-            public override string[] Parse(string[] args)
+            public override IEnumerable<string> Parse(
+                IEnumerable<string> args)
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
@@ -70,7 +73,7 @@ namespace dir2
                 else return args;
 
                 return found.ContainsKey(false)
-                    ? found[false].ToArray()
+                    ? found[false].AsEnumerable()
                     : Helper.emptyStrings;
             }
         }
@@ -91,7 +94,8 @@ namespace dir2
                 this.postAlt = postAlt;
             }
 
-            public override string[] Parse(string[] args)
+            public override IEnumerable<string> Parse(
+                IEnumerable<string> args)
             {
                 var found = args
                     .GroupBy((it) => it == name)
@@ -105,7 +109,7 @@ namespace dir2
                 else return args;
 
                 return found.ContainsKey(false)
-                    ? found[false].ToArray()
+                    ? found[false].AsEnumerable()
                     : Helper.emptyStrings;
             }
 
@@ -126,7 +130,8 @@ namespace dir2
                 this.parse = parse;
             }
 
-            public override string[] Parse(string[] args)
+            public override IEnumerable<string> Parse(
+                IEnumerable<string> args)
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
@@ -148,7 +153,7 @@ namespace dir2
                 else return args;
 
                 return found.ContainsKey(false)
-                    ? found[false].ToArray()
+                    ? found[false].AsEnumerable()
                     : Helper.emptyStrings;
             }
 
@@ -170,7 +175,8 @@ namespace dir2
                 this.parse = parse;
             }
 
-            public override string[] Parse(string[] args)
+            public override IEnumerable<string> Parse(
+                IEnumerable<string> args)
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
@@ -191,7 +197,7 @@ namespace dir2
                 else return args;
 
                 return found.ContainsKey(false)
-                    ? found[false].ToArray()
+                    ? found[false].AsEnumerable()
                     : Helper.emptyStrings;
             }
         }

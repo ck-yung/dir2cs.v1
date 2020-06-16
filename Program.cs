@@ -51,8 +51,9 @@ namespace dir2
             var baseDir = Directory.GetCurrentDirectory();
 
             var args = Opts.Parsers
-                .Aggregate(cfgLines.Concat(argsMain).ToArray(),
-                (it, opt) => opt.Parse(it));
+                .Aggregate(cfgLines.Concat(argsMain),
+                (it, opt) => opt.Parse(it))
+                .ToArray();
 
             if (args.Length > 0 && Directory.Exists(args[0]))
             {

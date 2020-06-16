@@ -1,1 +1,5 @@
-17.04 LINQ Concat() - Append 'command line arg' to 'cfg [phase 2] opt'
+17.05 Fine tune perfromance by reduce redundant 'ToArray()'
+
+Change 'IEnumerable<string> Parse(IEnumerable<string> args)'
+to 'IEnumerable<string> Parse(IEnumerable<string> args)'
+in 'interface IParser'

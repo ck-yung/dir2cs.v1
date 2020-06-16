@@ -1,0 +1,7 @@
+opt: --sort=name|size|date|last|count
+ 
+1. --sort=name  list items by sorting of the name.
+2. --sort=size  list items by sorting of the size.
+3. --sort=date  list items by sorting of the date/time.
+4. --sort=last  list grouping items by sorting of the last date/time.
+5. --sort=count list grouping items by sorting of the count.

@@ -155,12 +155,32 @@ namespace dir2
 
             if (string.IsNullOrEmpty(redirectFilename))
             {
-                Console.WriteLine($"'{questThe}' is NOT defined in '{recdirectDefFilename}'");
+                Console.WriteLine($"'{questThe.TrimEnd('=')}' is NOT defined in '{recdirectDefFilename}'");
                 return false;
             }
 
             var theFilename = Path.Join(helpBasePath, redirectFilename);
-            Console.WriteLine($"TODO: Print '{theFilename}'");
+            if (!File.Exists(theFilename))
+            {
+                Console.Error.WriteLine($"File '{theFilename}' is NOT found!");
+                return false;
+            }
+            try
+            {
+                using (var fs = File.OpenText(theFilename))
+                {
+                    foreach (var line in fs.ReadToEnd()
+                        .Split(new char[] { '\n', '\r' })
+                        .Where((it) => !string.IsNullOrEmpty(it)))
+                    {
+                        Console.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine($"File {theFilename}: {ee.Message}");
+            }
 
             return true;
         }

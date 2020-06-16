@@ -1,0 +1,11 @@
+opt:
+  --dir=sub|off|only
+ 
+1. --dir=sub    print all files on recursive sub-directories.
+2. --dir=off    print file names only.
+3. --dir=only   print dir names only.
+ 
+shortuct:
+ -b  => Filename only and without dir list
+ -f  => File only and without dir list
+ -d  => Dir only and without file list

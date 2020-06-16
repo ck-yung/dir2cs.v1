@@ -1,0 +1,14 @@
+opt:  --hide=size,date,count
+Specify what output columns would be skipped.
+
+opt:  --total=off|only
+1. --total=off   would suppress the grand total line.
+2. --total=only  would suppress item lines.
+
+opt:  --no-ext=excl|off
+1. --no-ext=excl  would suppress file if it has not file-extension.
+2. --no-ext=only  would suppress file if it has any file-extension.
+
+opt:  --hidden=incl|off
+1. --hidden=incl  would print hidden file also.
+2. --hidden=off   would print hidden file only.

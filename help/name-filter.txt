@@ -1,0 +1,14 @@
+opt:
+       --name=WILD[,WILD,..]
+  --excl-file=WILD[,WILD,..]
+   --excl-dir=WILD[,WILD,..]
+ 
+where:
+1. WILD cannot contain any directory.
+2. WILD could contain ? for a single wild char.
+3. WILD could contain * for any wild char.
+4. WILD "*." requests the last char is dot '.'.
+5. Use opt --no-ext= for no file extension.
+ 
+For example:
+  --excl-file=*.txt,*.cs

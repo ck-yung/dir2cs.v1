@@ -1,0 +1,7 @@
+opt:
+  --size-within=NUMBER
+  --size-beyond=NUMBER
+ 
+1. NUMBER can be digit, for example, --size-beyond=10 stands for min size 11 byte.
+2. NUMBER could be followed by 'k', for example, --size-within=2k stands for max size 2048 and including 2048.
+3. NUMBER could be followed by 'm' and 'g'.

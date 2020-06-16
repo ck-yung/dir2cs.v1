@@ -1,0 +1,16 @@
+opt:
+  --date-within=FORMAT
+  --date-beyond=FORMAT
+ 
+FORMAT is one of:
+  NUMBERd, for example, --date-within=9d stands for within 9 days.
+  NUMBERh, for example, --date-beyond=2h stands for before 2 hours.
+  NUMBERm, for example, --date-within=7m stands for within 7 minutes.
+  yyyy-MM-dd, for example, --date-beyond=2019-06-12 stands for before June 12, 2019 00:00:00.
+  yyyy-MM-ddTHH:mm, for example, --date-within=2019-07-31T20:31 stands for after July 31, 2019 08:31 pm.
+  yyyy-MM-ddTHH:mm:ss, for example, --date-within=2019-07-31T20:31:23 stands for after July 31, 2019 08:31:23 pm.
+  yyyy-MM-dd HH:mm, for example, "--date-within=2019-07-31 20:31" stands for after July 31, 2019 08:31 pm.
+  yyyy-MM-dd HH:mm:ss, for example, "--date-within=2019-07-31 20:31:23" stands for after July 31, 2019 08:31:23 pm.
+  yyyyMMdd, for example, --date-beyond=20190612 stands for before June 12, 2019 00:00:00.
+  yyyyMMdd HH:mm, for example, "--date-within=20190731 20:31" stands for after July 31, 2019 08:31 pm.
+  yyyyMMdd HH:mm:ss, for example, "--date-within=20190731 20:31:23" stands for after July 31, 2019 08:31:23 pm.

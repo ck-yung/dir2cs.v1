@@ -1,0 +1,6 @@
+opt:
+  --size-format=short|long
+ 
+1. --size-format=short  print file size with kilo unit, e.g. 4321k, 5432m and 6543g.
+2. --size-format=long   print file size with thousand comma. The width of file size is 19.
+3. The default width of file size is 8.

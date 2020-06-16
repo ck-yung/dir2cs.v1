@@ -1,1 +1,1 @@
-19.02 Add shortcut '-o' for '--sort='
+19.03 Add shortcut mapping in 'ShortCutWithValue' and 'ShortCutWithoutValue'

@@ -12,21 +12,47 @@ namespace dir2
     {
         static public string[] emptyStrings = new string[] { };
 
-        static public IEnumerable<string> ExpandShortcut(this IEnumerable<string> args)
+        static public readonly Dictionary<string, string>
+            ShortCutWithValue =
+            new Dictionary<string, string>()
+            {
+                ["-o"] = "--sort=",
+                ["-x"] = "--excl-file=",
+                ["-X"] = "--excl-dir=",
+            };
+
+        static public readonly Dictionary<string, string[]>
+            ShortCutWithoutValue =
+            new Dictionary<string, string[]>()
+            {
+                ["-s"] = new string[] { "--dir=sub" },
+                ["-f"] = new string[] { "--dir=off" },
+                ["-d"] = new string[] { "--dir=only" },
+            };
+
+        static public IEnumerable<string> ExpandShortcut(
+            this IEnumerable<string> args)
         {
             var enumThe = args.AsEnumerable().GetEnumerator();
             while (enumThe.MoveNext())
             {
                 var current = enumThe.Current;
-                if (current == "-s")
+                if (ShortCutWithValue.ContainsKey(current))
                 {
-                    yield return $"--dir=sub";
+                    if (!enumThe.MoveNext())
+                    {
+                        throw new ArgumentException(
+                            $"Missing value to '{current}','{ShortCutWithValue[current]}'");
+                    }
+                    var valueThe = enumThe.Current;
+                    yield return $"{ShortCutWithValue[current]}{valueThe}";
                 }
-                else if (current == "-o")
+                else if (ShortCutWithoutValue.ContainsKey(current))
                 {
-                    enumThe.MoveNext();
-                    current = enumThe.Current;
-                    yield return $"--sort={current}";
+                    foreach (var valueThe in ShortCutWithoutValue[current])
+                    {
+                        yield return valueThe;
+                    }
                 }
                 else
                 {

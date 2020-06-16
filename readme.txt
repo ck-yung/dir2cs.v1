@@ -1,1 +1,1 @@
-19.03 Add shortcut mapping in 'ShortCutWithValue' and 'ShortCutWithoutValue'
+19.04 Expand combining shortcut option

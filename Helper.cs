@@ -28,12 +28,29 @@ namespace dir2
                 ["-s"] = new string[] { "--dir=sub" },
                 ["-f"] = new string[] { "--dir=off" },
                 ["-d"] = new string[] { "--dir=only" },
+                ["-c"] = new string[] { "--case-sensitive" },
+                ["-b"] = new string[] { "--total=off", "--hide=size,date,count" },
+                ["-t"] = new string[] { "--total=only" },
             };
 
         static public IEnumerable<string> ExpandShortcut(
             this IEnumerable<string> args)
         {
-            var enumThe = args.AsEnumerable().GetEnumerator();
+            IEnumerable<string> ExpandCombiningShortcut()
+            {
+                var enum2 = args.AsEnumerable().GetEnumerator();
+                while (enum2.MoveNext())
+                {
+                    var curr2 = enum2.Current;
+                    if (curr2.Length < 3) yield return curr2;
+                    else if (curr2.StartsWith("--")) yield return curr2;
+                    else if (curr2[0] != '-') yield return curr2;
+                    else foreach (var chOpt in curr2.Substring(1))
+                            yield return $"-{chOpt}";
+                }
+            }
+
+            var enumThe = ExpandCombiningShortcut().GetEnumerator();
             while (enumThe.MoveNext())
             {
                 var current = enumThe.Current;

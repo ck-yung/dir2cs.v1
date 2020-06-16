@@ -210,11 +210,11 @@ namespace dir2
         static public Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
             SortSumInfo { get; private set; } = (seqThe) => seqThe;
 
-        static public readonly IParser SortOpt = new Parser777(
+        static public readonly IParser SortOpt = new Parser(
             "--sort=", help: "name|size|date|last|count",
-            parse: (opt, args) =>
+            parse: (opt, arg) =>
             {
-                switch (args[0])
+                switch (arg)
                 {
                     case "name":
                         SortFileInfo =
@@ -243,7 +243,7 @@ namespace dir2
                         (seqThe) => seqThe.OrderBy((it) => it.Count);
                         break;
                     default:
-                        throw new InvalidValueException(args[0], opt.Name());
+                        throw new InvalidValueException(arg, opt.Name());
                 }
             });
 

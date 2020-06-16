@@ -260,60 +260,6 @@ namespace dir2
             }
         }
 
-        private class Parser777 : IParser
-        {
-            readonly string name;
-            readonly string help;
-            public string Name()
-            {
-                return name;
-            }
-
-            readonly Action<Parser777, string[]> parse;
-            public string[] Parse(string[] args)
-            {
-                var found = args
-                    .GroupBy((it) => it.StartsWith(name))
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
-
-                if (found.ContainsKey(true))
-                {
-                    var values = found[true]
-                        .Select((it) => it.Substring(name.Length))
-                        .Select((it) => it.Split(','))
-                        .SelectMany((it) => it)
-                        .Where((it) => !string.IsNullOrEmpty(it))
-                        .Distinct()
-                        .ToArray();
-
-                    if (requireUnique && (values.Length > 1))
-                        throw new TooManyValuesException(name);
-
-                    if (values.Length > 0) parse(this, values);
-                }
-                else return args;
-
-                return found.ContainsKey(false)
-                    ? found[false].ToArray()
-                    : Helper.emptyStrings;
-            }
-
-            readonly bool requireUnique;
-            public Parser777(string name,
-                Action<Parser777, string[]> parse,
-                string help = "", bool requireUnique = true)
-            {
-                this.name = name;
-                this.help = help;
-                this.parse = parse;
-                this.requireUnique = requireUnique;
-            }
-            public override string ToString()
-            {
-                return $"{name,19}{help}";
-            }
-        }
-
         private class Switcher777<T, R> : IFunc<T, R>, IParser
         {
             Func<T, R> invoke { get; set; }

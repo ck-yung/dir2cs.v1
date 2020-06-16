@@ -12,6 +12,23 @@ namespace dir2
     {
         static public string[] emptyStrings = new string[] { };
 
+        static public IEnumerable<string> ExpandShortcut(this IEnumerable<string> args)
+        {
+            var enumThe = args.AsEnumerable().GetEnumerator();
+            while (enumThe.MoveNext())
+            {
+                var current = enumThe.Current;
+                if (current == "-s")
+                {
+                    yield return $"--dir=sub";
+                }
+                else
+                {
+                    yield return current;
+                }
+            }
+        }
+
         static public InfoSum Invoke(this IEnumerable<InfoFile> seqThe,
             IFunc<IEnumerable<InfoFile>, InfoSum> func)
         {

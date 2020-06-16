@@ -49,7 +49,7 @@ namespace dir2
             }
 
             var args = Opts.Parsers
-                .Aggregate(Opts.LoadConfig(argsMain),
+                .Aggregate(Opts.LoadConfig(argsMain).ExpandShortcut(),
                 (it, opt) => opt.Parse(it))
                 .ToArray();
 

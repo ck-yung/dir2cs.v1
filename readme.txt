@@ -1,1 +1,1 @@
-19.00 Lesson Init - Short-cut of command line arguments
+19.01 Add shortcut '-s' for '--dir=sub'

@@ -202,7 +202,7 @@ namespace dir2
             });
 
         static public readonly IFunc<FileInfo,DateTime> GetFileDate =
-            new Switcher777<FileInfo, DateTime>("--create-date",
+            new Switcher<FileInfo, DateTime>("--create-date",
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
         static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>

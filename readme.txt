@@ -1,1 +1,1 @@
-16.03 Add 'Opts.AbstractParser' and new 'Opts.Function<T,R>'
+16.04 Add new 'Opts.Switcher<T,R>'

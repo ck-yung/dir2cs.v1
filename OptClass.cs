@@ -5,7 +5,7 @@ namespace dir2
 {
     static partial class Opts
     {
-        private abstract class AbstractParser<T,R> : IParser, IFunc<T, R>
+        private abstract class AbstractParser<T, R> : IParser, IFunc<T, R>
         {
             protected readonly string name;
             protected readonly string help;
@@ -36,13 +36,13 @@ namespace dir2
             }
         }
 
-        private class Function<T,R>: AbstractParser<T,R>
+        private class Function<T, R> : AbstractParser<T, R>
         {
             protected readonly Action<Function<T, R>, string> parse;
 
-            public Function(string name, Func<T,R> invoke,
+            public Function(string name, Func<T, R> invoke,
                 Action<Function<T, R>, string> parse, string help = "")
-                : base(name,help)
+                : base(name, help)
             {
                 this.invoke = invoke;
                 this.parse = parse;
@@ -72,6 +72,47 @@ namespace dir2
                 return found.ContainsKey(false)
                     ? found[false].ToArray()
                     : Helper.emptyStrings;
+            }
+        }
+
+        private class Switcher<T,R>: AbstractParser<T,R>
+        {
+            protected readonly Func<T, R> alt;
+            protected readonly Action<Switcher<T, R>> postAlt;
+
+            public Switcher(string name,
+                Func<T, R> invoke, Func<T, R> alt,
+                string help = "",
+                Action<Switcher<T, R>> postAlt = null)
+                :base(name,help)
+            {
+                this.invoke = invoke;
+                this.alt = alt;
+                this.postAlt = postAlt;
+            }
+
+            public override string[] Parse(string[] args)
+            {
+                var found = args
+                    .GroupBy((it) => it == name)
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+
+                if (found.ContainsKey(true))
+                {
+                    invoke = alt;
+                    postAlt?.Invoke(this);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
+            }
+
+            public override string ToString()
+            {
+                return string.IsNullOrEmpty(help)
+                    ? $"{name,18}" : $"{name,18} \t{help}";
             }
         }
 

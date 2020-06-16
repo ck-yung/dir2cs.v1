@@ -37,6 +37,8 @@ namespace dir2
         {
             if (argsMain.Contains("-?"))
             {
+                Console.WriteLine(
+                    $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
                 Console.WriteLine("OPT:");
                 foreach (var opt in Opts.Parsers)
@@ -57,6 +59,15 @@ namespace dir2
             {
                 baseDir = Path.GetFullPath(args[0]);
                 args = args.Skip(1).ToArray();
+            }
+            else if (args.Length == 1)
+            {
+                var dirThe = Path.GetDirectoryName(args[0]);
+                if (!string.IsNullOrEmpty(dirThe))
+                {
+                    baseDir = Path.GetFullPath(dirThe);
+                    args = new string[] { Path.GetFileName(args[0]) };
+                }
             }
 
             InfoFile.InitDir(baseDir);

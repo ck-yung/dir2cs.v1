@@ -1,1 +1,1 @@
-18.00 Lesson Init - Filename Filter
+18.01 Parse 'dir\wild' if args has one element

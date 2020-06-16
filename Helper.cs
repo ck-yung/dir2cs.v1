@@ -22,6 +22,12 @@ namespace dir2
                 {
                     yield return $"--dir=sub";
                 }
+                else if (current == "-o")
+                {
+                    enumThe.MoveNext();
+                    current = enumThe.Current;
+                    yield return $"--sort={current}";
+                }
                 else
                 {
                     yield return current;

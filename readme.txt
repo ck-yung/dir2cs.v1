@@ -1,1 +1,1 @@
-19.01 Add shortcut '-s' for '--dir=sub'
+19.02 Add shortcut '-o' for '--sort='

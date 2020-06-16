@@ -16,28 +16,36 @@ namespace dir2
             return Path.Join(pathHome, ".local", "dir2.opt");
         }
 
-        static public void ReadFile()
+        static public string[] ParseFile()
         {
             try
             {
                 var cfgFilename = GetFilename();
-                Console.WriteLine($"*** Content of '{cfgFilename}':");
                 using (var fs = File.OpenText(cfgFilename))
                 {
                     var lines = fs.ReadToEnd()
                         .Split('\n', '\r')
                         .Select((it) => it.Trim())
-                        .Where((it) => !string.IsNullOrEmpty(it));
-                    foreach (var line in lines)
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .ToArray();
+                    try
                     {
-                        Console.WriteLine(line);
+                        return Opts.ConfigParsers
+                            .Aggregate(lines, (acc, opt) => opt.Parse(acc))
+                            .ToArray();
+                    }
+                    catch (Exception ee)
+                    {
+                        Console.Error.WriteLine(
+                            $"Config file {cfgFilename} [{ee.GetType()}] {ee.Message}");
+                        Console.Error.WriteLine();
+                        return Helper.emptyStrings;
                     }
                 }
-                Console.WriteLine();
             }
             catch
             {
-                // do nothing
+                return Helper.emptyStrings;
             }
         }
     }

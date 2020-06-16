@@ -429,5 +429,16 @@ namespace dir2
             (IParser) GetFiles,
             (IParser) SumBy,
         };
+
+        static public readonly IParser[] ConfigParsers = new IParser[]
+        {
+            (IParser) CaseOpt,
+            (IParser) CountComma,
+            (IParser) HiddenFilter,
+            (IParser) SizeFormat,
+            (IParser) CountFormat,
+            (IParser) DateFormat,
+            SortOpt,
+        };
     }
 }

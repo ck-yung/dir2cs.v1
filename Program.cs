@@ -46,7 +46,11 @@ namespace dir2
                 return;
             }
 
-            Config.ReadFile();
+            var cfgLines = Config.ParseFile();
+            foreach (var cfgLine in cfgLines)
+            {
+                Console.WriteLine($"cfg '{cfgLine}");
+            }
 
             var baseDir = Directory.GetCurrentDirectory();
 

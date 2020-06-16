@@ -46,6 +46,8 @@ namespace dir2
                 return;
             }
 
+            Config.ReadFile();
+
             var baseDir = Directory.GetCurrentDirectory();
 
             var args = Opts.Parsers

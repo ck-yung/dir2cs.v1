@@ -1,0 +1,3 @@
+This is a sample of 'dir2.opt' file.
+
+--size-format=short

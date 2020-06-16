@@ -487,5 +487,25 @@ namespace dir2
             (IParser) ExclFilenameFilter,
             (IParser) ExclDirnameFilter,
         };
+
+        static public readonly IParser[] BriefParsers = new IParser[]
+        {
+            (IParser) ExclFilenameFilter,
+            (IParser) ExclDirnameFilter,
+            (IParser) HiddenFilter,
+            (IParser) SizeFormat,
+            TotalOpt,
+            SortOpt,
+            (IParser) SumBy,
+        };
+
+        static public readonly Dictionary<string, string>
+            BriefShortCutWithoutValue =
+            new Dictionary<string, string>()
+            {
+                ["-s"] = "list file recursively subdirectories",
+                ["-f"] = "list file only (exclsive to '-s')",
+                ["-b"] = "list file name only",
+            };
     }
 }

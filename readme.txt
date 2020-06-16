@@ -1,1 +1,1 @@
-20.01 opt '--help' for long help
+20.02 Support brief help '-?' and long help '--help'

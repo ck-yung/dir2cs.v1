@@ -5,6 +5,76 @@ namespace dir2
 {
     static partial class Opts
     {
+        private abstract class AbstractParser<T,R> : IParser, IFunc<T, R>
+        {
+            protected readonly string name;
+            protected readonly string help;
+            public Func<T, R> invoke { get; set; }
+
+            public AbstractParser(string name,
+                string help)
+            {
+                this.name = name;
+                this.help = help;
+            }
+
+            public string Name()
+            {
+                return name;
+            }
+
+            public abstract string[] Parse(string[] args);
+
+            public R Func(T arg)
+            {
+                return invoke(arg);
+            }
+
+            public override string ToString()
+            {
+                return $"{name,19}{help}";
+            }
+        }
+
+        private class Function<T,R>: AbstractParser<T,R>
+        {
+            protected readonly Action<Function<T, R>, string> parse;
+
+            public Function(string name, Func<T,R> invoke,
+                Action<Function<T, R>, string> parse, string help = "")
+                : base(name,help)
+            {
+                this.invoke = invoke;
+                this.parse = parse;
+            }
+
+            public override string[] Parse(string[] args)
+            {
+                var found = args
+                    .GroupBy((it) => it.StartsWith(name))
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+
+                if (found.ContainsKey(true))
+                {
+                    var values = found[true]
+                        .Select((it) => it.Substring(name.Length))
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Distinct()
+                        .ToArray();
+
+                    if (values.Length > 1)
+                        throw new TooManyValuesException(name);
+
+                    if (values.Length > 0) parse(this, values[0]);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
+            }
+        }
+
         private class Function777<T, R> : IFunc<T, R>, IParser
         {
             public Func<T,R> invoke { get; set; }

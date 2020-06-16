@@ -57,33 +57,33 @@ namespace dir2
                 });
 
         static public readonly IFunc<long, bool> MinFileSizeFilter =
-            new Function777<long, bool>("--size-beyond=",
+            new Function<long, bool>("--size-beyond=",
                 help: "NUMBER",
                 invoke: (_) => true,
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    if (Helper.TryParseAsLong(args[0],
+                    if (Helper.TryParseAsLong(arg,
                         out long longThe) && (longThe >= 0))
                     {
                         opt.invoke = (it) => it >= longThe;
                     }
                     else throw new InvalidValueException(
-                        args[0], opt.Name());
+                        arg, opt.Name());
                 });
 
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
-            new Function777<long, bool>("--size-within=",
+            new Function<long, bool>("--size-within=",
                 help: "NUMBER",
                 invoke: (_) => true,
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    if (Helper.TryParseAsLong(args[0],
+                    if (Helper.TryParseAsLong(arg,
                         out long longThe) && (longThe >= 0))
                     {
                         opt.invoke = (it) => longThe > it;
                     }
                     else throw new InvalidValueException(
-                        args[0], opt.Name());
+                        arg, opt.Name());
                 });
 
         static public readonly IFunc<DateTime, bool> MinFileDateFilter =

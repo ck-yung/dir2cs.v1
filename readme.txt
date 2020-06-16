@@ -1,1 +1,1 @@
-16.02 Rename classes in OptClass as obsolete
+16.03 Add 'Opts.AbstractParser' and new 'Opts.Function<T,R>'

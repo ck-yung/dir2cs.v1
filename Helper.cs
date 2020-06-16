@@ -19,6 +19,7 @@ namespace dir2
                 ["-o"] = "--sort=",
                 ["-x"] = "--excl-file=",
                 ["-X"] = "--excl-dir=",
+                ["-n"] = "--name=",
             };
 
         static public readonly Dictionary<string, string[]>

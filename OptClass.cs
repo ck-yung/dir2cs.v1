@@ -158,6 +158,44 @@ namespace dir2
             }
         }
 
+        private class Function2<T, R> : AbstractParser<T, R>
+        {
+            protected readonly Action<Function2<T, R>, string[]> parse;
+
+            public Function2(string name, Func<T, R> invoke,
+                Action<Function2<T, R>, string[]> parse, string help = "")
+                : base(name, help)
+            {
+                this.invoke = invoke;
+                this.parse = parse;
+            }
+
+            public override string[] Parse(string[] args)
+            {
+                var found = args
+                    .GroupBy((it) => it.StartsWith(name))
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+
+                if (found.ContainsKey(true))
+                {
+                    var values = found[true]
+                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it.Split(','))
+                        .SelectMany((it) => it)
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Distinct()
+                        .ToArray();
+
+                    if (values.Length > 0) parse(this, values);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
+            }
+        }
+
         private class Function777<T, R> : IFunc<T, R>, IParser
         {
             public Func<T,R> invoke { get; set; }

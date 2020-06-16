@@ -177,8 +177,8 @@ namespace dir2
         { get; private set; } = (it) => it;
         static public Func<string, string> CountText
         { get; private set; } = (it) => it;
-        static public readonly IParser HideOpt = new Parser777("--hide=",
-            help: "size,date,count", requireUnique: false,
+        static public readonly IParser HideOpt = new Function2<bool,bool>("--hide=",
+            help: "size,date,count", invoke: (_) => false,
             parse: (opt, args) =>
             {
                 foreach (var arg in args)

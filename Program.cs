@@ -47,15 +47,11 @@ namespace dir2
             }
 
             var cfgLines = Config.ParseFile();
-            foreach (var cfgLine in cfgLines)
-            {
-                Console.WriteLine($"cfg '{cfgLine}");
-            }
 
             var baseDir = Directory.GetCurrentDirectory();
 
             var args = Opts.Parsers
-                .Aggregate(argsMain,
+                .Aggregate(cfgLines.Concat(argsMain).ToArray(),
                 (it, opt) => opt.Parse(it));
 
             if (args.Length > 0 && Directory.Exists(args[0]))

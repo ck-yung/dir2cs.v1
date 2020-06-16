@@ -1,1 +1,1 @@
-19.04 Expand combining shortcut option
+19.05 LINQ GroupJoin(), FirstOrDefault() - outer join - on-line help for shortcut

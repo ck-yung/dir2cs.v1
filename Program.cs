@@ -41,9 +41,27 @@ namespace dir2
                     $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
                 Console.WriteLine("OPT:");
-                foreach (var opt in Opts.Parsers.Concat(Opts.Parsers2))
+                foreach (var item in Opts.Parsers
+                    .Concat(Opts.Parsers2)
+                    .GroupJoin(Helper.ShortCutWithValue,
+                    (opt) => opt.Name(),
+                    (shortcut) => shortcut.Value,
+                    resultSelector: (opt, shortcuts) =>
+                    new {
+                        Opt = opt,
+                        Shortcut = shortcuts
+                        .Select((it) => it.Key)
+                        .FirstOrDefault()
+                    }))
                 {
-                    Console.WriteLine(opt);
+                    var shortcut = string.IsNullOrEmpty(item.Shortcut)
+                        ? "   " : $"{item.Shortcut},";
+                    Console.WriteLine($"  {shortcut}{item.Opt}");
+                }
+                Console.WriteLine("Shortcut:");
+                foreach (var shortcut in Helper.ShortCutWithoutValue)
+                {
+                    Console.WriteLine($"  {shortcut.Key} => {string.Join("\t", shortcut.Value)}");
                 }
                 return;
             }

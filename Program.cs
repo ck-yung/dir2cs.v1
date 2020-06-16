@@ -67,15 +67,19 @@ namespace dir2
             InfoFile.InitDir(baseDir);
 
             var sum = Opts.GetFiles.Func(baseDir)
+                .Where((it) =>
+                {
+                    var filename = Path.GetFileName(it);
+                    return Opts.FilenameFilter.Func(filename)
+                    && Opts.FileExtFilter.Func(filename)
+                    && !Opts.ExclFilenameFilter.Func(filename);
+                })
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
-                .Where((it) => Opts.FilenameFilter.Func(it.Filename))
-                .Where((it) =>!Opts.ExclFilenameFilter.Func(it.Filename))
                 .Where((it) => Opts.MinFileSizeFilter.Func(it.Length))
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))
                 .Where((it) => Opts.MinFileDateFilter.Func(it.DateTime))
                 .Where((it) => Opts.MaxFileDateFilter.Func(it.DateTime))
-                .Where((it) => Opts.FileExtFilter.Func(it.Filename))
                 .Where((it) => Opts.HiddenFilter.Func(it))
                 .Invoke(Opts.SumBy);
 

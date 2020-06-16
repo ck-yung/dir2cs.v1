@@ -259,58 +259,5 @@ namespace dir2
                 return $"{name,19}{help}";
             }
         }
-
-        private class Switcher777<T, R> : IFunc<T, R>, IParser
-        {
-            Func<T, R> invoke { get; set; }
-            readonly Func<T, R> alt;
-            public R Func(T arg)
-            {
-                return invoke(arg);
-            }
-
-            readonly string name;
-            readonly string help;
-            public string Name()
-            {
-                return name;
-            }
-
-            readonly Action<Switcher777<T, R>> postAlt;
-            public string[] Parse(string[] args)
-            {
-                var found = args
-                    .GroupBy((it) => it == name)
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
-
-                if (found.ContainsKey(true))
-                {
-                    invoke = alt;
-                    postAlt?.Invoke(this);
-                }
-                else return args;
-
-                return found.ContainsKey(false)
-                    ? found[false].ToArray()
-                    : Helper.emptyStrings;
-            }
-
-            public Switcher777(string name,
-                Func<T,R> invoke, Func<T,R> alt,
-                string help = "",
-                Action<Switcher777<T,R>> postAlt = null)
-            {
-                this.name = name;
-                this.help = help;
-                this.invoke = invoke;
-                this.alt = alt;
-                this.postAlt = postAlt;
-            }
-
-            public override string ToString()
-            {
-                return $"{name,18} {help}";
-            }
-        }
     }
 }

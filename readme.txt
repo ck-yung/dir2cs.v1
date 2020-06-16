@@ -1,1 +1,1 @@
-16.07 Remove obsolete Opts.Parser
+16.08 Remove obsolete Opts.Switcher

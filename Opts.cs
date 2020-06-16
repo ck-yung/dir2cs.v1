@@ -12,7 +12,7 @@ namespace dir2
         = (it) => new Regex(it, RegexOptions.IgnoreCase);
 
         static public readonly IFunc<string, string> CaseOpt =
-            new Switcher777<string, string>("--case-sensitive",
+            new Switcher<string, string>("--case-sensitive",
                 invoke: (it) => it.ToLower(), alt: (it) => it,
                 postAlt: (opt) =>
                 {
@@ -303,7 +303,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, Func<string, string>>
-            MakeRelativePath = new Switcher777<string, Func<string, string>>(
+            MakeRelativePath = new Switcher<string, Func<string, string>>(
                 "--relative", invoke: (dirname) =>
                 {
                     var pathLen = dirname.Length;
@@ -377,7 +377,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<bool, string> CountComma =
-            new Switcher777<bool, string>("--count-comma",
+            new Switcher<bool, string>("--count-comma",
                 invoke: (_) => "", alt: (_) => ":N0",
                 postAlt: (opt) =>
                 {

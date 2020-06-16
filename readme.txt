@@ -1,1 +1,1 @@
-16.08 Remove obsolete Opts.Switcher
+16.09 Remove obsolete Opts.Function<T,R>

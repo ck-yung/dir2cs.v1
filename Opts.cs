@@ -20,7 +20,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, bool> ExclFilenameFilter =
-            new Function777<string, bool>("--excl-file=", requireUnique: false,
+            new Function2<string, bool>("--excl-file=",
                 help: "WILD[,WILD,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
@@ -36,16 +36,11 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, bool> ExclDirnameFilter =
-            new Function777<string, bool>("--excl-dir=",
+            new Function2<string, bool>("--excl-dir=",
                 help: "WILD[,WILD,..]", invoke: (_) => false,
-                requireUnique: false,
                 parse: (opt, args) =>
                 {
                     var filterThe = args
-                    .Select((it) => it.Split(','))
-                    .SelectMany((it) => it)
-                    .Where((it) => !string.IsNullOrEmpty(it))
-                    .Distinct()
                     .Select((it) => Helper.ToWildMatch(it))
                     .ToArray();
 
@@ -67,8 +62,7 @@ namespace dir2
                     {
                         opt.invoke = (it) => it >= longThe;
                     }
-                    else throw new InvalidValueException(
-                        arg, opt.Name());
+                    else throw new InvalidValueException(arg, opt.Name());
                 });
 
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
@@ -82,40 +76,37 @@ namespace dir2
                     {
                         opt.invoke = (it) => longThe > it;
                     }
-                    else throw new InvalidValueException(
-                        arg, opt.Name());
+                    else throw new InvalidValueException(arg, opt.Name());
                 });
 
         static public readonly IFunc<DateTime, bool> MinFileDateFilter =
-            new Function777<DateTime, bool>("--date-beyond=", help: "DATETIME",
-                invoke: (_) => true, parse: (opt, args) =>
+            new Function<DateTime, bool>("--date-beyond=", help: "DATETIME",
+                invoke: (_) => true, parse: (opt, arg) =>
                 {
-                    if (Helper.TryParseDateTime(args[0], out DateTime result))
+                    if (Helper.TryParseDateTime(arg, out DateTime result))
                     {
                         opt.invoke = (it) => result > it;
                     }
-                    else throw new InvalidValueException(
-                        args[0], opt.Name());
+                    else throw new InvalidValueException(arg, opt.Name());
                 });
 
         static public readonly IFunc<DateTime, bool> MaxFileDateFilter =
-            new Function777<DateTime, bool>("--date-within=", help: "DATETIME",
-                invoke: (_) => true, parse: (opt, args) =>
+            new Function<DateTime, bool>("--date-within=", help: "DATETIME",
+                invoke: (_) => true, parse: (opt, arg) =>
                 {
-                    if (Helper.TryParseDateTime(args[0], out DateTime result))
+                    if (Helper.TryParseDateTime(arg, out DateTime result))
                     {
                         opt.invoke = (it) => it >= result;
                     }
-                    else throw new InvalidValueException(
-                        args[0], opt.Name());
+                    else throw new InvalidValueException(arg, opt.Name());
                 });
 
         static public readonly IFunc<string, bool> FileExtFilter =
-            new Function777<string, bool>("--no-ext=", help: "excl|only",
+            new Function<string, bool>("--no-ext=", help: "excl|only",
                 invoke: (_) => true,
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    switch (args[0])
+                    switch (arg)
                     {
                         case "excl":
                             opt.invoke = (it) =>
@@ -126,17 +117,16 @@ namespace dir2
                             string.IsNullOrEmpty(Path.GetExtension(it));
                             break;
                         default:
-                            throw new InvalidValueException(
-                                args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
         static public readonly IFunc<InfoFile, bool> HiddenFilter =
-            new Function777<InfoFile, bool>("--hidden=", help: "incl|only",
+            new Function<InfoFile, bool>("--hidden=", help: "incl|only",
                 invoke: (it) => !it.IsHidden,
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    switch (args[0])
+                    switch (arg)
                     {
                         case "incl":
                             opt.invoke = (_) => true;
@@ -145,7 +135,7 @@ namespace dir2
                             opt.invoke = (it) => it.IsHidden;
                             break;
                         default:
-                            throw new InvalidValueException(args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
@@ -195,8 +185,7 @@ namespace dir2
                             CountText = (_) => "";
                             break;
                         default:
-                            throw new InvalidValueException(
-                                args[0], opt.Name());
+                            throw new InvalidValueException(args[0], opt.Name());
                     }
                 }
             });
@@ -248,7 +237,7 @@ namespace dir2
             });
 
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
-            new Function777<IEnumerable<InfoFile>, InfoSum>(
+            new Function<IEnumerable<InfoFile>, InfoSum>(
                 "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
                 .Invoke((seqThe) => SortFileInfo(seqThe))
@@ -259,10 +248,10 @@ namespace dir2
                 })
                 .Aggregate(new InfoSum(InfoFile.BaseDir),
                 (acc, it) => acc.AddWith(it)),
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
                     PrintDir = (_) => { };
-                    switch (args[0])
+                    switch (arg)
                     {
                         case "ext":
                             opt.invoke = (seqThe) => seqThe
@@ -297,8 +286,7 @@ namespace dir2
                             (acc, it) => acc.AddWith(it));
                             break;
                         default:
-                            throw new InvalidValueException(
-                                args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
@@ -328,16 +316,16 @@ namespace dir2
             (dirname) => Helper.PrintDir(dirname);
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
-            new Function777<string, IEnumerable<string>>(
+            new Function<string, IEnumerable<string>>(
                 "--dir=", help: "sub|off|only",
                 invoke: (dirname) =>
                 {
                     PrintDir(dirname);
                     return Helper.GetFiles(dirname);
                 },
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    switch (args[0])
+                    switch (arg)
                     {
                         case "sub":
                             opt.invoke = (dirname) => Helper.GetAllFiles(dirname);
@@ -354,16 +342,16 @@ namespace dir2
                             };
                             break;
                         default:
-                            throw new InvalidValueException(args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
         static public readonly IFunc<long, string> SizeFormat =
-            new Function777<long, string>("--size-format=", help: "long|short",
+            new Function<long, string>("--size-format=", help: "long|short",
                 invoke: (it) => $"{it,8} ",
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    switch (args[0])
+                    switch (arg)
                     {
                         case "long":
                             opt.invoke = (it) => $"{it,19:N0} ";
@@ -372,7 +360,7 @@ namespace dir2
                             opt.invoke = (it) => $"{Helper.ToKiloUnit(it)} ";
                             break;
                         default:
-                            throw new InvalidValueException(args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
@@ -386,15 +374,15 @@ namespace dir2
                 });
 
         static public readonly IFunc<int, string> CountFormat =
-            new Function777<int, string>("--count-width=",
+            new Function<int, string>("--count-width=",
                 help: "NUMBER",
                 invoke: (it) => $"{it,4} ",
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    if (int.TryParse(args[0], out int widthThe))
+                    if (int.TryParse(arg, out int widthThe))
                     {
                         if (widthThe < 1)
-                            throw new InvalidValueException(args[0], opt.Name());
+                            throw new InvalidValueException(arg, opt.Name());
                         var fmtThe =
                         $"{{0,{widthThe}{CountComma.Func(true)}}} ";
                         opt.invoke = (it) =>
@@ -404,17 +392,17 @@ namespace dir2
                     }
                     else
                     {
-                        throw new InvalidValueException(args[0], opt.Name());
+                        throw new InvalidValueException(arg, opt.Name());
                     }
                 });
 
         static public readonly IFunc<DateTime, string> DateFormat =
-            new Function777<DateTime, string>("--date-format=",
+            new Function<DateTime, string>("--date-format=",
                 help: "FORMAT",
                 invoke: (it) => $"{it:yyyy-MM-dd HH:mm:ss} ",
-                parse: (opt, args) =>
+                parse: (opt, arg) =>
                 {
-                    var formatThe = $"{args[0]} ";
+                    var formatThe = $"{arg} ";
                     opt.invoke = (it) => it.ToString(formatThe);
                 });
 

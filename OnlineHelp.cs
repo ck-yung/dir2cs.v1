@@ -71,6 +71,22 @@ namespace dir2
                 return true;
             }
 
+            if (args.Contains("--help=cfg"))
+            {
+                Console.WriteLine($"Load opt from '{Config.GetFilename()}':");
+                foreach (var opt in Opts.ConfigParsers)
+                {
+                    Console.WriteLine(opt);
+                }
+                foreach (var opt in Opts.ConfigParsers2)
+                {
+                    Console.WriteLine(opt);
+                }
+                Console.WriteLine();
+                Console.WriteLine("Apply opt '--cfg-off' to skip the above config.");
+                return true;
+            }
+
             return false;
         }
     }

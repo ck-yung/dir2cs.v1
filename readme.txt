@@ -1,1 +1,1 @@
-20.02 Support brief help '-?' and long help '--help'
+20.03 Support '--help=cfg'

@@ -158,7 +158,7 @@ namespace dir2
             }
         }
 
-        static public void PrintDir(string dirname)
+        static public void PrintDir(string dirname, Func<string,bool> filterThe)
         {
             var cntDir = 0;
             var enumDir = SafeGetDirectoryEnumerator(dirname);
@@ -166,8 +166,9 @@ namespace dir2
             {
                 var currentDirname = SafeGetCurrent(enumDir);
                 if (string.IsNullOrEmpty(currentDirname)) continue;
-                if (Opts.ExclDirnameFilter.Func(
-                    Path.GetFileName(currentDirname))) continue;
+                var nameThe = Path.GetFileName(currentDirname);
+                if (Opts.ExclDirnameFilter.Func(nameThe)) continue;
+                if (!filterThe(nameThe)) continue;
                 Console.Write(Opts.ItemText(
                     $"[DIR] {InfoFile.RelativePath(currentDirname)}"));
                 cntDir += 1;

@@ -348,7 +348,7 @@ namespace dir2
                 });
 
         static Action<string> PrintDir { get; set; } =
-            (dirname) => Helper.PrintDir(dirname);
+            (dirname) => Helper.PrintDir(dirname, (_) => true);
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
             new Function<string, IEnumerable<string>>(
@@ -371,7 +371,8 @@ namespace dir2
                         case "only":
                             opt.invoke = (dirname) =>
                             {
-                                PrintDir(dirname);
+                                Helper.PrintDir(dirname,
+                                    (it) => FilenameFilter.Func(it));
                                 TotalText = (_) => "";
                                 return Helper.emptyStrings;
                             };

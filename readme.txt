@@ -1,1 +1,1 @@
-21.01 Fine tune - filename
+21.02 Add filename/dirname filter to '--dir=only'

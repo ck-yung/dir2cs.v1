@@ -1,1 +1,1 @@
-16.04 Add new 'Opts.Switcher<T,R>'
+16.05 Add new 'Opts.Parser'

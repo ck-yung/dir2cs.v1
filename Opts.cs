@@ -153,11 +153,11 @@ namespace dir2
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
         static public Func<string, string> TotalText
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
-        static public readonly IParser TotalOpt = new Parser777("--total=",
+        static public readonly IParser TotalOpt = new Parser("--total=",
             help: "off|only",
-            parse: (opt, args) =>
+            parse: (opt, arg) =>
             {
-                switch (args[0])
+                switch (arg)
                 {
                     case "off":
                         TotalText = (_) => "";
@@ -167,7 +167,7 @@ namespace dir2
                         break;
                     default:
                         throw new InvalidValueException(
-                            args[0], opt.Name());
+                            arg, opt.Name());
                 }
             });
 

@@ -25,7 +25,7 @@ namespace dir2
 
             public abstract string[] Parse(string[] args);
 
-            public R Func(T arg)
+            public virtual R Func(T arg)
             {
                 return invoke(arg);
             }
@@ -113,6 +113,48 @@ namespace dir2
             {
                 return string.IsNullOrEmpty(help)
                     ? $"{name,18}" : $"{name,18} \t{help}";
+            }
+        }
+
+        private class Parser: AbstractParser<bool,bool>
+        {
+            protected readonly Action<Parser, string> parse;
+
+            public Parser(string name, Action<Parser, string> parse,
+                string help = ""): base(name, help)
+            {
+                this.parse = parse;
+            }
+
+            public override string[] Parse(string[] args)
+            {
+                var found = args
+                    .GroupBy((it) => it.StartsWith(name))
+                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+
+                if (found.ContainsKey(true))
+                {
+                    var values = found[true]
+                        .Select((it) => it.Substring(name.Length))
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Distinct()
+                        .ToArray();
+
+                    if (values.Length > 1)
+                        throw new TooManyValuesException(name);
+
+                    if (values.Length > 0) parse(this, values[0]);
+                }
+                else return args;
+
+                return found.ContainsKey(false)
+                    ? found[false].ToArray()
+                    : Helper.emptyStrings;
+            }
+
+            public override bool Func(bool arg)
+            {
+                return false;
             }
         }
 

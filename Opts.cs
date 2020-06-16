@@ -44,6 +44,16 @@ namespace dir2
                     .Any((wildMatch) => wildMatch(filename));
                 });
 
+        static public string[] ParseFilenameFilter(string[] args)
+        {
+            var parser = (IParser)FilenameFilter;
+            return parser.Parse(
+                args
+                .Select((it) =>
+                it.StartsWith("-") ? it : $"--name={it}")
+                ).ToArray();
+        }
+
         static public readonly IFunc<string, bool> ExclFilenameFilter =
             new Function2<string, bool>("--excl-file=",
                 help: "WILD[,WILD,..]", invoke: (_) => false,
@@ -454,6 +464,10 @@ namespace dir2
             (IParser) SumBy,
             (IParser) ExclFilenameFilter,
             (IParser) ExclDirnameFilter,
+        };
+
+        static public readonly IParser[] Parsers2 = new IParser[]
+        {
             (IParser) FilenameFilter,
         };
 

@@ -41,7 +41,7 @@ namespace dir2
                     $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
                 Console.WriteLine("OPT:");
-                foreach (var opt in Opts.Parsers)
+                foreach (var opt in Opts.Parsers.Concat(Opts.Parsers2))
                 {
                     Console.WriteLine(opt);
                 }
@@ -69,6 +69,8 @@ namespace dir2
                     args = new string[] { Path.GetFileName(args[0]) };
                 }
             }
+
+            args = Opts.ParseFilenameFilter(args);
 
             InfoFile.InitDir(baseDir);
 

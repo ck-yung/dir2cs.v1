@@ -75,6 +75,7 @@ namespace dir2
             var sum = Opts.GetFiles.Func(baseDir)
                 .Select((it) => InfoFile.From(it))
                 .Where((it) => it.IsNotNone)
+                .Where((it) => Opts.FilenameFilter.Func(it.Filename))
                 .Where((it) =>!Opts.ExclFilenameFilter.Func(it.Filename))
                 .Where((it) => Opts.MinFileSizeFilter.Func(it.Length))
                 .Where((it) => Opts.MaxFileSizeFilter.Func(it.Length))

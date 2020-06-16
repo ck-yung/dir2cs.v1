@@ -31,6 +31,19 @@ namespace dir2
                     MakeRegex = (it) => new Regex(it, RegexOptions.None);
                 });
 
+        static public readonly IFunc<string, bool> FilenameFilter =
+            new Function2<string, bool>("--name=", help: "WILD[,WILD,..]",
+                invoke: (_) => true,
+                parse: (opt, args) =>
+                {
+                    var exclNames = args
+                    .Select((it) => Helper.ToWildMatch(it))
+                    .ToArray();
+
+                    opt.invoke = (filename) => exclNames
+                    .Any((wildMatch) => wildMatch(filename));
+                });
+
         static public readonly IFunc<string, bool> ExclFilenameFilter =
             new Function2<string, bool>("--excl-file=",
                 help: "WILD[,WILD,..]", invoke: (_) => false,
@@ -425,8 +438,6 @@ namespace dir2
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
             (IParser) CountComma,
-            (IParser) ExclFilenameFilter,
-            (IParser) ExclDirnameFilter,
             (IParser) MinFileSizeFilter,
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,
@@ -441,6 +452,9 @@ namespace dir2
             SortOpt,
             (IParser) GetFiles,
             (IParser) SumBy,
+            (IParser) ExclFilenameFilter,
+            (IParser) ExclDirnameFilter,
+            (IParser) FilenameFilter,
         };
 
         static public readonly IParser[] ConfigParsers = new IParser[]

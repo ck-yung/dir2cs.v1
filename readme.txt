@@ -1,1 +1,1 @@
-18.01 Parse 'dir\wild' if args has one element
+18.02 Add opt '--name=' for filename filter

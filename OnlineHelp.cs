@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace dir2
 {
@@ -87,7 +88,81 @@ namespace dir2
                 return true;
             }
 
+            var helpPrefix = "--help=";
+            var helpRequest = args
+                .Where((it) => it.StartsWith(helpPrefix))
+                .Select((it) => it.Substring(helpPrefix.Length))
+                .FirstOrDefault();
+            if (!string.IsNullOrEmpty(helpRequest))
+            {
+                PrintHelpContent(helpRequest);
+                return true;
+            }
+
             return false;
+        }
+
+        private static bool PrintHelpContent(string helpRequest)
+        {
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            if (codeBase.StartsWith("file://"))
+            {
+                codeBase = codeBase.Substring(7);
+            }
+            if (codeBase.Length > 2 && codeBase[0] == '/' && codeBase[2] == ':')
+            {
+                codeBase = codeBase.Substring(1);
+            }
+
+            Func<string, string> NormalizeForDirSepChar = (it) => it;
+            if (Path.DirectorySeparatorChar != '/')
+            {
+                NormalizeForDirSepChar = (it) => it.Replace('/',
+                    Path.DirectorySeparatorChar);
+            }
+
+            var helpBasePath = Path.Join(Path.GetDirectoryName(
+                NormalizeForDirSepChar(codeBase)), "help");
+
+            var recdirectDefFilename = Path.Join(helpBasePath, "dir2-redir.txt");
+            if (!File.Exists(recdirectDefFilename))
+            {
+                Console.Error.WriteLine($"File '{recdirectDefFilename}' is NOT found!");
+                return false;
+            }
+
+            var redirectFilename = string.Empty;
+            var questThe = $"{helpRequest}=";
+            try
+            {
+                using (var fs = File.OpenText(recdirectDefFilename))
+                {
+                    redirectFilename = fs.ReadToEnd()
+                        .Split(new char[] { '\n', '\r' })
+                        .Where((it) => !string.IsNullOrEmpty(it))
+                        .Select((it) => it.Trim())
+                        .Where((it) => it.StartsWith(questThe))
+                        .Select((it) => it.Substring(questThe.Length))
+                        .FirstOrDefault();
+                }
+            }
+            catch
+            {
+                Console.Error.WriteLine(
+                    $"File '{recdirectDefFilename}': Some error is encountered!");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(redirectFilename))
+            {
+                Console.WriteLine($"'{questThe}' is NOT defined in '{recdirectDefFilename}'");
+                return false;
+            }
+
+            var theFilename = Path.Join(helpBasePath, redirectFilename);
+            Console.WriteLine($"TODO: Print '{theFilename}'");
+
+            return true;
         }
     }
 }

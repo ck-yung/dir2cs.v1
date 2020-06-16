@@ -1,0 +1,25 @@
+excl-file=name-filter.txt
+ excl-dir=name-filter.txt
+     name=name-filter.txt
+
+date-within=date-filter.txt
+date-beyond=date-filter.txt
+
+date-format=date-format.txt
+
+size-within=size-filter.txt
+size-beyond=size-filter.txt
+
+   relative=misc.txt
+create-date=misc.txt
+
+  hide=hide.txt
+ total=hide.txt
+no-ext=hide.txt
+hidden=hide.txt
+
+sort=sort.txt
+dir=opt-dir.txt
+sum=sum.txt
+
+size-format=size-format.txt

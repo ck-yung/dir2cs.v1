@@ -10,4 +10,10 @@
     <None Remove=".DS_Store" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="help\dir2-redir.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

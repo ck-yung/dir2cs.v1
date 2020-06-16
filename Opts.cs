@@ -11,6 +11,18 @@ namespace dir2
         static public Func<string, Regex> MakeRegex { get; private set; }
         = (it) => new Regex(it, RegexOptions.IgnoreCase);
 
+        static readonly IFunc<bool, IEnumerable<string>> LoadConfigOpt =
+            new Switcher<bool, IEnumerable<string>>("--cfg-off",
+                help: "see --help=cfg",
+                invoke: (_) => Config.ParseFile(), alt: (_) => Helper.emptyStrings);
+
+        static public IEnumerable<string> LoadConfig(string[] args)
+        {
+            var parserThe = (IParser)LoadConfigOpt;
+            var parsedResult = parserThe.Parse(args);
+            return LoadConfigOpt.Func(true).Concat(parsedResult);
+        }
+
         static public readonly IFunc<string, string> CaseOpt =
             new Switcher<string, string>("--case-sensitive",
                 invoke: (it) => it.ToLower(), alt: (it) => it,
@@ -408,6 +420,7 @@ namespace dir2
 
         static public readonly IParser[] Parsers = new IParser[]
         {
+            (IParser) LoadConfigOpt,
             (IParser) CaseOpt,
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,

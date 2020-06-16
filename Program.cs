@@ -46,14 +46,12 @@ namespace dir2
                 return;
             }
 
-            var cfgLines = Config.ParseFile();
-
-            var baseDir = Directory.GetCurrentDirectory();
-
             var args = Opts.Parsers
-                .Aggregate(cfgLines.Concat(argsMain),
+                .Aggregate(Opts.LoadConfig(argsMain),
                 (it, opt) => opt.Parse(it))
                 .ToArray();
+
+            var baseDir = Directory.GetCurrentDirectory();
 
             if (args.Length > 0 && Directory.Exists(args[0]))
             {

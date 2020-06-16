@@ -1,5 +1,1 @@
-17.05 Fine tune perfromance by reduce redundant 'ToArray()'
-
-Change 'IEnumerable<string> Parse(IEnumerable<string> args)'
-to 'IEnumerable<string> Parse(IEnumerable<string> args)'
-in 'interface IParser'
+17.06 Add opt '--cfg-off' to ignore the config file

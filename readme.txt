@@ -1,1 +1,1 @@
-20.05 Print the content of redirect help file
+21.00 Lesson Init - Misc and fine tune

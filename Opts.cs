@@ -12,7 +12,7 @@ namespace dir2
         = (it) => new Regex(it, RegexOptions.IgnoreCase);
 
         static public readonly IFunc<string, string> CaseOpt =
-            new Switcher<string, string>("--case-sensitive",
+            new Switcher777<string, string>("--case-sensitive",
                 invoke: (it) => it.ToLower(), alt: (it) => it,
                 postAlt: (opt) =>
                 {
@@ -20,7 +20,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, bool> ExclFilenameFilter =
-            new Function<string, bool>("--excl-file=", requireUnique: false,
+            new Function777<string, bool>("--excl-file=", requireUnique: false,
                 help: "WILD[,WILD,..]", invoke: (_) => false,
                 parse: (opt, args) =>
                 {
@@ -36,7 +36,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, bool> ExclDirnameFilter =
-            new Function<string, bool>("--excl-dir=",
+            new Function777<string, bool>("--excl-dir=",
                 help: "WILD[,WILD,..]", invoke: (_) => false,
                 requireUnique: false,
                 parse: (opt, args) =>
@@ -57,7 +57,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<long, bool> MinFileSizeFilter =
-            new Function<long, bool>("--size-beyond=",
+            new Function777<long, bool>("--size-beyond=",
                 help: "NUMBER",
                 invoke: (_) => true,
                 parse: (opt, args) =>
@@ -72,7 +72,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
-            new Function<long, bool>("--size-within=",
+            new Function777<long, bool>("--size-within=",
                 help: "NUMBER",
                 invoke: (_) => true,
                 parse: (opt, args) =>
@@ -87,7 +87,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<DateTime, bool> MinFileDateFilter =
-            new Function<DateTime, bool>("--date-beyond=", help: "DATETIME",
+            new Function777<DateTime, bool>("--date-beyond=", help: "DATETIME",
                 invoke: (_) => true, parse: (opt, args) =>
                 {
                     if (Helper.TryParseDateTime(args[0], out DateTime result))
@@ -99,7 +99,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<DateTime, bool> MaxFileDateFilter =
-            new Function<DateTime, bool>("--date-within=", help: "DATETIME",
+            new Function777<DateTime, bool>("--date-within=", help: "DATETIME",
                 invoke: (_) => true, parse: (opt, args) =>
                 {
                     if (Helper.TryParseDateTime(args[0], out DateTime result))
@@ -111,7 +111,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, bool> FileExtFilter =
-            new Function<string, bool>("--no-ext=", help: "excl|only",
+            new Function777<string, bool>("--no-ext=", help: "excl|only",
                 invoke: (_) => true,
                 parse: (opt, args) =>
                 {
@@ -132,7 +132,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<InfoFile, bool> HiddenFilter =
-            new Function<InfoFile, bool>("--hidden=", help: "incl|only",
+            new Function777<InfoFile, bool>("--hidden=", help: "incl|only",
                 invoke: (it) => !it.IsHidden,
                 parse: (opt, args) =>
                 {
@@ -153,7 +153,7 @@ namespace dir2
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
         static public Func<string, string> TotalText
         { get; private set; } = (it) => $"{it}{Environment.NewLine}";
-        static public readonly IParser TotalOpt = new Parser("--total=",
+        static public readonly IParser TotalOpt = new Parser777("--total=",
             help: "off|only",
             parse: (opt, args) =>
             {
@@ -177,7 +177,7 @@ namespace dir2
         { get; private set; } = (it) => it;
         static public Func<string, string> CountText
         { get; private set; } = (it) => it;
-        static public readonly IParser HideOpt = new Parser("--hide=",
+        static public readonly IParser HideOpt = new Parser777("--hide=",
             help: "size,date,count", requireUnique: false,
             parse: (opt, args) =>
             {
@@ -202,7 +202,7 @@ namespace dir2
             });
 
         static public readonly IFunc<FileInfo,DateTime> GetFileDate =
-            new Switcher<FileInfo, DateTime>("--create-date",
+            new Switcher777<FileInfo, DateTime>("--create-date",
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
         static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
@@ -210,7 +210,7 @@ namespace dir2
         static public Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
             SortSumInfo { get; private set; } = (seqThe) => seqThe;
 
-        static public readonly IParser SortOpt = new Parser(
+        static public readonly IParser SortOpt = new Parser777(
             "--sort=", help: "name|size|date|last|count",
             parse: (opt, args) =>
             {
@@ -248,7 +248,7 @@ namespace dir2
             });
 
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
-            new Function<IEnumerable<InfoFile>, InfoSum>(
+            new Function777<IEnumerable<InfoFile>, InfoSum>(
                 "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
                 .Invoke((seqThe) => SortFileInfo(seqThe))
@@ -303,7 +303,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<string, Func<string, string>>
-            MakeRelativePath = new Switcher<string, Func<string, string>>(
+            MakeRelativePath = new Switcher777<string, Func<string, string>>(
                 "--relative", invoke: (dirname) =>
                 {
                     var pathLen = dirname.Length;
@@ -328,7 +328,7 @@ namespace dir2
             (dirname) => Helper.PrintDir(dirname);
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
-            new Function<string, IEnumerable<string>>(
+            new Function777<string, IEnumerable<string>>(
                 "--dir=", help: "sub|off|only",
                 invoke: (dirname) =>
                 {
@@ -359,7 +359,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<long, string> SizeFormat =
-            new Function<long, string>("--size-format=", help: "long|short",
+            new Function777<long, string>("--size-format=", help: "long|short",
                 invoke: (it) => $"{it,8} ",
                 parse: (opt, args) =>
                 {
@@ -377,7 +377,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<bool, string> CountComma =
-            new Switcher<bool, string>("--count-comma",
+            new Switcher777<bool, string>("--count-comma",
                 invoke: (_) => "", alt: (_) => ":N0",
                 postAlt: (opt) =>
                 {
@@ -386,7 +386,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<int, string> CountFormat =
-            new Function<int, string>("--count-width=",
+            new Function777<int, string>("--count-width=",
                 help: "NUMBER",
                 invoke: (it) => $"{it,4} ",
                 parse: (opt, args) =>
@@ -409,7 +409,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<DateTime, string> DateFormat =
-            new Function<DateTime, string>("--date-format=",
+            new Function777<DateTime, string>("--date-format=",
                 help: "FORMAT",
                 invoke: (it) => $"{it:yyyy-MM-dd HH:mm:ss} ",
                 parse: (opt, args) =>

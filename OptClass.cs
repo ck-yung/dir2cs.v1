@@ -5,7 +5,7 @@ namespace dir2
 {
     static partial class Opts
     {
-        private class Function<T, R> : IFunc<T, R>, IParser
+        private class Function777<T, R> : IFunc<T, R>, IParser
         {
             public Func<T,R> invoke { get; set; }
             public R Func(T arg)
@@ -14,9 +14,9 @@ namespace dir2
             }
 
             readonly bool requireUnique;
-            public Function(string name,
+            public Function777(string name,
                 Func<T,R> invoke,
-                Action<Function<T, R>, string[]> parse,
+                Action<Function777<T, R>, string[]> parse,
                 string help = "", bool requireUnique = true)
             {
                 this.name = name;
@@ -28,7 +28,7 @@ namespace dir2
 
             readonly string name;
             readonly string help;
-            readonly Action<Function<T, R>, string[]> parse;
+            readonly Action<Function777<T, R>, string[]> parse;
 
             public string Name()
             {
@@ -69,7 +69,7 @@ namespace dir2
             }
         }
 
-        private class Parser : IParser
+        private class Parser777 : IParser
         {
             readonly string name;
             readonly string help;
@@ -78,7 +78,7 @@ namespace dir2
                 return name;
             }
 
-            readonly Action<Parser, string[]> parse;
+            readonly Action<Parser777, string[]> parse;
             public string[] Parse(string[] args)
             {
                 var found = args
@@ -108,8 +108,8 @@ namespace dir2
             }
 
             readonly bool requireUnique;
-            public Parser(string name,
-                Action<Parser, string[]> parse,
+            public Parser777(string name,
+                Action<Parser777, string[]> parse,
                 string help = "", bool requireUnique = true)
             {
                 this.name = name;
@@ -123,7 +123,7 @@ namespace dir2
             }
         }
 
-        private class Switcher<T, R> : IFunc<T, R>, IParser
+        private class Switcher777<T, R> : IFunc<T, R>, IParser
         {
             Func<T, R> invoke { get; set; }
             readonly Func<T, R> alt;
@@ -139,7 +139,7 @@ namespace dir2
                 return name;
             }
 
-            readonly Action<Switcher<T, R>> postAlt;
+            readonly Action<Switcher777<T, R>> postAlt;
             public string[] Parse(string[] args)
             {
                 var found = args
@@ -158,10 +158,10 @@ namespace dir2
                     : Helper.emptyStrings;
             }
 
-            public Switcher(string name,
+            public Switcher777(string name,
                 Func<T,R> invoke, Func<T,R> alt,
                 string help = "",
-                Action<Switcher<T,R>> postAlt = null)
+                Action<Switcher777<T,R>> postAlt = null)
             {
                 this.name = name;
                 this.help = help;

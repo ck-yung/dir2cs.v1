@@ -440,5 +440,11 @@ namespace dir2
             (IParser) DateFormat,
             SortOpt,
         };
+
+        static public readonly IParser[] ConfigParsers2 = new IParser[]
+        {
+            (IParser) ExclFilenameFilter,
+            (IParser) ExclDirnameFilter,
+        };
     }
 }

@@ -32,6 +32,10 @@ namespace dir2
                     {
                         return Opts.ConfigParsers
                             .Aggregate(lines, (acc, opt) => opt.Parse(acc))
+                            .Join(Opts.ConfigParsers2,
+                            outerKeySelector: (line) => line.Split('=')[0],
+                            innerKeySelector: (opt) => opt.Name().Trim('='),
+                            resultSelector: (line, opt) => line)
                             .ToArray();
                     }
                     catch (Exception ee)

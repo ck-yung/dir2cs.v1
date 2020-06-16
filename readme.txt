@@ -1,1 +1,1 @@
-16.09 Remove obsolete Opts.Function<T,R>
+17.00 Lesson Init - Load config file

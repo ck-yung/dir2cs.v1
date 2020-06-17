@@ -352,7 +352,7 @@ namespace dir2
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
             new Function<string, IEnumerable<string>>(
-                "--dir=", help: "sub|off|only",
+                "--dir=", help: "sub|off|only|tree",
                 invoke: (dirname) =>
                 {
                     PrintDir(dirname);
@@ -373,6 +373,14 @@ namespace dir2
                             {
                                 Helper.PrintDir(dirname,
                                     (it) => FilenameFilter.Func(it));
+                                TotalText = (_) => "";
+                                return Helper.emptyStrings;
+                            };
+                            break;
+                        case "tree":
+                            opt.invoke = (dirname) =>
+                            {
+                                Helper.PrintTree(dirname);
                                 TotalText = (_) => "";
                                 return Helper.emptyStrings;
                             };

@@ -29,6 +29,7 @@ namespace dir2
                 ["-s"] = new string[] { "--dir=sub" },
                 ["-f"] = new string[] { "--dir=off" },
                 ["-d"] = new string[] { "--dir=only" },
+                ["-T"] = new string[] { "--dir=tree"},
                 ["-c"] = new string[] { "--case-sensitive" },
                 ["-b"] = new string[] { "--total=off", "--hide=size,date,count" },
                 ["-t"] = new string[] { "--total=only" },
@@ -304,6 +305,27 @@ namespace dir2
             regText.Append("$");
             var regThe = Opts.MakeRegex(regText.ToString());
             return (it) => regThe.Match(it).Success;
+        }
+
+        static public void PrintTree(string dirname)
+        {
+            Console.WriteLine(dirname);
+
+            var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
+
+            var prevDir = string.Empty;
+            if (enumDir.MoveNext())
+            {
+                prevDir = enumDir.Current;
+            }
+
+            while (enumDir.MoveNext())
+            {
+                Console.WriteLine($"+- {InfoFile.RelativePath(prevDir)}");
+                prevDir = enumDir.Current;
+            }
+
+            Console.WriteLine($"\\- {InfoFile.RelativePath(prevDir)}");
         }
     }
 

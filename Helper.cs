@@ -309,8 +309,6 @@ namespace dir2
 
         static public void PrintTree(string dirname)
         {
-            Console.WriteLine(dirname);
-
             var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
 
             var prevDir = string.Empty;
@@ -322,10 +320,14 @@ namespace dir2
             while (enumDir.MoveNext())
             {
                 Console.WriteLine($"+- {InfoFile.RelativePath(prevDir)}");
+                PrintTree(prevDir);
                 prevDir = enumDir.Current;
             }
 
-            Console.WriteLine($"\\- {InfoFile.RelativePath(prevDir)}");
+            if (!string.IsNullOrEmpty(prevDir))
+            {
+                Console.WriteLine($"\\- {InfoFile.RelativePath(prevDir)}");
+            }
         }
     }
 

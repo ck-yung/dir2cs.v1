@@ -307,32 +307,48 @@ namespace dir2
             return (it) => regThe.Match(it).Success;
         }
 
-        static public void PrintTree(string dirname)
+        static public void PrintSubTree(string prefix, string dirname)
         {
             var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
 
-            var prevDir = string.Empty;
-            while (enumDir.MoveNext())
+            string GetNext()
             {
-                prevDir = enumDir.Current;
-                var dirThe = Path.GetFileName(prevDir);
-                if (!Opts.ExclDirnameFilter.Func(dirThe))
+                while (enumDir.MoveNext())
                 {
-                    break;
+                    var currDir = enumDir.Current;
+                    var dirThe = Path.GetFileName(currDir);
+                    if (!Opts.ExclDirnameFilter.Func(dirThe))
+                    {
+                        return currDir;
+                    }
                 }
+                return string.Empty;
             }
 
-            while (enumDir.MoveNext())
+            var prevDir = GetNext();
+
+            while (true)
             {
-                Console.WriteLine($"+- {InfoFile.RelativePath(prevDir)}");
-                PrintTree(prevDir);
-                prevDir = enumDir.Current;
+                var currDir = GetNext();
+                if (string.IsNullOrEmpty(currDir)) break;
+                var dirThe = Path.GetFileName(prevDir);
+                Console.WriteLine($"{prefix}+- {dirThe}");
+                PrintSubTree($"{prefix}|  ", prevDir);
+                prevDir = currDir;
             }
 
             if (!string.IsNullOrEmpty(prevDir))
             {
-                Console.WriteLine($"\\- {InfoFile.RelativePath(prevDir)}");
+                var dirThe = Path.GetFileName(prevDir);
+                Console.WriteLine($"{prefix}\\- {dirThe}");
+                PrintSubTree($"{prefix}   ", prevDir);
             }
+        }
+
+        static public void PrintTree(string dirname)
+        {
+            Console.WriteLine(dirname);
+            PrintSubTree("", dirname);
         }
     }
 

@@ -1,1 +1,3 @@
-22.04 Add tree prefix to Console.WriteLine()
+22.05 Suppress exception
+
+SafeGetDirectoryEnumerator(), SafeMoveNext() and SafeGetCurrent()

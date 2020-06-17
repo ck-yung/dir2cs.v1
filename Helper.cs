@@ -309,13 +309,13 @@ namespace dir2
 
         static public void PrintSubTree(string prefix, string dirname)
         {
-            var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
+            var enumDir = SafeGetDirectoryEnumerator(dirname);
 
             string GetNext()
             {
-                while (enumDir.MoveNext())
+                while (SafeMoveNext(enumDir))
                 {
-                    var currDir = enumDir.Current;
+                    var currDir = SafeGetCurrent(enumDir);
                     var dirThe = Path.GetFileName(currDir);
                     if (!Opts.ExclDirnameFilter.Func(dirThe))
                     {

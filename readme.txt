@@ -1,1 +1,1 @@
-21.02 Add filename/dirname filter to '--dir=only'
+21.03 Add opt '--utf8' for encoding console output.

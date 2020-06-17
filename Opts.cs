@@ -442,9 +442,18 @@ namespace dir2
                     opt.invoke = (it) => it.ToString(formatThe);
                 });
 
+        static public readonly IFunc<bool, bool> EncodeConsoleOuput =
+            new Switcher<bool, bool>("--utf8", help: "see --help=utf8",
+                invoke: (_) => { return false;  }, alt: (_) =>
+                {
+                    Console.OutputEncoding = System.Text.Encoding.UTF8;
+                    return true;
+                });
+
         static public readonly IParser[] Parsers = new IParser[]
         {
             (IParser) LoadConfigOpt,
+            (IParser) EncodeConsoleOuput,
             (IParser) CaseOpt,
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
@@ -474,6 +483,7 @@ namespace dir2
 
         static public readonly IParser[] ConfigParsers = new IParser[]
         {
+            (IParser) EncodeConsoleOuput,
             (IParser) CaseOpt,
             (IParser) CountComma,
             (IParser) HiddenFilter,

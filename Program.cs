@@ -10,8 +10,6 @@ namespace dir2
         {
             try
             {
-                Console.OutputEncoding = System.Text.Encoding.UTF8;
-                Console.InputEncoding = System.Text.Encoding.UTF8;
                 MainRun(args);
             }
             catch (TooManyValuesException tmve)
@@ -44,6 +42,8 @@ namespace dir2
                 .Aggregate(Opts.LoadConfig(argsMain).ExpandShortcut(),
                 (it, opt) => opt.Parse(it))
                 .ToArray();
+
+            Opts.EncodeConsoleOuput.Func(true);
 
             var baseDir = Directory.GetCurrentDirectory();
 

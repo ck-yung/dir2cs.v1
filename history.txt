@@ -1,0 +1,175 @@
+00.00  Init Project
+00.01  Add exception handling and 'MainRun'
+00.02  Get file names and dir names
+
+01.00  Lesson Init
+01.01  Filter out/skip if file extension is '.cache'
+01.02  Parse command-line option '--excl-ext='
+01.03  Convert filename to class FileInfo
+01.04  Print last-written date/time
+
+02.00  Lesson Init
+02.01  Get the list of filename for '--excl-ext' option
+02.02  Get a list of FileInfo
+02.03  Use function for 'new FileInfo(..)' and print FileInfo
+
+03.00  Lesson Init
+03.01  LINQ Where()
+03.02  LINQ Select() - Transform string into FileInfo
+03.03  LINQ Select(), Count() - Print FileInfo
+03.04  Combine into a single LINQ query
+03.05a Better coding - add an iterator parameter in each lambda
+03.05b Better coding - remove one-time functions
+03.05c Replace control data 'exclFileExtension' by a lambda
+03.06a Simple question - print a blank line per 5 output lines and etc
+03.06b First IEnumerable<T> func()
+03.06c LINQ Zip() - Print a blank line per 5 output lines
+03.06d A simple question about LINQ Count()
+
+04.00  Lesson Init
+04.01  Call EnumerateFiles and EnumerateDirectories
+04.02  Add 'Helper.cs' for 'IEnumerable<string> GetAllFiles()'
+04.03  yield return for IEnumerable<T>
+04.04  IEnumerable<T>.GetEnumerator
+04.05  EnumerateDirectories(dirname).GetEnumerator()
+04.06a Not so good - Path.Join(..) because 'obj\Debug\netcoreapp3.1' ..
+04.06b COMPILER ERROR - CS1622: Cannot return a value from an iterator
+04.06c 'yield return' and recursive function calling
+04.07a Exception handling for GetEnumerator, EnumerateDirectories and EnumerateFiles
+04.07b Exception handling for MoveNext and Current
+
+05.00  Lesson Init
+05.01  Add 'MyFilter()' for the feature of LINQ Where()
+05.02  Add 'MyTransform' for the feature of LINQ Select() - ToFileInfo
+05.03  Add 'MyPrint' for the feature of LINQ Select() - PrintFileInfo
+05.04  Add 'MyCount' for the feature of LINQ Count()
+05.05  Combine into a chain function calling
+05.06  Use extension methods to simplify the chain of function calling
+05.07  What is "Lazy Computing"?
+
+06.00  Lesson Init
+06.01a For loop to calculate the grant total of list of FileInfo
+06.01b LINQ Aggregate() - calculate the grant total of list of FileInfo
+06.02  Add 'class InfoFile' to ignore protential exception from 'class FileInfo'
+
+07.00  Lesson Init
+07.01a Add '--create-date' with control data 'IsCreateDate'
+07.01b Add '--size-within=' for control data 'sizeWithin'
+07.01c Add '--hide=' with control data
+07.01d Add '--total=' with control data
+07.02a Change '--create-date' with lambda from control-data
+07.02b Change '--size-within' with lambda from control-data
+07.02c Change '--hide=' with lambda from control-data
+07.02d Change '--total=' with lambda from control-data
+
+08.00  Lesson Init
+08.01  IFunc<T,R> and IParser - Pilot
+08.02  Field 'parse' is in type of 'Action<Function<T,R>,string[]>'
+08.03  Parse for '--size-within=', and call 'Func'
+08.04  LINQ Distinct()
+08.05  Add 'class Parser' and move '--total=' into 'class Opts'
+08.06  Move '--hide=' into 'class Opts'
+08.07  Move '--create-date' into 'class Opts'
+08.08  LINQ SelectMany()
+08.09  Add on-line help
+09.00  Lesson Init
+09.01  Change 'string[] Parse(..)' in 'interface IParser'
+09.02  Change proper return value of 'string[] Parse(..)'
+09.03  LINQ GroupBy()
+09.04  LINQ Aggregate() - replace for-loop
+
+10.00  Lesson Init
+10.01  LINQ GroupBy() for sum by file extension
+10.02  Add 'Name' to 'InfoSum'
+10.03  Add opt '--sum=' ('ext' only)
+10.04  Add extension method 'InfoSum Invoke(this IEnumerable<InfoFile> ..
+10.05a Get relative path - add 'InfoFIle.Init(string basedir)'
+10.05b Get relative path - print relative path of 'fullpath'
+10.05c Get relative path - get 'InfoFile.BaseDir' in 'InfoSum.ToString()'
+10.06  Add 'dir' to opt '--sum='
+10.07  Add opt '--relative'
+
+11.00  Lesson Init
+11.01  Add opt '--dir=' with default new 'Helper.GetFiles(dirname)'
+11.02  Add 'sub' to '--dir=' for calling 'Helper.GetAllFiles(dirname)'
+11.03a Print sub dirname in 'GetFiles'
+11.03b Add 'only' and 'off' to opt '--dir='
+
+12.00  Lesson Init
+12.01  Sort 'IEnumerable<FileInfo>' by 'Length'
+12.02  Sort with calling lamdba on 'IEnumerable<FileInfo>'
+12.03  Add opt '--sort=' ('size' first)
+12.04  Change 'Invoke' to be generic function to both 'InfoFile' and 'InfoSum'
+12.05  Add 'name','date','last','count' to '--sort='
+
+13.00  Lesson Init
+13.01  Add opt '--size-beyond=NUMBER'
+13.02  'NUMBER' to 'size-beyond=' could be followed by 'k', 'm', 'g'
+13.03  Add opt '--date-within=' and '--date-beyond='
+13.04  Add opt '--no-ext=excl|only'
+13.05  Add opt '--hidden=incl|only'
+
+14.00  Lesson Init
+14.01  Add opt '--size-format=' ('long' first)
+14.02  Add 'short' to opt '--size-format=' (recursive function call)
+14.03  Add opt '--count-width='
+14.04  Add opt '--count-comma'
+
+15.00  Lesson Init
+15.01  Add opt '--excl-file=NAME' (simple pilot)
+15.02  LINQ Any() - Handle mulitple '--excl-file=NAME'
+15.03  Find out performance issue of calling lambda
+15.04  LINQ ToArray() - Resolve performance issue of calling lambda
+15.05  Handle wild matching of opt '--excl-file=WILD[,WILD,..]' (Regex, regular expression)
+15.06  Add opt '--case-sensitive'
+15.07  Add opt '--excl-dir=WILD[,WILD,..]'
+
+16.00  Lesson Init
+16.01  Add opt '--date-format=FORMAT'
+16.02  Rename classes in OptClass as obsolete
+16.03  Add 'Opts.AbstractParser' and new 'Opts.Function<T,R>'
+16.04  Add new 'Opts.Switcher<T,R>'
+16.05  Add new 'Opts.Parser'
+16.06  Add new 'Opts.Function2<T, R>' for multiple command-line opt assignment
+16.07  Remove obsolete Opts.Parser
+16.08  Remove obsolete Opts.Switcher
+16.09  Remove obsolete Opts.Function<T,R>
+
+17.00  Lesson Init - Load config file
+17.01  Read file 'dir2.opt'
+17.02  LINQ Aggregate() - Parsing config file [phase 1]
+17.03  LINQ Join() - Get [phase 2] opt
+17.04  LINQ Concat() - Append 'command line arg' to 'cfg [phase 2] opt'
+17.05  Fine tune perfromance by reduce redundant 'ToArray()'
+17.06  Add opt '--cfg-off' to ignore the config file
+
+18.00  Lesson Init - Filename Filter
+18.01  Parse 'dir\wild' if args has one element
+18.02  Add opt '--name=' for filename filter
+18.03  LINQ Concat() - Add prefile '--name=' to parsed command-line arguments
+
+19.00  Lesson Init - Short-cut of command line arguments
+19.01  Add shortcut '-s' for '--dir=sub'
+19.02  Add shortcut '-o' for '--sort='
+19.03  Add shortcut mapping in 'ShortCutWithValue' and 'ShortCutWithoutValue'
+19.04  Expand combining shortcut option
+19.05  LINQ GroupJoin(), FirstOrDefault() - outer join - on-line help for shortcut
+
+20.00  Lesson Init - Mulitple On-line Help
+20.01  opt '--help' for long help
+20.02  Support brief help '-?' and long help '--help'
+20.03  Support '--help=cfg'
+20.04  LINQ FirstOrDefault() - Find out the path of 'dir2-redir.txt'
+20.05  Print the content of redirect help file
+
+21.00  Lesson Init - Misc and fine tune
+21.01  Fine tune - filename
+21.02  Add filename/dirname filter to '--dir=only'
+21.03  Add opt '--utf8' for encoding console output.
+
+22.00  Lesson Init - opt '--dir=tree' for print dir tree
+22.01  Add opt '--dir=tree' [pilot - first path]
+22.02  Recursive function calling
+22.03  Apply ExclDirFilter
+22.04  Add tree prefix to Console.WriteLine()
+22.05  Suppress exception

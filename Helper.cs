@@ -312,9 +312,14 @@ namespace dir2
             var enumDir = Directory.EnumerateDirectories(dirname).GetEnumerator();
 
             var prevDir = string.Empty;
-            if (enumDir.MoveNext())
+            while (enumDir.MoveNext())
             {
                 prevDir = enumDir.Current;
+                var dirThe = Path.GetFileName(prevDir);
+                if (!Opts.ExclDirnameFilter.Func(dirThe))
+                {
+                    break;
+                }
             }
 
             while (enumDir.MoveNext())

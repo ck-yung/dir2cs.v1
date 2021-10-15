@@ -81,12 +81,12 @@ namespace dir2
         private class Switcher<T,R>: AbstractParser<T,R>
         {
             protected readonly Func<T, R> alt;
-            protected readonly Action<Switcher<T, R>> postAlt;
+            protected readonly Action<Switcher<T, R>>? postAlt;
 
             public Switcher(string name,
                 Func<T, R> invoke, Func<T, R> alt,
                 string help = "",
-                Action<Switcher<T, R>> postAlt = null)
+                Action<Switcher<T, R>>? postAlt = null)
                 :base(name,help)
             {
                 this.invoke = invoke;

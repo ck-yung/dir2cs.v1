@@ -10,7 +10,7 @@ namespace dir2
         {
             protected readonly string name;
             protected readonly string help;
-            public Func<T, R> invoke { get; set; }
+            public Func<T, R>? invoke { get; set; }
 
             public AbstractParser(string name,
                 string help)
@@ -29,7 +29,7 @@ namespace dir2
 
             public virtual R Func(T arg)
             {
-                return invoke(arg);
+                return invoke!(arg);
             }
 
             public override string ToString()

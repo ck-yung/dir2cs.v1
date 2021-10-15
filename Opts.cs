@@ -413,8 +413,8 @@ namespace dir2
                 invoke: (_) => "", alt: (_) => ":N0",
                 postAlt: (opt) =>
                 {
-                    ((IParser)CountFormat).Parse(
-                        new string[] { "--count-width=5" });
+                    ((IParser)(CountFormat!)).Parse(
+                        new string[] { "--count-width=7" });
                 });
 
         static public readonly IFunc<int, string> CountFormat =

@@ -6,11 +6,11 @@ namespace dir2
 {
     class InfoFile
     {
-        public string FullName { get; private set; }
-        public string Filename { get; private set; }
-        public long Length { get; private set; }
-        public DateTime DateTime { get; private set; }
-        public FileAttributes Attributes { get; private set; }
+        public string FullName { get; init; }
+        public string Filename { get; init; }
+        public long Length { get; init; }
+        public DateTime DateTime { get; init; }
+        public FileAttributes Attributes { get; init; }
 
         public bool IsHidden
         {
@@ -23,28 +23,36 @@ namespace dir2
             }
         }
 
-        private InfoFile() { }
+        private InfoFile()
+        {
+            FullName = "||";
+            Filename = "|";
+        }
 
         static InfoFile None = new InfoFile();
+
+        private InfoFile(string filename)
+        {
+            var infoFile = new FileInfo(filename);
+            Filename = Path.GetFileName(filename);
+            FullName = infoFile.FullName;
+            Length = infoFile.Length;
+            DateTime = Opts.GetFileDate.Func(infoFile);
+            Attributes = infoFile.Attributes;
+        }
 
         static public InfoFile From(string filename)
         {
             try
             {
-                var info = new FileInfo(filename);
-                var rtn = new InfoFile();
-                rtn.Filename = Path.GetFileName(filename);
-                rtn.FullName = info.FullName;
-                rtn.Length = info.Length;
-                rtn.DateTime = Opts.GetFileDate.Func(info);
-                rtn.Attributes = info.Attributes;
-                return rtn;
+                return new InfoFile(filename);
             }
             catch
             {
                 return None;
             }
         }
+
         public bool IsNotNone { get => !ReferenceEquals(this, None); }
         public override string ToString()
         {

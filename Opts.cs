@@ -414,7 +414,7 @@ namespace dir2
                 postAlt: (opt) =>
                 {
                     ((IParser)(CountFormat!)).Parse(
-                        new string[] { "--count-width=7" });
+                        new string[] { "--count-width=5" });
                 });
 
         static public readonly IFunc<int, string> CountFormat =

@@ -104,15 +104,7 @@ namespace dir2
 
         private static bool PrintHelpContent(string helpRequest)
         {
-            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            if (codeBase.StartsWith("file://"))
-            {
-                codeBase = codeBase.Substring(7);
-            }
-            if (codeBase.Length > 2 && codeBase[0] == '/' && codeBase[2] == ':')
-            {
-                codeBase = codeBase.Substring(1);
-            }
+            var codeBase = Assembly.GetExecutingAssembly().Location;
 
             Func<string, string> NormalizeForDirSepChar = (it) => it;
             if (Path.DirectorySeparatorChar != '/')

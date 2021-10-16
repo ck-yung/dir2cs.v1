@@ -1,27 +1,46 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Title>dir2</Title>
+    <PackageId>dir2</PackageId>
+    <PackageVersion>1.0.1</PackageVersion>
+    <Version>1.0.1</Version>
+    <Authors>Yung, Chun Kau</Authors>
+    <Description>List files by dir or ext, with filter on date and time</Description>
+    <Summary>
+       The tool seems old MSDOS DIR command. Features: Group by File-Ext, Group by Dir, Date Filter, Size Filter,
+       Column Selection. C# source https://github.com/ck-yung/dir2cs.
+   </Summary>
+    <PackageTags>dir; group by file ext; group by dir; file date filter; file size filter; dir tree</PackageTags>
+    <PackAsTool>true</PackAsTool>
+    <Company>https://github.com/ck-yung/dir2cs</Company>
+    <ToolCommandName>dir2</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageReleaseNotes>First to NuGet</PackageReleaseNotes>
+    <PackageTags>dir</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Copyright>Copyright (c)2021 Yung, chun.kau</Copyright>
+    <PackageLicense>GPL-3.0 License</PackageLicense>
+    <PackageLicenseUrl>https://www.gnu.org/licenses/gpl-3.0.txt</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/ck-yung/dir2cs</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ck-yung/dir2cs</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageDependencies></PackageDependencies>
+    <PackageDevelopmentDependency></PackageDevelopmentDependency>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Company>https://github.com/ck-yung/dir2cs</Company>
-    <Authors>Yung, Chun Kau</Authors>
-    <Copyright>yung.chun.kau@gmail.com</Copyright>
-    <PackageProjectUrl>https://github.com/ck-yung/dir2cs</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ck-yung/dir2cs</RepositoryUrl>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
-    <Description>By dir or file ext, with filter on date and time</Description>
-    <Version>1.0.1</Version>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>dir2</ToolCommandName>
-    <PackageOutputPath>./nupkg</PackageOutputPath>
-    <PackageReleaseNotes>init</PackageReleaseNotes>
-    <PackageTags>dir</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>  </PropertyGroup>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="readme.md" Pack="true" PackagePath="" />
     <None Remove=".gitignore" />

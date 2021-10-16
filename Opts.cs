@@ -440,6 +440,28 @@ namespace dir2
                     }
                 });
 
+        static public readonly IFunc<string, string> ToRegexText =
+            new Switcher<string, string>("--regex",
+                invoke: (it) =>
+                {
+                    var regText = new System.Text.StringBuilder("^");
+                    regText.Append(it
+                        .Replace(@"\", @"\\")
+                        .Replace("^", @"\^")
+                        .Replace("$", @"\$")
+                        .Replace(".", @"\.")
+                        .Replace("?", ".")
+                        .Replace("*", ".*")
+                        .Replace("(", @"\(")
+                        .Replace(")", @"\)")
+                        .Replace("[", @"\[")
+                        .Replace("]", @"\]")
+                        .Replace("{", @"\{")
+                        .Replace("}", @"\}"));
+                    regText.Append("$");
+                    return regText.ToString();
+                }, alt: (it) => it);
+
         static public readonly IFunc<DateTime, string> DateFormat =
             new Function<DateTime, string>("--date-format=",
                 help: "FORMAT",
@@ -462,6 +484,7 @@ namespace dir2
         {
             (IParser) LoadConfigOpt,
             (IParser) EncodeConsoleOuput,
+            (IParser) ToRegexText,
             (IParser) CaseOpt,
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
@@ -492,6 +515,7 @@ namespace dir2
         static public readonly IParser[] ConfigParsers = new IParser[]
         {
             (IParser) EncodeConsoleOuput,
+            (IParser) ToRegexText,
             (IParser) CaseOpt,
             (IParser) CountComma,
             (IParser) HiddenFilter,

@@ -288,22 +288,8 @@ namespace dir2
 
         static public Func<string, bool> ToWildMatch(string arg)
         {
-            var regText = new StringBuilder("^");
-            regText.Append(arg
-                .Replace(@"\", @"\\")
-                .Replace("^", @"\^")
-                .Replace("$", @"\$")
-                .Replace(".", @"\.")
-                .Replace("?", ".")
-                .Replace("*", ".*")
-                .Replace("(", @"\(")
-                .Replace(")", @"\)")
-                .Replace("[", @"\[")
-                .Replace("]", @"\]")
-                .Replace("{", @"\{")
-                .Replace("}", @"\}"));
-            regText.Append("$");
-            var regThe = Opts.MakeRegex(regText.ToString());
+            var regThe = Opts.MakeRegex(
+                Opts.ToRegexText.Func(arg));
             return (it) => regThe.Match(it).Success;
         }
 

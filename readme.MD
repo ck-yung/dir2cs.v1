@@ -1,13 +1,17 @@
-#Dir2
+# Dir2
 **v1.01**
 
-##Syntax: dir2 DIR/WILD [OPT ..]
-*Example:*
-dir2 obj\*.dll -s
-*Example:*
-dir2 bin *.exe *.dll -s --size-beyond=10m
+### Syntax: dir2 DIR/WILD [OPT ..]
+#### Example:
 
-##Options:
+dir2 obj\\*.dll -s
+
+#### Example:
+
+dir2 bin -s \*.exe \*.dll --size-beyond=10m
+
+### Options:
+
 | Shortcut | Option           | Example or Info         | Shortcut Example |
 | -------- | ------           | ---------------         | ---------------- |
 |          | --cfg-off        | see --help=cfg          |                  |
@@ -31,10 +35,11 @@ dir2 bin *.exe *.dll -s --size-beyond=10m
 | -o,      | --sort           | --sort=size             | -o date          |
 |          | --dir            | --dir=sub               |                  |
 |          | --sum            | --sum=ext               |                  |
-| -x,      | --excl-file      | --excl-file=*.dll,*.pdb | -x *.exe,*.dat   |
+| -x,      | --excl-file      | --excl-file=\*.dll,\*.pdb | -x \*.exe,\*.dat   |
 | -X,      | --excl-dir       | --excl-dir=bin,obj      | -X bin,obj       |
 
 ##Other Shortcut:
+
 | Shortcut | Stand for              | Description                    |
 | -------- | ---------              | -----------                    |
 | -s       | --dir=sub              | Recursively sub-directory      |
@@ -46,5 +51,8 @@ dir2 bin *.exe *.dll -s --size-beyond=10m
 |          | --hide=size,date,count |                                |
 | -t       | --total=only           | Display total line only        |
   
-Yung, Chun Kau <yung.chun.kau@gmail.com>
+Yung, Chun Kau
+
+<yung.chun.kau@gmail.com>
+
 2021-10-16

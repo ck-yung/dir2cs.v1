@@ -9,14 +9,39 @@ namespace dir2
     {
         static public bool IsShow(string[] args)
         {
+            var assemblyThe = Assembly.GetExecutingAssembly();
+
+            string Get<T>(Func<T, string> select)
+                where T : Attribute
+            {
+                if (Attribute.IsDefined(assemblyThe,typeof(T)))
+                {
+                    T attribute = (T)Attribute.GetCustomAttribute(
+                        assemblyThe, typeof(T))!;
+                    return select.Invoke(attribute);
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+
             if (args.Contains("-v") || args.Contains("--version"))
             {
-                var info = System.Diagnostics.FileVersionInfo.GetVersionInfo(
-                    Assembly.GetExecutingAssembly().Location);
-                Console.Write($"{info.ProductName}");
-                Console.WriteLine($" Version {info.ProductVersion}");
-                Console.WriteLine($"{info.CompanyName}");
-                Console.WriteLine($"{info.Comments}");
+                var title = Get<AssemblyTitleAttribute>(it =>
+                it.Title);
+                var version = Get<AssemblyFileVersionAttribute>(
+                    it => it.Version);
+                Console.WriteLine($"{title} Version {version}");
+                var copyright = Get<AssemblyCopyrightAttribute>(
+                    it => it.Copyright);
+                Console.WriteLine(copyright);
+                var company = Get<AssemblyCompanyAttribute>(
+                    it => it.Company);
+                Console.WriteLine(company);
+                var description = Get<AssemblyDescriptionAttribute>(
+                    it => it.Description);
+                Console.WriteLine(description);
                 return true;
             }
 
@@ -54,6 +79,7 @@ namespace dir2
             if (args.Contains("-?"))
             {
                 Console.WriteLine("Syntax: dir2 --help");
+                Console.WriteLine("Syntax: dir2 --version | -v");
                 Console.WriteLine(
                     $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");

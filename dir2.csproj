@@ -5,15 +5,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Company />
+    <Company>https://github.com/ck-yung/dir2cs</Company>
     <Authors>Yung, Chun Kau</Authors>
-    <Copyright>GPL-3.0 License</Copyright>
+    <Copyright>yung.chun.kau@gmail.com</Copyright>
     <PackageProjectUrl>https://github.com/ck-yung/dir2cs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ck-yung/dir2cs</RepositoryUrl>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
-    <Description>yung.chun.kau@gmail.com
-https://github.com/ck-yung/dir2cs</Description>
+    <Description>By dir or file ext, with filter on date and time</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

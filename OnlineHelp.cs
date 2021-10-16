@@ -9,6 +9,17 @@ namespace dir2
     {
         static public bool IsShow(string[] args)
         {
+            if (args.Contains("-v") || args.Contains("--version"))
+            {
+                var info = System.Diagnostics.FileVersionInfo.GetVersionInfo(
+                    Assembly.GetExecutingAssembly().Location);
+                Console.Write($"{info.ProductName}");
+                Console.WriteLine($" Version {info.ProductVersion}");
+                Console.WriteLine($"{info.CompanyName}");
+                Console.WriteLine($"{info.Comments}");
+                return true;
+            }
+
             if (args.Contains("--help"))
             {
                 Console.WriteLine(

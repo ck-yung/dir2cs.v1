@@ -5,6 +5,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Company />
+    <Authors>Yung, Chun Kau (yung.chun.kau@gmail.com)</Authors>
+    <Copyright>GPL-3.0 License</Copyright>
+    <PackageProjectUrl>https://github.com/ck-yung/dir2cs</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ck-yung/dir2cs</RepositoryUrl>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Description>https://github.com/ck-yung/dir2cs</Description>
   </PropertyGroup>
 
   <ItemGroup>

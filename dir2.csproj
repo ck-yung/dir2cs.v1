@@ -20,9 +20,10 @@
     <PackageReleaseNotes>init</PackageReleaseNotes>
     <PackageTags>dir</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <PackageReadmeFile>./readme.MD</PackageReadmeFile>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>  </PropertyGroup>
   <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="" />
     <None Remove=".gitignore" />
     <None Remove=".DS_Store" />
   </ItemGroup>

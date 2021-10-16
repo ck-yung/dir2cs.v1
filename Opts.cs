@@ -522,7 +522,7 @@ namespace dir2
             BriefShortCutWithoutValue =
             new Dictionary<string, string>()
             {
-                ["-s"] = "list file recursively subdirectories",
+                ["-s"] = "list file recursively",
                 ["-f"] = "list file only (exclsive to '-s')",
                 ["-b"] = "list file name only",
             };

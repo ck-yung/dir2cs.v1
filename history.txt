@@ -173,3 +173,5 @@
 22.03  Apply ExclDirFilter
 22.04  Add tree prefix to Console.WriteLine()
 22.05  Suppress exception
+
+23.00  Lesson Init - Add opt '--regex' for non-DOS wild card

@@ -442,6 +442,7 @@ namespace dir2
 
         static public readonly IFunc<string, string> ToRegexText =
             new Switcher<string, string>("--regex",
+                help:"enclosed by quotion mark",
                 invoke: (it) =>
                 {
                     var regText = new System.Text.StringBuilder("^");

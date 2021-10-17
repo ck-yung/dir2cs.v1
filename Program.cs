@@ -55,7 +55,8 @@ namespace dir2
             else if (args.Length == 1)
             {
                 var dirThe = Path.GetDirectoryName(args[0]);
-                if (!string.IsNullOrEmpty(dirThe))
+                if (!string.IsNullOrEmpty(dirThe) &&
+                    Directory.Exists(dirThe))
                 {
                     baseDir = Path.GetFullPath(dirThe);
                     args = new string[] { Path.GetFileName(args[0]) };

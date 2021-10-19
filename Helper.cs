@@ -10,11 +10,10 @@ namespace dir2
 {
     static class Helper
     {
-        static public string[] emptyStrings = new string[] { };
+        static public string[] emptyStrings = Array.Empty<string>();
 
         static public readonly Dictionary<string, string>
-            ShortCutWithValue =
-            new Dictionary<string, string>()
+            ShortCutWithValue = new()
             {
                 ["-o"] = "--sort=",
                 ["-x"] = "--excl-file=",
@@ -23,8 +22,7 @@ namespace dir2
             };
 
         static public readonly Dictionary<string, string[]>
-            ShortCutWithoutValue =
-            new Dictionary<string, string[]>()
+            ShortCutWithoutValue = new()
             {
                 ["-s"] = new string[] { "--dir=sub" },
                 ["-f"] = new string[] { "--dir=off" },
@@ -47,7 +45,7 @@ namespace dir2
                     if (curr2.Length < 3) yield return curr2;
                     else if (curr2.StartsWith("--")) yield return curr2;
                     else if (curr2[0] != '-') yield return curr2;
-                    else foreach (var chOpt in curr2.Substring(1))
+                    else foreach (var chOpt in curr2[1..])
                             yield return $"-{chOpt}";
                 }
             }
@@ -170,8 +168,8 @@ namespace dir2
                 var nameThe = Path.GetFileName(currentDirname);
                 if (Opts.ExclDirnameFilter.Func(nameThe)) continue;
                 if (!filterThe(nameThe)) continue;
-                Console.Write(Opts.ItemText(
-                    $"[DIR] {InfoFile.RelativePath(currentDirname)}"));
+                Console.Write(Opts.ItemText(Opts.DirNameText(
+                    InfoFile.RelativePath(currentDirname))));
                 cntDir += 1;
             }
             if (cntDir > 1)
@@ -184,24 +182,24 @@ namespace dir2
 
         public static bool TryParseAsLong(string arg, out long result)
         {
-            long unitValue(char unitThe)
+            static long unitValue(char unitThe)
             {
-                switch (unitThe)
+                return unitThe switch
                 {
-                    case 'k': return 1024;
-                    case 'm': return 1024 * 1024;
-                    default: return 1024 * 1024 * 1024; // g
-                }
+                    'k' => 1024,
+                    'm' => 1024 * 1024,
+                    _ => 1024 * 1024 * 1024,// g
+                };
             }
 
             if (Regex.Match(arg, @"^\d+[kmg]$").Success)
             {
-                if (long.TryParse(arg.Substring(0, arg.Length - 1),
+                if (long.TryParse(arg.AsSpan(0, arg.Length - 1),
                     out long valThe))
                 {
                     if (valThe > 0)
                     {
-                        result = valThe * unitValue(arg[arg.Length - 1]);
+                        result = valThe * unitValue(arg[^1]);
                         return true;
                     }
                 }
@@ -234,21 +232,14 @@ namespace dir2
 
             if (Regex.Match(arg, @"^\d+[mhd]$").Success)
             {
-                Func<int, TimeSpan> toTimeSpan;
-                switch (arg[arg.Length - 1])
+                Func<int, TimeSpan> toTimeSpan = arg[^1] switch
                 {
-                    case 'm':
-                        toTimeSpan = (arg9) => TimeSpan.FromMinutes(arg9);
-                        break;
-                    case 'h':
-                        toTimeSpan = (arg9) => TimeSpan.FromHours(arg9);
-                        break;
-                    default: // 'd'
-                        toTimeSpan = (arg9) => TimeSpan.FromDays(arg9);
-                        break;
-                }
-
-                if (int.TryParse(arg.Substring(0, arg.Length - 1),
+                    'm' => (arg9) => TimeSpan.FromMinutes(arg9),
+                    'h' => (arg9) => TimeSpan.FromHours(arg9),
+                    // 'd'
+                    _ => (arg9) => TimeSpan.FromDays(arg9),
+                };
+                if (int.TryParse(arg.AsSpan(0, arg.Length - 1),
                     out int goodValue))
                 {
                     if (goodValue > 0)

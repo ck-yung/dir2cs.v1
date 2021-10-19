@@ -10,7 +10,7 @@ namespace dir2
         {
             protected readonly string name;
             protected readonly string help;
-            public Func<T, R>? invoke { get; set; }
+            public Func<T, R>? _Invoke { get; set; }
 
             public AbstractParser(string name,
                 string help)
@@ -29,7 +29,7 @@ namespace dir2
 
             public virtual R Func(T arg)
             {
-                return invoke!(arg);
+                return _Invoke!(arg);
             }
 
             public override string ToString()
@@ -46,7 +46,7 @@ namespace dir2
                 Action<Function<T, R>, string> parse, string help = "")
                 : base(name, help)
             {
-                this.invoke = invoke;
+                this._Invoke = invoke;
                 this.parse = parse;
             }
 
@@ -60,7 +60,7 @@ namespace dir2
                 if (found.ContainsKey(true))
                 {
                     var values = found[true]
-                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it[name.Length..])
                         .Where((it) => !string.IsNullOrEmpty(it))
                         .Distinct()
                         .ToArray();
@@ -89,7 +89,7 @@ namespace dir2
                 Action<Switcher<T, R>>? postAlt = null)
                 :base(name,help)
             {
-                this.invoke = invoke;
+                this._Invoke = invoke;
                 this.alt = alt;
                 this.postAlt = postAlt;
             }
@@ -103,7 +103,7 @@ namespace dir2
 
                 if (found.ContainsKey(true))
                 {
-                    invoke = alt;
+                    _Invoke = alt;
                     postAlt?.Invoke(this);
                 }
                 else return args;
@@ -140,7 +140,7 @@ namespace dir2
                 if (found.ContainsKey(true))
                 {
                     var values = found[true]
-                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it[name.Length..])
                         .Where((it) => !string.IsNullOrEmpty(it))
                         .Distinct()
                         .ToArray();
@@ -171,7 +171,7 @@ namespace dir2
                 Action<Function2<T, R>, string[]> parse, string help = "")
                 : base(name, help)
             {
-                this.invoke = invoke;
+                this._Invoke = invoke;
                 this.parse = parse;
             }
 
@@ -185,7 +185,7 @@ namespace dir2
                 if (found.ContainsKey(true))
                 {
                     var values = found[true]
-                        .Select((it) => it.Substring(name.Length))
+                        .Select((it) => it[name.Length..])
                         .Select((it) => it.Split(','))
                         .SelectMany((it) => it)
                         .Where((it) => !string.IsNullOrEmpty(it))

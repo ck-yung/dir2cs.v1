@@ -22,28 +22,26 @@ namespace dir2
             try
             {
                 var cfgFilename = GetFilename();
-                using (var fs = File.OpenText(cfgFilename))
+                using var fs = File.OpenText(cfgFilename);
+                var lines = fs.ReadToEnd()
+                    .Split('\n', '\r')
+                    .Select((it) => it.Trim())
+                    .Where((it) => !string.IsNullOrEmpty(it));
+                try
                 {
-                    var lines = fs.ReadToEnd()
-                        .Split('\n', '\r')
-                        .Select((it) => it.Trim())
-                        .Where((it) => !string.IsNullOrEmpty(it));
-                    try
-                    {
-                        return Opts.ConfigParsers
-                            .Aggregate(lines, (acc, opt) => opt.Parse(acc))
-                            .Join(Opts.ConfigParsers2,
-                            outerKeySelector: (line) => line.Split('=')[0],
-                            innerKeySelector: (opt) => opt.Name().Trim('='),
-                            resultSelector: (line, opt) => line);
-                    }
-                    catch (Exception ee)
-                    {
-                        Console.Error.WriteLine(
-                            $"Config file {cfgFilename} [{ee.GetType()}] {ee.Message}");
-                        Console.Error.WriteLine();
-                        return Helper.emptyStrings;
-                    }
+                    return Opts.ConfigParsers
+                        .Aggregate(lines, (acc, opt) => opt.Parse(acc))
+                        .Join(Opts.ConfigParsers2,
+                        outerKeySelector: (line) => line.Split('=')[0],
+                        innerKeySelector: (opt) => opt.Name().Trim('='),
+                        resultSelector: (line, opt) => line);
+                }
+                catch (Exception ee)
+                {
+                    Console.Error.WriteLine(
+                        $"Config file {cfgFilename} [{ee.GetType()}] {ee.Message}");
+                    Console.Error.WriteLine();
+                    return Helper.emptyStrings;
                 }
             }
             catch

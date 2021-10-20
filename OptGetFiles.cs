@@ -134,6 +134,20 @@ namespace dir2
                     Console.OutputEncoding = System.Text.Encoding.UTF8;
                     return true;
                 });
+
+        static Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
+            SumOrder = (seqThe) => seqThe;
+
+        static public readonly IFunc<IEnumerable<InfoFile>,
+            IEnumerable<InfoFile>> OrderOpt =
+            new Switcher<IEnumerable<InfoFile>, IEnumerable<InfoFile>>(
+                "--reverse",
+                invoke: (seqThe) => seqThe,
+                alt: (seqThe) => seqThe.Reverse(),
+                postAlt: (_) =>
+                {
+                    SumOrder = (seqThe) => seqThe.Reverse();
+                });
     }
 }
 

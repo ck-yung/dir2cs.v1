@@ -282,6 +282,7 @@ namespace dir2
                 "--sum=", help: "ext|dir",
                 invoke: (seqThe) => seqThe
                 .Invoke((seqThe) => SortFileInfo(seqThe))
+                .Invoke((seqThe) => OrderOpt.Func(seqThe))
                 .Select((it) =>
                 {
                     Console.Write(ItemText(it.ToString()));
@@ -302,6 +303,7 @@ namespace dir2
                             ? "*no-ext*" : grp.Key),
                         (acc, it) => acc.AddWith(it)))
                         .Invoke(SortSumInfo)
+                        .Invoke(SumOrder)
                         .Select((it) =>
                         {
                             Console.Write(ItemText(it.ToString()));
@@ -316,6 +318,7 @@ namespace dir2
                         .Select((grp) => grp.Aggregate(new InfoSum(grp.Key),
                         (acc, it) => acc.AddWith(it)))
                         .Invoke(SortSumInfo)
+                        .Invoke(SumOrder)
                         .Select((it) =>
                         {
                             Console.Write(ItemText(it.ToString()));
@@ -359,6 +362,7 @@ namespace dir2
             (IParser) GetFileDate,
             (IParser) MakeRelativePath,
             (IParser) CountComma,
+            (IParser) OrderOpt,
             (IParser) MinFileSizeFilter,
             (IParser) MaxFileSizeFilter,
             (IParser) MinFileDateFilter,
@@ -387,6 +391,7 @@ namespace dir2
             (IParser) EncodeConsoleOuput,
             (IParser) ToRegexText,
             (IParser) CaseOpt,
+            (IParser) OrderOpt,
             (IParser) CountComma,
             (IParser) HiddenFilter,
             (IParser) SizeFormat,

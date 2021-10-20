@@ -175,8 +175,9 @@
 22.05  Suppress exception
 23.00  Lesson Init - Add opt '--regex' for non-DOS wild card
 23.01  Add opt '--regex' (And fine tune for C# 10 features)
-
 24.00  Lesson Init - Parse opt from envir variable 'dir2'
 24.01  Check if envir 'dir2' contains '--cfg-off'
 24.02  Parse other envir opts
 24.03  Update on-line help message and fine tune warning message
+
+25.01  Add opt '--reverse'

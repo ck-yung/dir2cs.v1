@@ -179,5 +179,6 @@
 24.01  Check if envir 'dir2' contains '--cfg-off'
 24.02  Parse other envir opts
 24.03  Update on-line help message and fine tune warning message
-
 25.01  Add opt '--reverse'
+
+26.01  Add opt '--take=NUMBER'

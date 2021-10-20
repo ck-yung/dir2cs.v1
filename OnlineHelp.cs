@@ -127,7 +127,8 @@ namespace dir2
                     Console.WriteLine(opt);
                 }
                 Console.WriteLine();
-                Console.WriteLine("Apply opt '--cfg-off' to skip the above config.");
+                Console.WriteLine($"Apply opt '{Opts.ConfigFileOffOption}'");
+                Console.WriteLine(" to skip the above config.");
                 return true;
             }
 

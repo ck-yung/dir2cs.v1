@@ -13,7 +13,7 @@ namespace dir2
         = (it) => new Regex(it, RegexOptions.IgnoreCase);
 
         static readonly IFunc<bool, IEnumerable<string>> LoadConfigOpt =
-            new Switcher<bool, IEnumerable<string>>("--cfg-off",
+            new Switcher<bool, IEnumerable<string>>(Opts.ConfigFileOffOption,
                 help: "see --help=cfg",
                 invoke: (_) => Config.ParseFile(), alt: (_) => Helper.emptyStrings);
 
@@ -379,6 +379,7 @@ namespace dir2
             (IParser) SumBy,
             (IParser) ExclFilenameFilter,
             (IParser) ExclDirnameFilter,
+            (IParser) TakeOpt,
         };
 
         static public readonly IParser[] Parsers2 = new IParser[]

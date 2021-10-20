@@ -91,6 +91,7 @@ namespace dir2
                 .Where((it) => Opts.MinFileDateFilter.Func(it.DateTime))
                 .Where((it) => Opts.MaxFileDateFilter.Func(it.DateTime))
                 .Where((it) => Opts.HiddenFilter.Func(it))
+                .Invoke((seq) => Opts.TakeOpt.Func(seq))
                 .Invoke(Opts.SumBy);
 
             if (sum.AddCount == 0)

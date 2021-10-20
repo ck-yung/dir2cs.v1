@@ -4,6 +4,7 @@ namespace dir2
 {
     static partial class Opts
     {
+        static public readonly string ConfigFileOffOption = "--cfg-off";
 
         static Action<string> PrintDir { get; set; } =
             (dirname) => Helper.PrintDir(dirname, (_) => true);
@@ -148,6 +149,23 @@ namespace dir2
                 {
                     SumOrder = (seqThe) => seqThe.Reverse();
                 });
+
+        static public readonly
+            IFunc<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
+            TakeOpt =
+            new Function<IEnumerable<InfoFile>, IEnumerable<InfoFile>>(
+                "--take=", help: "NUMBER",
+                invoke: (seqThe) => seqThe,
+                parse: (opt, arg) =>
+                {
+                    if (Int32.TryParse(arg, out Int32 count))
+                    {
+                        opt._Invoke = (seqThe) => seqThe.Take(count);
+                    }
+                    else
+                    {
+                        throw new InvalidValueException(arg, opt.Name());
+                    }
+                });
     }
 }
-

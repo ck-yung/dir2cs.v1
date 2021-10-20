@@ -23,10 +23,10 @@ namespace dir2
             return LoadConfigOpt.Func(true).Concat(parsedResult);
         }
 
-        static internal void DisableLoadConfig()
+        static internal IEnumerable<string> GetEnvirOpts()
         {
             var parserThe = (IParser)LoadConfigOpt;
-            parserThe.Parse(new string[] { "--cfg-off" });
+            return parserThe.Parse(Config.GetEnvirOpts());
         }
 
         static public readonly IFunc<string, string> CaseOpt =

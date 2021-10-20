@@ -38,20 +38,19 @@ namespace dir2
                 return;
             }
 
-            var envirOpts = Config.PreParseEnvir();
-            if (envirOpts.Item1)
-            {
-                Console.WriteLine("Envir: cfg-off is found");
-                Opts.DisableLoadConfig();
-            }
+            var envirOpts = Opts.GetEnvirOpts();
 
-            if (envirOpts.Item2.Any())
+            var cmdOpts = Opts.LoadConfig(argsMain).ExpandShortcut();
+
+            var envirErrorOpts = Opts.Parsers
+                .Aggregate(envirOpts, (it, opt) => opt.Parse(it))
+                .ToArray();
+            if (envirErrorOpts.Any())
             {
-                Console.WriteLine("Envir:");
-                foreach (var envirOpt in envirOpts.Item2)
-                {
-                    Console.WriteLine($"'{envirOpt}'");
-                }
+                Console.Error.WriteLine(
+                    $"Envir '{nameof(dir2)}' contains unknown option.");
+                foreach (var errOpt in envirErrorOpts)
+                    Console.Error.WriteLine($"\t{errOpt}");
             }
 
             var args = Opts.Parsers

@@ -50,35 +50,22 @@ namespace dir2
             }
         }
 
-        static internal Tuple<bool,IEnumerable<string>>
-            PreParseEnvir()
+        static internal IEnumerable<string> GetEnvirOpts()
         {
             var envirOld = Environment.GetEnvironmentVariable(
                 nameof(dir2));
             if (string.IsNullOrEmpty(envirOld))
             {
-                return new Tuple<bool,IEnumerable<string>>(
-                    false, Array.Empty<string>());
+                return Array.Empty<string>();
             }
 
-            var envirCfgOffCheck = (" "+envirOld)
+            return (" "+envirOld)
                 .Split(" --")
                 .Select((it) => it.Trim())
                 .Where((it) => it.Length> 0)
                 .Distinct()
                 .Select((it) => "--"+ it)
-                .GroupBy((it) => it.Equals("--cfg-off"))
-                .ToDictionary((grp)=>grp.Key,(grp)=>grp)
                 ;
-
-            IEnumerable<string> envirOthers =
-                envirCfgOffCheck.ContainsKey(false)
-                ? envirCfgOffCheck[false]
-                : Array.Empty<string>();
-
-            return new Tuple<bool, IEnumerable<string>>(
-                envirCfgOffCheck.ContainsKey(true),
-                envirOthers);
         }
     }
 }

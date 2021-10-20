@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -44,20 +45,21 @@ namespace dir2
                 {
                     var exclNames = args
                     .Select((it) => Helper.ToWildMatch(it))
-                    .ToArray();
+                    .ToImmutableArray();
 
                     opt._Invoke = (filename) => exclNames
                     .Any((wildMatch) => wildMatch(filename));
                 });
 
-        static public string[] ParseFilenameFilter(string[] args)
+        static public ImmutableArray<string>
+            ParseFilenameFilter(IEnumerable<string> args)
         {
             var parser = (IParser)FilenameFilter;
             return parser.Parse(
                 args
                 .Select((it) =>
                 it.StartsWith("-") ? it : $"--name={it}")
-                ).ToArray();
+                ).ToImmutableArray();
         }
 
         static public readonly IFunc<string, bool> ExclFilenameFilter =
@@ -67,7 +69,7 @@ namespace dir2
                 {
                     var filterThe = args
                     .Select((it) => Helper.ToWildMatch(it))
-                    .ToArray();
+                    .ToImmutableArray();
 
                     if (filterThe.Length>0)
                     {
@@ -83,7 +85,7 @@ namespace dir2
                 {
                     var filterThe = args
                     .Select((it) => Helper.ToWildMatch(it))
-                    .ToArray();
+                    .ToImmutableArray();
 
                     if (filterThe.Length > 0)
                     {
@@ -410,12 +412,12 @@ namespace dir2
             (IParser) SumBy,
         };
 
-        static public readonly Dictionary<string, string>
-            BriefShortCutWithoutValue = new()
+        static public readonly ImmutableDictionary<string, string>
+            BriefShortCutWithoutValue = new Dictionary<string, string>()
             {
                 ["-s"] = "list file recursively",
                 ["-f"] = "list file only (exclsive to '-s')",
                 ["-b"] = "list file name only",
-            };
+            }.ToImmutableDictionary();
     }
 }

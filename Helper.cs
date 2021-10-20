@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,26 +13,26 @@ namespace dir2
     {
         static public string[] emptyStrings = Array.Empty<string>();
 
-        static public readonly Dictionary<string, string>
-            ShortCutWithValue = new()
+        static public readonly ImmutableDictionary<string, string>
+            ShortCutWithValue = new Dictionary<string, string>()
             {
                 ["-o"] = "--sort=",
                 ["-x"] = "--excl-file=",
                 ["-X"] = "--excl-dir=",
                 ["-n"] = "--name=",
-            };
+            }.ToImmutableDictionary();
 
-        static public readonly Dictionary<string, string[]>
-            ShortCutWithoutValue = new()
+        static public readonly ImmutableDictionary<string, string[]>
+            ShortCutWithoutValue = new Dictionary<string, string[]>()
             {
                 ["-s"] = new string[] { "--dir=sub" },
                 ["-f"] = new string[] { "--dir=off" },
                 ["-d"] = new string[] { "--dir=only" },
-                ["-T"] = new string[] { "--dir=tree"},
+                ["-T"] = new string[] { "--dir=tree" },
                 ["-c"] = new string[] { "--case-sensitive" },
                 ["-b"] = new string[] { "--total=off", "--hide=size,date,count" },
                 ["-t"] = new string[] { "--total=only" },
-            };
+            }.ToImmutableDictionary();
 
         static public IEnumerable<string> ExpandShortcut(
             this IEnumerable<string> args)
@@ -157,7 +158,7 @@ namespace dir2
             }
         }
 
-        static public void PrintDir(string dirname, Func<string,bool> filterThe)
+        static public void PrintDir(string dirname, Func<string, bool> filterThe)
         {
             var cntDir = 0;
             var enumDir = SafeGetDirectoryEnumerator(dirname);
@@ -219,12 +220,13 @@ namespace dir2
             return false;
         }
 
-        static public string[] DateTimeFormats = new string[] {
+        static public readonly ImmutableArray<string> DateTimeFormats =
+            ImmutableArray.Create(new String[] {
                 "yyyy-MM-dd", "yyyyMMdd", "yyyy-MM-ddTHH:mm:ss",
                 "yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm",
                 "yyyy-MM-dd HH:mm", "yyyyMMdd HH:mm:ss",
                 "yyyyMMdd HH:mm",
-            };
+            });
 
         static public bool TryParseDateTime(string arg, out DateTime result)
         {

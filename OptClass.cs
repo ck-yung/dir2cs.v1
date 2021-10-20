@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace dir2
@@ -55,7 +56,7 @@ namespace dir2
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+                    .ToImmutableDictionary((grp) => grp.Key, (grp) => grp);
 
                 if (found.ContainsKey(true))
                 {
@@ -63,7 +64,7 @@ namespace dir2
                         .Select((it) => it[name.Length..])
                         .Where((it) => !string.IsNullOrEmpty(it))
                         .Distinct()
-                        .ToArray();
+                        .ToImmutableArray();
 
                     if (values.Length > 1)
                         throw new TooManyValuesException(name);
@@ -99,7 +100,7 @@ namespace dir2
             {
                 var found = args
                     .GroupBy((it) => it == name)
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+                    .ToImmutableDictionary((grp) => grp.Key, (grp) => grp);
 
                 if (found.ContainsKey(true))
                 {
@@ -135,7 +136,7 @@ namespace dir2
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+                    .ToImmutableDictionary((grp) => grp.Key, (grp) => grp);
 
                 if (found.ContainsKey(true))
                 {
@@ -143,7 +144,7 @@ namespace dir2
                         .Select((it) => it[name.Length..])
                         .Where((it) => !string.IsNullOrEmpty(it))
                         .Distinct()
-                        .ToArray();
+                        .ToImmutableArray();
 
                     if (values.Length > 1)
                         throw new TooManyValuesException(name);
@@ -165,11 +166,12 @@ namespace dir2
 
         private class Function2<T, R> : AbstractParser<T, R>
         {
-            protected readonly Action<Function2<T, R>, string[]> parse;
+            protected readonly Action<Function2<T, R>,
+                ImmutableArray<string>> parse;
 
             public Function2(string name, Func<T, R> invoke,
-                Action<Function2<T, R>, string[]> parse, string help = "")
-                : base(name, help)
+                Action<Function2<T, R>, ImmutableArray<string>> parse,
+                string help = ""): base(name, help)
             {
                 this._Invoke = invoke;
                 this.parse = parse;
@@ -180,7 +182,7 @@ namespace dir2
             {
                 var found = args
                     .GroupBy((it) => it.StartsWith(name))
-                    .ToDictionary((grp) => grp.Key, (grp) => grp);
+                    .ToImmutableDictionary((grp) => grp.Key, (grp) => grp);
 
                 if (found.ContainsKey(true))
                 {
@@ -190,7 +192,7 @@ namespace dir2
                         .SelectMany((it) => it)
                         .Where((it) => !string.IsNullOrEmpty(it))
                         .Distinct()
-                        .ToArray();
+                        .ToImmutableArray();
 
                     if (values.Length > 0) parse(this, values);
                 }

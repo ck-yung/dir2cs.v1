@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -48,7 +49,7 @@ namespace dir2
             var args = Opts.Parsers
                 .Aggregate(Opts.LoadConfig(argsMain).ExpandShortcut(),
                 (it, opt) => opt.Parse(it))
-                .ToArray();
+                .ToImmutableArray();
 
             Opts.EncodeConsoleOuput.Func(true);
 
@@ -57,7 +58,7 @@ namespace dir2
             if (args.Length > 0 && Directory.Exists(args[0]))
             {
                 baseDir = Path.GetFullPath(args[0]);
-                args = args.Skip(1).ToArray();
+                args = args.Skip(1).ToImmutableArray();
             }
             else if (args.Length == 1)
             {
@@ -66,7 +67,8 @@ namespace dir2
                     Directory.Exists(dirThe))
                 {
                     baseDir = Path.GetFullPath(dirThe);
-                    args = new string[] { Path.GetFileName(args[0]) };
+                    args = ImmutableArray.Create(
+                        new string[] { Path.GetFileName(args[0]) });
                 }
             }
 

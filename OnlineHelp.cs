@@ -68,11 +68,17 @@ namespace dir2
                         ? "   " : $"{item.Shortcut},";
                     Console.WriteLine($"  {shortcut}{item.Opt}");
                 }
+
                 Console.WriteLine("Shortcut:");
                 foreach (var shortcut in Helper.ShortCutWithoutValue)
                 {
                     Console.WriteLine($"  {shortcut.Key} => {string.Join("\t", shortcut.Value)}");
                 }
+
+                Console.WriteLine();
+                Console.Write($"Options defined by envir var '{nameof(dir2)}'");
+                Console.Write(" will be parsed before command line opt.");
+                Console.WriteLine();
                 return true;
             }
 

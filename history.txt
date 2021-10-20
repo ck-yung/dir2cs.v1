@@ -180,6 +180,7 @@
 24.02  Parse other envir opts
 24.03  Update on-line help message and fine tune warning message
 25.01  Add opt '--reverse'
-
 26.01  Add opt '--take=NUMBER'
 26.02  Update opt '--take=NUMBER|SIZE'
+
+27.01  Add '+dir' to '--sum='

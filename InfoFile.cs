@@ -76,9 +76,16 @@ namespace dir2
     class InfoSum
     {
         public readonly string Name;
+
         public InfoSum(string name)
         {
             Name = name;
+        }
+
+        public InfoSum(string name, bool _)
+        {
+            Name = name;
+            DateTime = DateTime.MinValue;
         }
 
         public int Count { get; private set; }

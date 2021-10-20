@@ -279,7 +279,7 @@ namespace dir2
 
         static public readonly IFunc<IEnumerable<InfoFile>, InfoSum> SumBy =
             new Function<IEnumerable<InfoFile>, InfoSum>(
-                "--sum=", help: "ext|dir",
+                "--sum=", help: "ext|dir|+dir",
                 invoke: (seqThe) => seqThe
                 .Invoke((seqThe) => SortFileInfo(seqThe))
                 .Invoke((seqThe) => OrderOpt.Func(seqThe))
@@ -327,7 +327,41 @@ namespace dir2
                         .Aggregate(new InfoSum(InfoFile.BaseDir),
                         (acc, it) => acc.AddWith(it)),
 
-                        _ => throw new InvalidValueException(arg, opt.Name()),
+                        "+dir" => (seqThe) =>
+                        {
+                            var qryScan = seqThe
+                            .GroupBy((it) => Helper.GetFirstPath(
+                                InfoFile.RelativePath(it.FullName)))
+                            .Select((grp) => grp.Aggregate(
+                                new InfoSum(grp.Key),
+                                (acc, it) => acc.AddWith(it)));
+
+                            var qryResult =
+                            from dirDefault in (new string[1] { "." })
+                            .AsEnumerable()
+                            .Union(Directory.EnumerateDirectories(
+                                InfoFile.BaseDir)
+                            .Select(it => Path.GetFileName(it)))
+                            join dirScan in qryScan
+                            on dirDefault equals dirScan.Name
+                            into joinThe
+                            from dirFound in joinThe.DefaultIfEmpty()
+                            select dirFound == null
+                            ? new InfoSum(dirDefault, false) : dirFound;
+
+                            return qryResult
+                            .Invoke(SortSumInfo)
+                            .Invoke(SumOrder)
+                            .Select((it) =>
+                            {
+                                Console.Write(ItemText(it.ToString()));
+                                return it;
+                            })
+                            .Aggregate(new InfoSum(InfoFile.BaseDir),
+                            (acc, it) => acc.AddWith(it));
+                        },
+
+                    _ => throw new InvalidValueException(arg, opt.Name()),
                     };
                 });
 

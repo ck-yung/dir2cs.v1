@@ -177,3 +177,4 @@
 23.01  Add opt '--regex' (And fine tune for C# 10 features)
 
 24.00  Lesson Init - Parse opt from envir variable 'dir2'
+24.01  Check if envir 'dir2' contains '--cfg-off'

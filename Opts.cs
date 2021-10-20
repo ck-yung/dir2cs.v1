@@ -23,6 +23,12 @@ namespace dir2
             return LoadConfigOpt.Func(true).Concat(parsedResult);
         }
 
+        static internal void DisableLoadConfig()
+        {
+            var parserThe = (IParser)LoadConfigOpt;
+            parserThe.Parse(new string[] { "--cfg-off" });
+        }
+
         static public readonly IFunc<string, string> CaseOpt =
             new Switcher<string, string>("--case-sensitive",
                 invoke: (it) => it.ToLower(), alt: (it) => it,

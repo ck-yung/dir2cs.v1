@@ -38,6 +38,22 @@ namespace dir2
                 return;
             }
 
+            var envirOpts = Config.PreParseEnvir();
+            if (envirOpts.Item1)
+            {
+                Console.WriteLine("Envir: cfg-off is found");
+                Opts.DisableLoadConfig();
+            }
+
+            if (envirOpts.Item2.Any())
+            {
+                Console.WriteLine("Envir:");
+                foreach (var envirOpt in envirOpts.Item2)
+                {
+                    Console.WriteLine($"'{envirOpt}'");
+                }
+            }
+
             var args = Opts.Parsers
                 .Aggregate(Opts.LoadConfig(argsMain).ExpandShortcut(),
                 (it, opt) => opt.Parse(it))

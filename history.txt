@@ -182,3 +182,4 @@
 25.01  Add opt '--reverse'
 
 26.01  Add opt '--take=NUMBER'
+26.02  Update opt '--take=NUMBER|SIZE'

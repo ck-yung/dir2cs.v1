@@ -154,7 +154,7 @@ namespace dir2
             IFunc<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
             TakeOpt =
             new Function<IEnumerable<InfoFile>, IEnumerable<InfoFile>>(
-                "--take=", help: "NUMBER",
+                "--take=", help: "NUMBER|SIZE",
                 invoke: (seqThe) => seqThe,
                 parse: (opt, arg) =>
                 {
@@ -164,7 +164,20 @@ namespace dir2
                     }
                     else
                     {
-                        throw new InvalidValueException(arg, opt.Name());
+                        if (Helper.TryParseAsLong(arg, out long maxSize))
+                        {
+                            long sumSize = 0L;
+                            opt._Invoke = (seqThe) =>
+                            seqThe.TakeWhile((it) =>
+                            {
+                                sumSize += it.Length;
+                                return sumSize < maxSize;
+                            });
+                        }
+                        else
+                        {
+                            throw new InvalidValueException(arg, opt.Name());
+                        }
                     }
                 });
     }

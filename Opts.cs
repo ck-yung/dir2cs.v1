@@ -17,7 +17,7 @@ namespace dir2
                 help: "see --help=cfg",
                 invoke: (_) => Config.ParseFile(), alt: (_) => Helper.emptyStrings);
 
-        static public IEnumerable<string> LoadConfig(string[] args)
+        static public IEnumerable<string> LoadConfig(IEnumerable<string> args)
         {
             var parserThe = (IParser)LoadConfigOpt;
             var parsedResult = parserThe.Parse(args);
@@ -433,6 +433,33 @@ namespace dir2
             (IParser) CountFormat,
             (IParser) DateFormat,
             SortOpt,
+        };
+
+        static public readonly IParser[] EnvirParsers = new IParser[]
+        {
+            (IParser) LoadConfigOpt,
+            (IParser) EncodeConsoleOuput,
+            (IParser) ToRegexText,
+            (IParser) CaseOpt,
+            (IParser) GetFileDate,
+            (IParser) MakeRelativePath,
+            (IParser) CountComma,
+            (IParser) OrderOpt,
+            (IParser) MinFileSizeFilter,
+            (IParser) MaxFileSizeFilter,
+            (IParser) MinFileDateFilter,
+            (IParser) MaxFileDateFilter,
+            (IParser) FileExtFilter,
+            (IParser) HiddenFilter,
+            (IParser) SizeFormat,
+            (IParser) CountFormat,
+            (IParser) DateFormat,
+            TotalOpt,
+            HideOpt,
+            SortOpt,
+            (IParser) GetFiles,
+            (IParser) SumBy,
+            (IParser) TakeOpt,
         };
 
         static public readonly IParser[] ConfigParsers2 = new IParser[]

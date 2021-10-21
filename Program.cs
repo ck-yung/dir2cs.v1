@@ -43,11 +43,17 @@ namespace dir2
 
             var cmdOpts = Opts.LoadConfig(argsMain).ExpandShortcut();
 
-            var envirErrorOpts = Opts.Parsers
-                .Aggregate(envirOpts, (it, opt) => opt.Parse(it));
+            var envirExclOpts = Opts.EnvirParsers
+                .Aggregate(envirOpts, (it, opt) => opt.Parse(it))
+                .Join(Opts.ConfigParsers2,
+                outerKeySelector: (line) => line.Split('=')[0],
+                innerKeySelector: (opt) => opt.Name().Trim('='),
+                resultSelector: (line, opt) => line);
 
             var args = Opts.Parsers
-                .Aggregate(Opts.LoadConfig(argsMain).ExpandShortcut(),
+                .Aggregate(Opts.LoadConfig(
+                    argsMain.Union(envirExclOpts)
+                    ).ExpandShortcut(),
                 (it, opt) => opt.Parse(it))
                 .ToImmutableArray();
 
@@ -101,12 +107,6 @@ namespace dir2
 
             foreach (var arg in args)
                 Console.Error.WriteLine($"Unknown opt '{arg}'");
-
-            if (envirErrorOpts.Any())
-            {
-                Console.Error.WriteLine(
-                    $"Envir '{nameof(dir2)}' contains unknown option.");
-            }
 
             return;
         }

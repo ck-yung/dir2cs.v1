@@ -122,7 +122,7 @@ namespace dir2
                 {
                     Console.WriteLine(opt);
                 }
-                foreach (var opt in Opts.ConfigParsers2)
+                foreach (var opt in Opts.ExclFileDirParsers)
                 {
                     Console.WriteLine(opt);
                 }

@@ -39,21 +39,20 @@ namespace dir2
                 return;
             }
 
-            var envirOpts = Opts.GetEnvirOpts();
+            var envirOpts = Opts.GetEnvirOpts().EnvirExpandShortcut();
 
             var cmdOpts = Opts.LoadConfig(argsMain).ExpandShortcut();
 
             var envirExclOpts = Opts.EnvirParsers
                 .Aggregate(envirOpts, (it, opt) => opt.Parse(it))
-                .Join(Opts.ConfigParsers2,
+                .Join(Opts.ExclFileDirParsers,
                 outerKeySelector: (line) => line.Split('=')[0],
                 innerKeySelector: (opt) => opt.Name().Trim('='),
                 resultSelector: (line, opt) => line);
 
             var args = Opts.Parsers
                 .Aggregate(Opts.LoadConfig(
-                    argsMain.Union(envirExclOpts)
-                    ).ExpandShortcut(),
+                    argsMain).ExpandShortcut().Union(envirExclOpts),
                 (it, opt) => opt.Parse(it))
                 .ToImmutableArray();
 

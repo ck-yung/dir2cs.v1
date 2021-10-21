@@ -31,7 +31,7 @@ namespace dir2
                 {
                     return Opts.ConfigParsers
                         .Aggregate(lines, (acc, opt) => opt.Parse(acc))
-                        .Join(Opts.ConfigParsers2,
+                        .Join(Opts.ExclFileDirParsers,
                         outerKeySelector: (line) => line.Split('=')[0],
                         innerKeySelector: (opt) => opt.Name().Trim('='),
                         resultSelector: (line, opt) => line);
@@ -60,11 +60,11 @@ namespace dir2
             }
 
             return (" "+envirOld)
-                .Split(" --")
+                .Split(" -")
                 .Select((it) => it.Trim())
-                .Where((it) => it.Length> 0)
+                .Where((it) => it.Length > 0)
+                .Select((it) => "-"+ it)
                 .Distinct()
-                .Select((it) => "--"+ it)
                 ;
         }
     }

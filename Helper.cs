@@ -29,8 +29,9 @@ namespace dir2
                 ["-f"] = new string[] { "--dir=off" },
                 ["-d"] = new string[] { "--dir=only" },
                 ["-T"] = new string[] { "--dir=tree" },
-                ["-c"] = new string[] { "--case-sensitive" },
                 ["-b"] = new string[] { "--total=off", "--hide=size,date,count" },
+                ["-c"] = new string[] { "--case-sensitive" },
+                ["-r"] = new string[] { "--reverse" },
                 ["-t"] = new string[] { "--total=only" },
             }.ToImmutableDictionary();
 
@@ -328,6 +329,76 @@ namespace dir2
         {
             Console.WriteLine(dirname);
             PrintSubTree("", dirname);
+        }
+
+        static public IEnumerable<string> EnvirExpandShortcut(
+            this IEnumerable<string> args)
+        {
+            IEnumerable<string> ExpandCombiningShortcut()
+            {
+                var enum2 = args.AsEnumerable().GetEnumerator();
+                while (enum2.MoveNext())
+                {
+                    var curr2 = enum2.Current;
+                    if (curr2.Length < 3) yield return curr2;
+                    else if (curr2.StartsWith("--")) yield return curr2;
+                    else if (curr2[0] != '-') yield return curr2;
+                    else
+                    {
+                        int jj = curr2.IndexOf(' ');
+                        if (jj==1)
+                        {
+                            Console.Error.WriteLine($"Skip invalid envir option'{curr2}'");
+                        }
+                        if (jj==2)
+                        {
+                            yield return $"-{curr2[1]}";
+                            yield return $"{curr2[3..]}";
+                        }
+                        else if ((jj+1)<curr2.Length)
+                        {
+                            jj -= 1;
+                            for (int ii=1; ii<jj; ii++)
+                            {
+                                yield return $"-{curr2[ii]}";
+                            }
+                            yield return $"-{curr2[jj]}";
+                            yield return $"{curr2[(jj+2)..]}";
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine($"Skip bad envir option '{curr2}'");
+                        }
+                    }
+                }
+            }
+
+            var enumThe = ExpandCombiningShortcut().GetEnumerator();
+            while (enumThe.MoveNext())
+            {
+                var current = enumThe.Current;
+                if (ShortCutWithValue.ContainsKey(current))
+                {
+                    if (!enumThe.MoveNext())
+                    {
+                        throw new ArgumentException(
+                            $"Missing value to '{current}','{ShortCutWithValue[current]}'");
+                    }
+                    var valueThe = enumThe.Current;
+                    yield return $"{ShortCutWithValue[current]}{valueThe}";
+                }
+                else if (ShortCutWithoutValue.ContainsKey(current))
+                {
+                    foreach (var valueThe in ShortCutWithoutValue[current])
+                    {
+                        yield return valueThe;
+                    }
+                }
+                else
+                {
+                    yield return current;
+                }
+            }
         }
     }
 

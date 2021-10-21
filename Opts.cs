@@ -462,7 +462,7 @@ namespace dir2
             (IParser) TakeOpt,
         };
 
-        static public readonly IParser[] ConfigParsers2 = new IParser[]
+        static public readonly IParser[] ExclFileDirParsers = new IParser[]
         {
             (IParser) ExclFilenameFilter,
             (IParser) ExclDirnameFilter,

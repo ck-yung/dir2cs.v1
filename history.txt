@@ -184,3 +184,4 @@
 26.02  Update opt '--take=NUMBER|SIZE'
 27.01  Add '+dir' to '--sum='
 24.04  Fix bug about '--excl-file=' and '--excl-dir=' in envir 'dir2'
+24.05  Expand combining shortcut option in envir 'dir2'

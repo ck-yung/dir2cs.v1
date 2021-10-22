@@ -355,6 +355,13 @@ namespace dir2
                             yield return $"-{curr2[1]}";
                             yield return $"{curr2[3..]}";
                         }
+                        else if (jj==-1)
+                        {
+                            for (int ii = 1; ii < curr2.Length; ii++)
+                            {
+                                yield return $"-{curr2[ii]}";
+                            }
+                        }
                         else if ((jj+1)<curr2.Length)
                         {
                             jj -= 1;
@@ -373,31 +380,63 @@ namespace dir2
                 }
             }
 
-            var enumThe = ExpandCombiningShortcut().GetEnumerator();
-            while (enumThe.MoveNext())
+            IEnumerable<string> ExpandShortcut()
             {
-                var current = enumThe.Current;
-                if (ShortCutWithValue.ContainsKey(current))
+                var enumThe = ExpandCombiningShortcut().GetEnumerator();
+                while (enumThe.MoveNext())
                 {
-                    if (!enumThe.MoveNext())
+                    var current = enumThe.Current;
+                    if (ShortCutWithValue.ContainsKey(current))
                     {
-                        throw new ArgumentException(
-                            $"Missing value to '{current}','{ShortCutWithValue[current]}'");
+                        if (!enumThe.MoveNext())
+                        {
+                            throw new ArgumentException(
+                                $"Missing value to '{current}','{ShortCutWithValue[current]}'");
+                        }
+                        var valueThe = enumThe.Current;
+                        yield return $"{ShortCutWithValue[current]}{valueThe}";
                     }
-                    var valueThe = enumThe.Current;
-                    yield return $"{ShortCutWithValue[current]}{valueThe}";
-                }
-                else if (ShortCutWithoutValue.ContainsKey(current))
-                {
-                    foreach (var valueThe in ShortCutWithoutValue[current])
+                    else if (ShortCutWithoutValue.ContainsKey(current))
                     {
-                        yield return valueThe;
+                        foreach (var valueThe in ShortCutWithoutValue[current])
+                        {
+                            yield return valueThe;
+                        }
+                    }
+                    else
+                    {
+                        yield return current;
                     }
                 }
-                else
-                {
-                    yield return current;
-                }
+            }
+
+            try
+            {
+                return ExpandShortcut();
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine($"Envir error: {ee.Message}");
+                return Helper.emptyStrings;
+            }
+        }
+
+        static public IEnumerable<string> EnvirParse(
+            IEnumerable<string> args)
+        {
+            try
+            {
+                return Opts.EnvirParsers
+                    .Aggregate(args, (it, opt) => opt.Parse(it))
+                    .Join(Opts.ExclFileDirParsers,
+                    outerKeySelector: (line) => line.Split('=')[0],
+                    innerKeySelector: (opt) => opt.Name().Trim('='),
+                    resultSelector: (line, opt) => line);
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine($"Envir error: {ee.Message}");
+                return Helper.emptyStrings;
             }
         }
     }

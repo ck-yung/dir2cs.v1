@@ -43,12 +43,8 @@ namespace dir2
 
             var cmdOpts = Opts.LoadConfig(argsMain).ExpandShortcut();
 
-            var envirExclOpts = Opts.EnvirParsers
-                .Aggregate(envirOpts, (it, opt) => opt.Parse(it))
-                .Join(Opts.ExclFileDirParsers,
-                outerKeySelector: (line) => line.Split('=')[0],
-                innerKeySelector: (opt) => opt.Name().Trim('='),
-                resultSelector: (line, opt) => line);
+            IEnumerable<string> envirExclOpts =
+                Helper.EnvirParse(envirOpts);
 
             var args = Opts.Parsers
                 .Aggregate(Opts.LoadConfig(

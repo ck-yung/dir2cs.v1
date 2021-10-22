@@ -185,3 +185,5 @@
 27.01  Add '+dir' to '--sum='
 24.04  Fix bug about '--excl-file=' and '--excl-dir=' in envir 'dir2'
 24.05  Expand combining shortcut option in envir 'dir2'
+26.02+ Re-phase init lambda by static readonly property
+26.03  Fix '--take=' if '--sum=' is also applied

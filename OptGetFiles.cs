@@ -2,12 +2,48 @@ using System.Text.RegularExpressions;
 
 namespace dir2
 {
+    internal class Always<T>
+    {
+        static readonly public Func<T,bool> True = (_) => true;
+    }
+
+    internal static class Any
+    {
+        static readonly public Func<long,bool> LongTrue =
+        Always<long>.True;
+        static readonly public Func<DateTime,bool> DateTimeTrue =
+        Always<DateTime>.True;
+        static readonly public Func<string,bool> StringTrue =
+        Always<string>.True;
+        static readonly public Func<InfoFile,bool> InfoFileTrue =
+        Always<InfoFile>.True;
+        static readonly public Func<InfoSum,bool> InfoSumTrue =
+        Always<InfoSum>.True;
+    }
+
+    internal class Seq<T>
+    {
+        static readonly public Func<IEnumerable<T>,IEnumerable<T>>
+        NoFilter = (seq) => seq;
+    }
+
+    internal static class NoChangeOn
+    {
+        static readonly public
+        Func<IEnumerable<InfoFile>,IEnumerable<InfoFile>>
+        InfoFileSeq = Seq<InfoFile>.NoFilter;
+
+        static readonly public
+        Func<IEnumerable<InfoSum>,IEnumerable<InfoSum>>
+        InfoSumSeq = Seq<InfoSum>.NoFilter;
+    }
+
     static partial class Opts
     {
         static public readonly string ConfigFileOffOption = "--cfg-off";
 
         static Action<string> PrintDir { get; set; } =
-            (dirname) => Helper.PrintDir(dirname, (_) => true);
+            (dirname) => Helper.PrintDir(dirname, Any.StringTrue);
 
         static public readonly IFunc<string, IEnumerable<string>> GetFiles =
             new Function<string, IEnumerable<string>>(
@@ -137,37 +173,81 @@ namespace dir2
                 });
 
         static Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
-            SumOrder = (seqThe) => seqThe;
+            SumOrder = NoChangeOn.InfoSumSeq;
 
         static public readonly IFunc<IEnumerable<InfoFile>,
             IEnumerable<InfoFile>> OrderOpt =
             new Switcher<IEnumerable<InfoFile>, IEnumerable<InfoFile>>(
                 "--reverse",
-                invoke: (seqThe) => seqThe,
+                invoke: NoChangeOn.InfoFileSeq,
                 alt: (seqThe) => seqThe.Reverse(),
                 postAlt: (_) =>
                 {
                     SumOrder = (seqThe) => seqThe.Reverse();
                 });
 
+        static internal Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
+            TakeSumWhile = NoChangeOn.InfoSumSeq;
+
+        static Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
+            Shadow_TakeSumWhile = NoChangeOn.InfoSumSeq;
+
+        static Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
+            Shadow_TakeFileWhile = NoChangeOn.InfoFileSeq;
+
+        static internal void SwitchTakeWhile(bool toSum)
+        {
+            var takeOpt = TakeOpt as AbstractParser<
+                IEnumerable<InfoFile>, IEnumerable<InfoFile>>;
+            if (toSum)
+            {
+                TakeSumWhile = Shadow_TakeSumWhile;
+                takeOpt!._Invoke = NoChangeOn.InfoFileSeq;
+            }
+            else
+            {
+                TakeSumWhile = NoChangeOn.InfoSumSeq;
+                takeOpt!._Invoke = Shadow_TakeFileWhile;
+            }
+        }
+
         static public readonly
             IFunc<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
             TakeOpt =
             new Function<IEnumerable<InfoFile>, IEnumerable<InfoFile>>(
                 "--take=", help: "NUMBER|SIZE",
-                invoke: (seqThe) => seqThe,
+                invoke: NoChangeOn.InfoFileSeq,
                 parse: (opt, arg) =>
                 {
                     if (Int32.TryParse(arg, out Int32 count))
                     {
-                        opt._Invoke = (seqThe) => seqThe.Take(count);
+                        Shadow_TakeFileWhile =
+                        (seqThe) => seqThe.Take(count);
+                        opt._Invoke = Shadow_TakeFileWhile;
+
+                        long cnt = 0;
+                        Shadow_TakeSumWhile = (seqThe) =>
+                        seqThe.TakeWhile((it) =>
+                        {
+                            cnt += it.Count;
+                            return cnt < count;
+                        });
                     }
                     else
                     {
                         if (Helper.TryParseAsLong(arg, out long maxSize))
                         {
                             long sumSize = 0L;
-                            opt._Invoke = (seqThe) =>
+
+                            Shadow_TakeFileWhile = (seqThe) =>
+                            seqThe.TakeWhile((it) =>
+                            {
+                                sumSize += it.Length;
+                                return sumSize < maxSize;
+                            });
+                            opt._Invoke = Shadow_TakeFileWhile;
+
+                            Shadow_TakeSumWhile = (seqThe) =>
                             seqThe.TakeWhile((it) =>
                             {
                                 sumSize += it.Length;

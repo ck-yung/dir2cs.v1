@@ -40,7 +40,7 @@ namespace dir2
 
         static public readonly IFunc<string, bool> FilenameFilter =
             new Function2<string, bool>("--name=", help: "WILD[,WILD,..]",
-                invoke: (_) => true,
+                invoke: Any.StringTrue,
                 parse: (opt, args) =>
                 {
                     var exclNames = args
@@ -97,7 +97,7 @@ namespace dir2
         static public readonly IFunc<long, bool> MinFileSizeFilter =
             new Function<long, bool>("--size-beyond=",
                 help: "NUMBER",
-                invoke: (_) => true,
+                invoke: Any.LongTrue,
                 parse: (opt, arg) =>
                 {
                     if (Helper.TryParseAsLong(arg,
@@ -111,7 +111,7 @@ namespace dir2
         static public readonly IFunc<long, bool> MaxFileSizeFilter =
             new Function<long, bool>("--size-within=",
                 help: "NUMBER",
-                invoke: (_) => true,
+                invoke: Any.LongTrue,
                 parse: (opt, arg) =>
                 {
                     if (Helper.TryParseAsLong(arg,
@@ -124,7 +124,7 @@ namespace dir2
 
         static public readonly IFunc<DateTime, bool> MinFileDateFilter =
             new Function<DateTime, bool>("--date-beyond=", help: "DATETIME",
-                invoke: (_) => true, parse: (opt, arg) =>
+                invoke: Any.DateTimeTrue, parse: (opt, arg) =>
                 {
                     if (Helper.TryParseDateTime(arg, out DateTime result))
                     {
@@ -135,7 +135,7 @@ namespace dir2
 
         static public readonly IFunc<DateTime, bool> MaxFileDateFilter =
             new Function<DateTime, bool>("--date-within=", help: "DATETIME",
-                invoke: (_) => true, parse: (opt, arg) =>
+                invoke: Any.DateTimeTrue, parse: (opt, arg) =>
                 {
                     if (Helper.TryParseDateTime(arg, out DateTime result))
                     {
@@ -146,7 +146,7 @@ namespace dir2
 
         static public readonly IFunc<string, bool> FileExtFilter =
             new Function<string, bool>("--no-ext=", help: "excl|only",
-                invoke: (_) => true,
+                invoke: Any.StringTrue,
                 parse: (opt, arg) =>
                 {
                     opt._Invoke = arg switch
@@ -167,7 +167,7 @@ namespace dir2
                 {
                     opt._Invoke = arg switch
                     {
-                        "incl" => (_) => true,
+                        "incl" => Any.InfoFileTrue,
                         "only" => (it) => it.IsHidden,
                         _ => throw new InvalidValueException(
                             arg, opt.Name()),
@@ -236,9 +236,10 @@ namespace dir2
             invoke: (it) => it.LastWriteTime, alt: (it) => it.CreationTime);
 
         static public Func<IEnumerable<InfoFile>, IEnumerable<InfoFile>>
-            SortFileInfo { get; private set; } = (seqThe) => seqThe;
+            SortFileInfo { get; private set; } = NoChangeOn.InfoFileSeq;
+
         static public Func<IEnumerable<InfoSum>, IEnumerable<InfoSum>>
-            SortSumInfo { get; private set; } = (seqThe) => seqThe;
+            SortSumInfo { get; private set; } = NoChangeOn.InfoSumSeq;
 
         static public readonly IParser SortOpt = new Parser(
             "--sort=", help: "name|size|date|last|count",
@@ -293,6 +294,7 @@ namespace dir2
                 parse: (opt, arg) =>
                 {
                     PrintDir = (_) => { };
+                    SwitchTakeWhile(toSum:true);
                     opt._Invoke = arg switch
                     {
                         "ext" => (seqThe) => seqThe
@@ -304,6 +306,7 @@ namespace dir2
                         (acc, it) => acc.AddWith(it)))
                         .Invoke(SortSumInfo)
                         .Invoke(SumOrder)
+                        .Invoke(TakeSumWhile)
                         .Select((it) =>
                         {
                             Console.Write(ItemText(it.ToString()));
@@ -319,6 +322,7 @@ namespace dir2
                         (acc, it) => acc.AddWith(it)))
                         .Invoke(SortSumInfo)
                         .Invoke(SumOrder)
+                        .Invoke(TakeSumWhile)
                         .Select((it) =>
                         {
                             Console.Write(ItemText(it.ToString()));
@@ -352,6 +356,7 @@ namespace dir2
                             return qryResult
                             .Invoke(SortSumInfo)
                             .Invoke(SumOrder)
+                            .Invoke(TakeSumWhile)
                             .Select((it) =>
                             {
                                 Console.Write(ItemText(it.ToString()));
@@ -410,10 +415,10 @@ namespace dir2
             HideOpt,
             SortOpt,
             (IParser) GetFiles,
+            (IParser) TakeOpt,
             (IParser) SumBy,
             (IParser) ExclFilenameFilter,
             (IParser) ExclDirnameFilter,
-            (IParser) TakeOpt,
         };
 
         static public readonly IParser[] Parsers2 = new IParser[]

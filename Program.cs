@@ -97,6 +97,13 @@ namespace dir2
 
             if (sum.AddCount == 0)
                 Console.Write(Opts.TotalText("No file is found."));
+            else if (sum.AddCount == 1)
+            {
+                if (Opts.ItemText == Helper.Print.Off)
+                {
+                    Console.Write(Opts.TotalText("One file is found."));
+                }
+            }
             else if (sum.AddCount > 1)
                 Console.Write(Opts.TotalText(sum.ToString()));
 

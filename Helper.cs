@@ -428,6 +428,16 @@ namespace dir2
                 return Helper.emptyStrings;
             }
         }
+
+        static public class Print
+        {
+            static public Func<string,string>
+            Off = (it) => String.Empty;
+            static public Func<string,string>
+            Item = (it) => it;
+            static public Func<string,string>
+            Line = (it) => $"{it}{Environment.NewLine}";
+        }
     }
 
     class TooManyValuesException: ArgumentException

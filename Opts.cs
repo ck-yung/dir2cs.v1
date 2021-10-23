@@ -175,9 +175,9 @@ namespace dir2
                 });
 
         static public Func<string, string> ItemText
-        { get; private set; } = (it) => $"{it}{Environment.NewLine}";
+        { get; private set; } = Helper.Print.Line;
         static public Func<string, string> TotalText
-        { get; private set; } = (it) => $"{it}{Environment.NewLine}";
+        { get; private set; } = Helper.Print.Line;
         static public readonly IParser TotalOpt = new Parser("--total=",
             help: "off|only",
             parse: (opt, arg) =>
@@ -185,10 +185,12 @@ namespace dir2
                 switch (arg)
                 {
                     case "off":
-                        TotalText = (_) => "";
+                        ItemText = Helper.Print.Line;
+                        TotalText = Helper.Print.Off;
                         break;
                     case "only":
-                        ItemText = (_) => "";
+                        ItemText = Helper.Print.Off;
+                        TotalText = Helper.Print.Line;
                         break;
                     default:
                         throw new InvalidValueException(

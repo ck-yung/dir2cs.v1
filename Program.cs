@@ -15,20 +15,20 @@ namespace dir2
             }
             catch (TooManyValuesException tmve)
             {
-                Console.WriteLine($"Too many value to {tmve.Message}");
+                Console.Error.WriteLine($"Too many value to {tmve.Message}");
             }
             catch (InvalidValueException ive)
             {
-                Console.WriteLine($"{ive.Message} is invalid");
+                Console.Error.WriteLine($"{ive.Message} is invalid");
             }
             catch (ArgumentException ae)
             {
-                Console.WriteLine(ae.Message);
+                Console.Error.WriteLine(ae.Message);
             }
             catch (Exception ee)
             {
-                Console.WriteLine();
-                Console.WriteLine(ee);
+                Console.Error.WriteLine();
+                Console.Error.WriteLine(ee);
             }
         }
 

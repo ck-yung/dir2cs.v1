@@ -345,36 +345,24 @@ namespace dir2
                     else if (curr2[0] != '-') yield return curr2;
                     else
                     {
-                        int jj = curr2.IndexOf(' ');
-                        if (jj==1)
+                        int ii = 1; var cc = curr2[ii];
+                        for (; ii < curr2.Length; ii++)
                         {
-                            Console.Error.WriteLine($"Skip invalid envir option'{curr2}'");
+                            cc = curr2[ii];
+                            if (cc==' ') break;
+                            yield return $"-{cc}";
                         }
-                        if (jj==2)
+                        if (cc==' ')
                         {
-                            yield return $"-{curr2[1]}";
-                            yield return $"{curr2[3..]}";
-                        }
-                        else if (jj==-1)
-                        {
-                            for (int ii = 1; ii < curr2.Length; ii++)
+                            if (ii<(curr2.Length-1))
                             {
-                                yield return $"-{curr2[ii]}";
+                                yield return curr2[ii..].TrimStart();
                             }
-                        }
-                        else if ((jj+1)<curr2.Length)
-                        {
-                            jj -= 1;
-                            for (int ii=1; ii<jj; ii++)
+                            else
                             {
-                                yield return $"-{curr2[ii]}";
+                                throw new Exception(
+                                    $"Bad envir opt '{curr2}'");
                             }
-                            yield return $"-{curr2[jj]}";
-                            yield return $"{curr2[(jj+2)..]}";
-                        }
-                        else
-                        {
-                            Console.Error.WriteLine($"Skip bad envir option '{curr2}'");
                         }
                     }
                 }
@@ -412,7 +400,7 @@ namespace dir2
 
             try
             {
-                return ExpandShortcut();
+                return ExpandShortcut().ToArray();
             }
             catch (Exception ee)
             {
@@ -431,7 +419,8 @@ namespace dir2
                     .Join(Opts.ExclFileDirParsers,
                     outerKeySelector: (line) => line.Split('=')[0],
                     innerKeySelector: (opt) => opt.Name().Trim('='),
-                    resultSelector: (line, opt) => line);
+                    resultSelector: (line, opt) => line)
+                    .ToArray();
             }
             catch (Exception ee)
             {

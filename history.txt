@@ -187,3 +187,4 @@
 24.05  Expand combining shortcut option in envir 'dir2'
 26.02+ Re-phase init lambda by static readonly property
 26.03  Fix '--take=' if '--sum=' is also applied
+24.06  Fine tune 'Expand combining shortcut option in envir dir2'

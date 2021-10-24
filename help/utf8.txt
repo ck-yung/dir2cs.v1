@@ -1,4 +1,4 @@
 opt:
   --utf8
  
-Encode console output to UTF8 for some languages other than European.
+Encode console output to UTF8 for some languages.

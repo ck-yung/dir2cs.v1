@@ -14,7 +14,7 @@ namespace dir2
 
         static readonly IFunc<bool, IEnumerable<string>> LoadConfigOpt =
             new Switcher<bool, IEnumerable<string>>(Opts.ConfigFileOffOption,
-                help: "see --help=cfg",
+                help: "see --help cfg",
                 invoke: (_) => Config.ParseFile(), alt: (_) => Helper.emptyStrings);
 
         static public IEnumerable<string> LoadConfig(IEnumerable<string> args)

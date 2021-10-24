@@ -165,7 +165,7 @@ namespace dir2
                 });
 
         static public readonly IFunc<bool, bool> EncodeConsoleOuput =
-            new Switcher<bool, bool>("--utf8", help: "see --help=utf8",
+            new Switcher<bool, bool>("--utf8", help: "see --help utf8",
                 invoke: (_) => { return false; }, alt: (_) =>
                 {
                     Console.OutputEncoding = System.Text.Encoding.UTF8;

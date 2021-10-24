@@ -45,8 +45,15 @@ namespace dir2
                 return true;
             }
 
-            if (args.Contains("--help"))
+            const string singleQuestionMark = "-?";
+            int ndxQueMark = Array.IndexOf(args,singleQuestionMark);
+            const string helpText = "--help";
+            int ndxHelp = Array.IndexOf(args,helpText);
+            int argsLastNdx = args.Length - 1;
+
+            if (argsLastNdx!=-1 && ndxHelp==argsLastNdx)
             {
+                Console.WriteLine("Syntax: dir2 --help help");
                 Console.WriteLine(
                     $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
@@ -82,10 +89,11 @@ namespace dir2
                 return true;
             }
 
-            if (args.Contains("-?"))
+            if (argsLastNdx!=-1 && ndxQueMark==argsLastNdx)
             {
-                Console.WriteLine("Syntax: dir2 --help");
                 Console.WriteLine("Syntax: dir2 --version | -v");
+                Console.WriteLine("Syntax: dir2 --help");
+                Console.WriteLine("Syntax: dir2 -? \"?\"");
                 Console.WriteLine(
                     $"Syntax: dir2 DIR{Path.DirectorySeparatorChar}WILD [OPT ..]");
                 Console.WriteLine("Syntax: dir2 [DIR] [WILD ..] [OPT ..]");
@@ -115,35 +123,47 @@ namespace dir2
                 return true;
             }
 
-            if (args.Contains("--help=cfg"))
+            var helpTopics = "";
+            if (ndxHelp!=-1 || ndxQueMark!=-1)
             {
-                Console.WriteLine($"Load opt from '{Config.GetFilename()}':");
-                foreach (var opt in Opts.ConfigParsers)
+                if (ndxHelp!=-1)
                 {
-                    Console.WriteLine(opt);
+                    helpTopics = args[ndxHelp+1];
                 }
-                foreach (var opt in Opts.ExclFileDirParsers)
+                else
                 {
-                    Console.WriteLine(opt);
+                    helpTopics = args[ndxQueMark+1];
                 }
-                Console.WriteLine();
-                Console.WriteLine($"Apply opt '{Opts.ConfigFileOffOption}'");
-                Console.WriteLine(" to skip the above config.");
-                return true;
             }
 
-            var helpPrefix = "--help=";
-            var helpRequest = args
-                .Where((it) => it.StartsWith(helpPrefix))
-                .Select((it) => it.Substring(helpPrefix.Length))
-                .FirstOrDefault();
-            if (!string.IsNullOrEmpty(helpRequest))
+            switch (helpTopics)
             {
-                PrintHelpContent(helpRequest);
-                return true;
-            }
+                case "":
+                    return false;
 
-            return false;
+                case "cfg":
+                    Console.WriteLine($"Load opt from '{Config.GetFilename()}':");
+                    foreach (var opt in Opts.ConfigParsers)
+                    {
+                        Console.WriteLine(opt);
+                    }
+                    foreach (var opt in Opts.ExclFileDirParsers)
+                    {
+                        Console.WriteLine(opt);
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine($"Apply opt '{Opts.ConfigFileOffOption}'");
+                    Console.WriteLine(" to skip the above config.");
+                    return true;
+
+                case "?": case "help":
+                    ListHelpTopics();
+                    return true;
+
+                default:
+                    PrintHelpContent(helpTopics);
+                    return true;
+            }
         }
 
         private static bool PrintHelpContent(string helpRequest)
@@ -191,7 +211,8 @@ namespace dir2
 
             if (string.IsNullOrEmpty(redirectFilename))
             {
-                Console.WriteLine($"'{questThe.TrimEnd('=')}' is NOT defined in '{recdirectDefFilename}'");
+                Console.WriteLine(
+                    $"'{questThe.TrimEnd('=')}' is NOT defined in '{recdirectDefFilename}'");
                 return false;
             }
 
@@ -201,13 +222,13 @@ namespace dir2
                 Console.Error.WriteLine($"File '{theFilename}' is NOT found!");
                 return false;
             }
+
             try
             {
                 using (var fs = File.OpenText(theFilename))
                 {
                     foreach (var line in fs.ReadToEnd()
-                        .Split(new char[] { '\n', '\r' })
-                        .Where((it) => !string.IsNullOrEmpty(it)))
+                        .Split(new char[] { '\n', '\r' }))
                     {
                         Console.WriteLine(line);
                     }
@@ -216,6 +237,60 @@ namespace dir2
             catch (Exception ee)
             {
                 Console.Error.WriteLine($"File {theFilename}: {ee.Message}");
+            }
+
+            return true;
+        }
+
+        private static bool ListHelpTopics()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().Location;
+
+            Func<string, string> NormalizeForDirSepChar = (it) => it;
+            if (Path.DirectorySeparatorChar != '/')
+            {
+                NormalizeForDirSepChar = (it) => it.Replace('/',
+                    Path.DirectorySeparatorChar);
+            }
+
+            var helpBasePath = Path.Join(Path.GetDirectoryName(
+                NormalizeForDirSepChar(codeBase)), "help");
+
+            var recdirectDefFilename = Path.Join(helpBasePath, "dir2-redir.txt");
+            if (!File.Exists(recdirectDefFilename))
+            {
+                Console.Error.WriteLine($"File '{recdirectDefFilename}' is NOT found!");
+                return false;
+            }
+
+            Console.WriteLine("Syntax: dir2 --help TOPICS");
+            Console.WriteLine("Syntax: dir2 -? TOPICS");
+            Console.WriteLine("\t where TOPICS is one of below:");
+            try
+            {
+                using var fs = File.OpenText(recdirectDefFilename);
+                foreach (var topics in fs.ReadToEnd()
+                .Split(new char[]{ '\n', '\r'})
+                .Where((it) => !string.IsNullOrEmpty(it))
+                .Select((it) => it.Trim())
+                .Where((it) => it.Length>0)
+                .Where((it) => !(it.StartsWith(";")))
+                .Where((it) => !(it.StartsWith("#")))
+                .Where((it) => it.Contains('='))
+                .Select((it) => it.Split('='))
+                .Select((it) => it[0])
+                .Union(new string[]{"cfg"})
+                .OrderBy((it) => it)
+                )
+                {
+                    Console.WriteLine(topics);
+                }
+            }
+            catch
+            {
+                Console.Error.WriteLine(
+                    $"File '{recdirectDefFilename}': Some error is encountered!");
+                return false;
             }
 
             return true;

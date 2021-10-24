@@ -1,12 +1,21 @@
 # Dir2
 **v1.01**
 
+### Syntax: dir2 --help help
+List help topics
+
+### Syntax: dir2 --help TOPICS
+##### Example:
+
+dir --help sort
+
 ### Syntax: dir2 DIR/WILD [OPT ..]
-#### Example:
+##### Example:
 
-dir2 obj\\*.dll -s
+dir2 obj/*.dll -s
 
-#### Example:
+### Syntax: dir2 [DIR] [WILD ..] [OPT ..]
+##### Example:
 
 dir2 bin -s \*.exe \*.dll --size-beyond=10m
 
@@ -14,8 +23,9 @@ dir2 bin -s \*.exe \*.dll --size-beyond=10m
 
 | Shortcut | Option           | Example or Info         | Shortcut Example |
 | -------- | ------           | ---------------         | ---------------- |
-|          | --cfg-off        | see --help=cfg          |                  |
-|          | --utf8 	      | see --help=utf8         |                  |
+| -?       | --help           | --help sort             | -? sort          |
+|          | --cfg-off        | see --help cfg          |                  |
+|          | --utf8 	      | see --help utf8         |                  |
 |          | --regex          |                         |                  |
 |          | --case-sensitive |                         |                  |
 |          | --create-date    |                         |                  |

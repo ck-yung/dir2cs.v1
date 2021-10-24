@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace dir2
 {
@@ -101,7 +102,22 @@ namespace dir2
             {
                 if (Opts.ItemText == Helper.Print.Off)
                 {
-                    Console.Write(Opts.TotalText("One file is found."));
+                    StringBuilder totalThe = new();
+                    totalThe.Append(Opts.SizeText(
+                        Opts.SizeFormat.Func(sum.Length)));
+                    totalThe.Append(Opts.DateText(
+                        Opts.DateFormat.Func(sum.DateTime)));
+                    if (sum.Count>1)
+                    {
+                        totalThe.Append(Opts.DateText("- "));
+                        totalThe.Append(Opts.DateText(
+                            Opts.DateFormat.Func(sum.Last)));
+                        totalThe.Append(Opts.CountText("(count="));
+                        totalThe.Append(Opts.CountText(
+                            Opts.CountFormat.Func(sum.Count).TrimEnd()));
+                        totalThe.Append(Opts.CountText(")"));
+                    }
+                    Console.Write(Opts.TotalText(totalThe.ToString()));
                 }
             }
             else if (sum.AddCount > 1)

@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Title>dir2</Title>
     <PackageId>dir2</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
-    <Version>1.0.1</Version>
+    <PackageVersion>1.1.0</PackageVersion>
+    <Version>1.1.0</Version>
     <Authors>Yung, Chun Kau</Authors>
     <Description>List files by dir or ext, with filter on date and time</Description>
     <Summary>
@@ -37,8 +37,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

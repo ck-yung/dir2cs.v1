@@ -225,15 +225,10 @@ namespace dir2
 
             try
             {
-                var info = new FileInfo(theFilename);
-                var buf = new byte[info.Length];
-                using var fs = File.OpenRead(theFilename);
-                int readSize = fs.Read(buf,0, buf.Length);
-                var textThe = System.Text.Encoding.UTF8
-                    .GetString(buf)
-                    .Replace("\r","")
-                    .Replace("\n",Environment.NewLine);
-                Console.WriteLine(textThe);
+                var helpThe = File.ReadAllText(theFilename)
+                    .Replace("\r", "")
+                    .Replace("\n", Environment.NewLine);
+                Console.WriteLine(helpThe.Trim());
             }
             catch (Exception ee)
             {

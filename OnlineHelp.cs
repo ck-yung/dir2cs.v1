@@ -152,8 +152,11 @@ namespace dir2
                         Console.WriteLine(opt);
                     }
                     Console.WriteLine();
-                    Console.WriteLine($"Apply opt '{Opts.ConfigFileOffOption}'");
-                    Console.WriteLine(" to skip the above config.");
+                    Console.WriteLine("No shortcut in the config file can be parsed.");
+                    Console.Write($"Apply opt '{Opts.ConfigFileOffOption}'");
+                    Console.Write(" in envir or command line to skip");
+                    Console.Write(" the config file.");
+                    Console.WriteLine();
                     return true;
 
                 case "?": case "help":
@@ -183,7 +186,8 @@ namespace dir2
             var recdirectDefFilename = Path.Join(helpBasePath, "dir2-redir.txt");
             if (!File.Exists(recdirectDefFilename))
             {
-                Console.Error.WriteLine($"File '{recdirectDefFilename}' is NOT found!");
+                Console.Error.WriteLine(
+                    $"File '{recdirectDefFilename}' is NOT found!");
                 return false;
             }
 
@@ -212,7 +216,8 @@ namespace dir2
             if (string.IsNullOrEmpty(redirectFilename))
             {
                 Console.WriteLine(
-                    $"'{questThe.TrimEnd('=')}' is NOT defined in '{recdirectDefFilename}'");
+                    $"Topics '{questThe.TrimEnd('=')}' is NOT defined in help.");
+                Console.WriteLine("Do you mean: dir2 -? \"?\" | more");
                 return false;
             }
 
@@ -288,6 +293,8 @@ namespace dir2
                     $"File '{recdirectDefFilename}': Some error is encountered!");
                 return false;
             }
+            Console.WriteLine();
+            Console.WriteLine("Sample: dir2 -? sum");
 
             return true;
         }

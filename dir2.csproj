@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Title>dir2</Title>
     <PackageId>dir2</PackageId>
-    <PackageVersion>1.1.1</PackageVersion>
-    <Version>1.1.1</Version>
+    <PackageVersion>1.1.2</PackageVersion>
+    <Version>1.1.2</Version>
     <Authors>Yung, Chun Kau</Authors>
     <Description>List files by dir or ext, with filter on date and time</Description>
     <Summary>
@@ -37,8 +37,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.1.1</AssemblyVersion>
-    <FileVersion>1.1.1</FileVersion>
+    <AssemblyVersion>1.1.2</AssemblyVersion>
+    <FileVersion>1.1.2</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -73,6 +73,9 @@
     <None Update="help\dir2-redir.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="help\envir.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="help\hide.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -95,6 +98,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="help\sum.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="help\take.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="help\utf8.txt">

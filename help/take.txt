@@ -1,0 +1,17 @@
+opt:
+  --take=NUMBER|SIZE
+
+1. If the value to '--take=' is end by 'k', 'm' or 'g',
+   it will be parsed as size value.
+2. If the value is not size value, it will be parsed as a number.
+
+Examples:
+
+  dir2 -s --sum=dir --sort=size --take=100m
+
+will show directories in order of size for total size within 100Mb.
+
+
+  dir2 -s --sum=+dir --sort=count --take=0
+
+will show empty directories only.

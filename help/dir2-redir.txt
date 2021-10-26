@@ -25,3 +25,7 @@ sum=sum.txt
 size-format=size-format.txt
 
 utf8=utf8.txt
+
+take=take.txt
+
+envir=envir.txt

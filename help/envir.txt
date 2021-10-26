@@ -1,0 +1,75 @@
+1. The following options can be assigned by environment variable 'dir2'.
+  --cfg-off
+  --utf8
+  --regex
+  --case-sensitive
+  --create-date
+  --relative
+  --count-comma
+  --reverse
+  --size-beyond=SIZE
+  --size-within=SIZE
+  --date-beyond=DATE
+  --date-within=DATE
+  --no-ext=excl|only
+  --hidden=incl|only
+  --size-format=long|short
+  --count-width=NUMBER
+  --date-format=DATE-FORMAT
+  --total=off|only
+  --hide=size,date,count
+  --sort=name|ext|size|date|last|count|ext,name|ext,size|ext,date
+  --dir=sub|off|only|tree
+  --sum=ext|dir
+  --excl-file=WILD[,WILD,..]
+  --excl-dir=WILD[,WILD,..]
+  --name=WILD[,WILD,..]
+
+2. The following shortcut can be used in environment variable 'dir2'.
+
+  Shortcut             Meaning
+  -x=WILD[,WILD ..]    --excl-file=WILD[,WILD,..]
+  -X=WILD[,WILD ..]    --excl-dir=WILD[,WILD,..]
+  -n=WILD[,WILD ..]    --name=WILD[,WILD,..]
+  -o=OPTION            --sort=OPTION
+  -s                   --dir=sub
+  -f                   --dir=off
+  -d                   --dir=only
+  -T                   --dir=tree
+  -c                   --case-sensitive
+  -t                   --total=only
+  -b                   --total=off --hide=size,date,count
+
+3. Filename selection in envir var 'dir2' should be assigned by option '--name='.
+   For example, envir setup to show '*.cs' files only
+   set "dir2=--name=*.cs"
+   export "dir2=--name=*.cs"
+
+4. Option values assigning in envir var 'dir2' cannot contain <space-hepen> " -".
+   That is, set "dir2=--excl-file=abc -xyz.txt" is invalid.
+
+5. The whole envir var assignment usually is required to be
+   enclosed by double quotation mark. For example,
+   set "dir2=--date-format=MMM dd -o=date -n=*.cs"
+   export "dir2=--date-format=MMM dd -o=date -n=*.cs"
+
+6. Prority
+
+6.1 If envir var or command line contain '--cfg-off', config file 'dir2.opt'
+    will NOT be loaed. Otherwise, 'dir2.opt' will be load before others.
+
+6.2 Envir var 'dir2' always will be referred and override config file setting.
+
+6.3 Command line param always overrides prior setting.
+
+6.4 For example,
+
+Envir setup
+    set "dir2=--dir=off -o size -x *.dll"
+    export "dir2=--dir=off -o size -x *.dll"
+Command
+    dir2 --dir=sub -o date test*.*
+
+    The result will show files "test*.*" including all sub-dir
+    but excluding "*.dll".
+

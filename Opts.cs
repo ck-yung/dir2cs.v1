@@ -486,6 +486,7 @@ namespace dir2
             (IParser) GetFiles,
             (IParser) SumBy,
             (IParser) TakeOpt,
+            (IParser) FilenameFilter,
         };
 
         static public readonly IParser[] ExclFileDirParsers = new IParser[]

@@ -27,8 +27,9 @@
 
 | Shortcut | Option           | Example                 | Shortcut Example |
 | -------- | ------           | -------                 | ---------------- |
-| -?       | --help           | --help                  |                  |
-|          |                  | --help help             | -? ?             |
+| -?       | --help           |                         |                  |
+| -? ?     | --help help      |                         |                  |
+| -? TOPICS | --help TOPICS   | --help sort             | -? sort          | 
 |          | --cfg-off        |                         |                  |
 |          | --utf8           |                         |                  |
 |          | --regex          |                         |                  |
@@ -47,12 +48,12 @@
 |          | --date-format    | --date-format=MM.dd     |                  |
 |          | --total          | --total=only            |                  |
 |          | --hide           | --hide=date             |                  |
-| -o,      | --sort           | --sort=size             | -o date          |
+| -o       | --sort           | --sort=size             | -o date          |
 |          | --take           | --take=100m             |                  |
 |          | --dir            | --dir=sub               |                  |
 |          | --sum            | --sum=ext               |                  |
-| -x,      | --excl-file      | --excl-file=\*.dll,\*.pdb | -x \*.exe,\*.dat   |
-| -X,      | --excl-dir       | --excl-dir=bin,obj      | -X bin,obj       |
+| -x       | --excl-file      | --excl-file=\*.dll,\*.pdb | -x \*.exe,\*.dat   |
+| -X       | --excl-dir       | --excl-dir=bin,obj      | -X bin,obj       |
 
 
 ## Daily Shortcut:

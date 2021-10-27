@@ -28,10 +28,10 @@
 2. The following shortcut can be used in environment variable 'dir2'.
 
   Shortcut             Meaning
-  -x=WILD[,WILD ..]    --excl-file=WILD[,WILD,..]
-  -X=WILD[,WILD ..]    --excl-dir=WILD[,WILD,..]
-  -n=WILD[,WILD ..]    --name=WILD[,WILD,..]
-  -o=OPTION            --sort=OPTION
+  -x WILD[,WILD ..]    --excl-file=WILD[,WILD,..]
+  -X WILD[,WILD ..]    --excl-dir=WILD[,WILD,..]
+  -n WILD[,WILD ..]    --name=WILD[,WILD,..]
+  -o OPTION            --sort=OPTION
   -s                   --dir=sub
   -f                   --dir=off
   -d                   --dir=only

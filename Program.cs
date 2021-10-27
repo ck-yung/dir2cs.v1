@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -48,8 +48,7 @@ namespace dir2
                 Helper.EnvirParse(envirOpts);
 
             var args = Opts.Parsers
-                .Aggregate(Opts.LoadConfig(
-                    argsMain).ExpandShortcut().Union(envirExclOpts),
+                .Aggregate(cmdOpts.Union(envirExclOpts),
                 (it, opt) => opt.Parse(it))
                 .ToImmutableArray();
 

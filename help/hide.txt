@@ -9,6 +9,6 @@ opt:  --no-ext=excl|off
 1. --no-ext=excl  would suppress file if it has not file-extension.
 2. --no-ext=only  would suppress file if it has any file-extension.
 
-opt:  --hidden=incl|off
+opt:  --hidden=incl|only
 1. --hidden=incl  would print hidden file also.
-2. --hidden=off   would print hidden file only.
+2. --hidden=only  would print hidden file only.

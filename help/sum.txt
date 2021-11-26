@@ -1,5 +1,5 @@
 opt:
-  --sum=ext|dir
+  --sum=ext|dir|+dir
  
 1. --sum=ext    group by file extension.
 2. --sum=dir    group by first directory name.

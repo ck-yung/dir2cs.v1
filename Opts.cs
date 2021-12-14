@@ -305,6 +305,7 @@ namespace dir2
                 invoke: (seqThe) => seqThe
                 .Invoke((seqThe) => SortFileInfo(seqThe))
                 .Invoke((seqThe) => OrderOpt.Func(seqThe))
+                .Invoke((seqThe) => TakeOpt.Func(seqThe))
                 .Select((it) =>
                 {
                     Console.Write(ItemText(it.ToString()));

@@ -3,4 +3,4 @@ opt:
  
 1. --sum=ext    group by file extension.
 2. --sum=dir    group by first directory name.
-3. --sum=+dir   group by first directory name, plus empty content.
+3. --sum=+dir   group by first directory name, plus empty dir

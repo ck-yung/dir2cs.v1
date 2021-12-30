@@ -271,13 +271,13 @@ namespace dir2
         static public string ToKiloUnit(long arg)
         {
             var units = new char[] { 'T', 'G', 'M', 'K', ' ' };
-            string toKilo(long arg2, int index)
+            string toKilo(float arg2, int index)
             {
-                if (arg2 < 10000) return $"{arg2,4}{units[index - 1]}";
-                if (index == 1) return $"{arg2,4}{units[0]}";
-                return toKilo((arg2 + 512) / 1024, index - 1);
+                if (arg2 < 10_000.0F) return $"{arg2,4:F0}{units[index - 1]}";
+                if (index == 1) return $"{arg2,4:F0}{units[0]}";
+                return toKilo(arg2 / 1024.0F, index - 1);
             }
-            return toKilo(arg, units.Length);
+            return toKilo((float) arg, units.Length);
         }
 
         static public Func<string, bool> ToWildMatch(string arg)

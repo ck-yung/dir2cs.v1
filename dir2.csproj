@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Title>dir2</Title>
     <PackageId>dir2</PackageId>
-    <PackageVersion>1.1.5</PackageVersion>
-    <Version>1.1.5</Version>
+    <PackageVersion>1.1.6</PackageVersion>
+    <Version>1.1.6</Version>
     <Authors>Yung, Chun Kau</Authors>
     <Description>List files by dir or ext, with filter on date and time</Description>
     <Summary>
@@ -18,7 +18,7 @@
     <ToolCommandName>dir2</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <PackageReleaseNotes>dotnet 6 has been relased at Nov 8, 2021.</PackageReleaseNotes>
-    <PackageTags>dir;ls;subdir;size;grand total</PackageTags>
+    <PackageTags>easy dir;ls;subdir;size;grand total;simple command</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Copyright>Copyright (c)2021 Yung, Chun Kau</Copyright>
@@ -38,8 +38,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.1.5</AssemblyVersion>
-    <FileVersion>1.1.5</FileVersion>
+    <AssemblyVersion>1.1.6</AssemblyVersion>
+    <FileVersion>1.1.6</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

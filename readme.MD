@@ -1,5 +1,5 @@
 # Dir2
-**v1.1.5**
+**v1.1.6**
 
 ## Syntax:
 	dir2 [DIR] [WILD ..] [OPT ..]
@@ -84,4 +84,4 @@ Yung, Chun Kau
 
 <yung.chun.kau@gmail.com>
 
-2021 Dec 14
+2021 Dec 30
